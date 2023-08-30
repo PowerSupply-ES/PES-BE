@@ -1,13 +1,16 @@
 package com.powersupply.PES.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Map;
 
 @Controller
 public class GithubLoginController {
@@ -19,7 +22,7 @@ public class GithubLoginController {
     private String clientSecret;
 
     @GetMapping("/login/oauth2/code/github")
-    public String getCode(@RequestParam String code) throws IOException {
+    public String getCode(@RequestParam String code, RedirectAttributes redirectAttributes) throws IOException {
 
         //System.out.println("client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + code);
 
@@ -43,6 +46,8 @@ public class GithubLoginController {
         connection.disconnect();
 
         System.out.println("responseCode = " + responseCode + " responseData = " + responseData);
+
+        access(responseData, redirectAttributes);
         return "index";
     }
 
@@ -57,5 +62,25 @@ public class GithubLoginController {
             }
         }
         return stringBuilder.toString();
+    }
+
+    private void access(String response, RedirectAttributes redirectAttributes) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> map = objectMapper.readValue(response, Map.class);
+        String access_token = map.get("access_token");
+
+        URL url = new URL("https://api.github.com/user");
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Accept", "application/json");
+        connection.setRequestProperty("Authorization", "bearer " + access_token);
+
+        int responseCode = connection.getResponseCode();
+
+        String result = getResponse(connection, responseCode);
+
+        connection.disconnect();
+
+        System.out.println(result);
     }
 }
