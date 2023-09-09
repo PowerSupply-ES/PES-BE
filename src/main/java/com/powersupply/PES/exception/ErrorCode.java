@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ErrorCode {
     USERNAME_DUPLICATED(HttpStatus.CONFLICT, ""),
-    INVALID_INPUT(HttpStatus.UNAUTHORIZED,"");
+    INVALID_INPUT(HttpStatus.UNAUTHORIZED,""),
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND,"");
 
     private HttpStatus httpStatus;
     private String message;

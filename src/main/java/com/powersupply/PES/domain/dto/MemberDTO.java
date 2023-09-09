@@ -15,4 +15,10 @@ public class MemberDTO {
         private String memberEmail; // 이메일
         private String memberGitUrl; // 깃주소
     }
+
+    @Getter
+    public static class MemberLoginRequest {
+        private String memberStuNum; // 학번
+        private String memberPw; // 비밀번호
+    }
 }

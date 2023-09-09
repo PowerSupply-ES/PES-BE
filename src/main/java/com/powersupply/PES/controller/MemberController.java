@@ -31,8 +31,17 @@ public class MemberController {
         return "redirect:/member/login/";
     }
 
+    // login 페이지 가져오기
     @GetMapping("/login")
     public String getLogin() {
         return "login";
+    }
+
+    // login 진행
+    @PostMapping("/login")
+    public String postLogin(@RequestBody MemberDTO.MemberLoginRequest dto) {
+        memberService.login(dto);
+
+        return "index";
     }
 }

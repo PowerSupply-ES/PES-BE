@@ -47,4 +47,24 @@ public class MemberService {
                 .build();
         memberRepository.save(memberEntity);
     }
+
+    //로그인
+    public void login(MemberDTO.MemberLoginRequest dto) {
+        String stuNum = dto.getMemberStuNum();
+        String pw = dto.getMemberPw();
+
+        // Email 및 password 빈칸 체크
+        if (stuNum.isBlank() || pw.isBlank()) {
+            throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
+        }
+
+        // Email 없는 경우
+        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
+                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
+
+        // password 틀린 경우
+        if(!encoder.matches(pw, selectedMember.getMemberPw())){
+            throw new AppException(ErrorCode.INVALID_INPUT, "패스워드를 잘못 입력 했습니다.");
+        }
+    }
 }
