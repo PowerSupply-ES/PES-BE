@@ -14,11 +14,12 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
         return httpSecurity
-                .httpBasic().disable()//UI쪽 들어오는거 disable
-                .csrf().disable()//cross site 기능
-                .cors().and()// cross site 도메인 다른 경우 허용
+                .httpBasic().disable() // UI쪽 들어오는거 disable
+                .csrf().disable() // cross site 기능
+                .cors().and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
-                .antMatchers("/","/login/**","/userdata").permitAll() // main 페이지는 언제나 접근 가능
+                .antMatchers("/","/member/**").permitAll() // main 페이지는 언제나 접근 가능
+                .antMatchers("/css/**", "/js/**", "/img/**").permitAll()  // 정적 리소스에 대한 접근 허용
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement()
