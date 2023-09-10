@@ -51,4 +51,12 @@ public class MemberController {
 
         return "index";
     }
+
+    // 마이페이지
+    @GetMapping("/mypage")
+    public String getMyPage() {
+        MemberDTO.MemberMyPageResponse myPageResponse = memberService.getMyPage();
+
+        return "mypage";
+    }
 }

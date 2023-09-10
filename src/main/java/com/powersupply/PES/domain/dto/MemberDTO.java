@@ -1,5 +1,6 @@
 package com.powersupply.PES.domain.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 
 public class MemberDTO {
@@ -20,5 +21,18 @@ public class MemberDTO {
     public static class MemberSignInRequest {
         private String memberStuNum; // 학번
         private String memberPw; // 비밀번호
+    }
+
+    @Builder
+    public static class MemberMyPageResponse {
+        private String memberStuNum; // 학번
+        private String memberName; // 이름
+        private int memberCardiNum; // 기수
+        private String memberMajor; // 학과
+        private String memberPhone; // 전화번호
+        private String memberStatus; // 상태
+        private String memberEmail; // 이메일
+        private int memberScore; // 점수
+        private String memberGitUrl; // 깃주소
     }
 }

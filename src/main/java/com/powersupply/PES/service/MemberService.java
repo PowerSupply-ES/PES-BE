@@ -79,4 +79,22 @@ public class MemberService {
         return memberRepository.findByMemberStuNum(memberStuNum)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
     }
+
+    public MemberDTO.MemberMyPageResponse getMyPage() {
+        MemberEntity memberEntity = memberRepository.findByMemberStuNum(JwtUtil.getMemberStuNumFromToken())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
+
+        MemberDTO.MemberMyPageResponse myPageResponse = MemberDTO.MemberMyPageResponse.builder()
+                .memberStuNum(memberEntity.getMemberStuNum())
+                .memberName(memberEntity.getMemberName())
+                .memberCardiNum(memberEntity.getMemberCardiNum())
+                .memberMajor(memberEntity.getMemberMajor())
+                .memberPhone(memberEntity.getMemberPhone())
+                .memberStatus(memberEntity.getMemberStatus())
+                .memberScore(memberEntity.getMemberScore())
+                .memberEmail(memberEntity.getMemberEmail())
+                .memberGitUrl(memberEntity.getMemberGitUrl())
+                .build();
+        return myPageResponse;
+    }
 }
