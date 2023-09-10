@@ -33,7 +33,7 @@ public class MemberService {
         // memberEmail 중복 체크
         memberRepository.findByMemberStuNum(StuNum)
                 .ifPresent(member -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "해당 학번은 이미 있습니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
         // 저장
@@ -65,11 +65,11 @@ public class MemberService {
 
         // Email 없는 경우
         MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
-                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
+                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
 
         // password 틀린 경우
         if(!encoder.matches(pw, selectedMember.getMemberPw())){
-            throw new AppException(ErrorCode.INVALID_INPUT, "패스워드를 잘못 입력 했습니다.");
+            throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
         return JwtUtil.createToken(selectedMember.getMemberStuNum(), secretKey, expireTimeMs);
