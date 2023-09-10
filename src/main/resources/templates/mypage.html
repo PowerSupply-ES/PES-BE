@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,7 @@
 
             <div class="info">
                 <p><strong>이름</strong></p>
-                <p>홍길동</p>
+                <p th:text="${member.memberName}"></p>
             </div>
             <div class="info">
                 <p><strong>이메일</strong></p>

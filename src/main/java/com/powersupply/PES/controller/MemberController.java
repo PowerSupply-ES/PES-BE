@@ -4,6 +4,7 @@ import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,9 +55,10 @@ public class MemberController {
 
     // 마이페이지
     @GetMapping("/mypage")
-    public String getMyPage() {
+    public String getMyPage(Model model) {
         MemberDTO.MemberMyPageResponse myPageResponse = memberService.getMyPage();
 
+        model.addAttribute("member", myPageResponse);
         return "mypage";
     }
 }

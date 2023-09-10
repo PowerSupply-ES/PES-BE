@@ -24,6 +24,7 @@ public class MemberDTO {
     }
 
     @Builder
+    @Getter
     public static class MemberMyPageResponse {
         private String memberStuNum; // 학번
         private String memberName; // 이름
