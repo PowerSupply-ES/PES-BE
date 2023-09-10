@@ -5,7 +5,9 @@ import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.MemberRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
+    @Value("${jwt.secret}")
+    private String secretKey;
 
     public void signUp(MemberDTO.MemberSignUpRequest dto) {
 
@@ -49,9 +53,10 @@ public class MemberService {
     }
 
     //로그인
-    public void signIn(MemberDTO.MemberSignInRequest dto) {
+    public String signIn(MemberDTO.MemberSignInRequest dto) {
         String stuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
+        Long expireTimeMs = 1000 * 60 * 60l;
 
         // Email 및 password 빈칸 체크
         if (stuNum.isBlank() || pw.isBlank()) {
@@ -66,5 +71,12 @@ public class MemberService {
         if(!encoder.matches(pw, selectedMember.getMemberPw())){
             throw new AppException(ErrorCode.INVALID_INPUT, "패스워드를 잘못 입력 했습니다.");
         }
+
+        return JwtUtil.createToken(selectedMember.getMemberStuNum(), secretKey, expireTimeMs);
+    }
+
+    public MemberEntity findByMemberStuNum(String memberStuNum) {
+        return memberRepository.findByMemberStuNum(memberStuNum)
+                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
     }
 }
