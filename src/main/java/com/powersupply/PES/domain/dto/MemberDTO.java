@@ -5,7 +5,7 @@ import lombok.Getter;
 public class MemberDTO {
 
     @Getter
-    public static class MemberJoinRequest {
+    public static class MemberSignUpRequest {
         private String memberStuNum; // 학번
         private String memberPw; // 멤버 비밀번호
         private String memberName; // 이름
@@ -17,7 +17,7 @@ public class MemberDTO {
     }
 
     @Getter
-    public static class MemberLoginRequest {
+    public static class MemberSignInRequest {
         private String memberStuNum; // 학번
         private String memberPw; // 비밀번호
     }

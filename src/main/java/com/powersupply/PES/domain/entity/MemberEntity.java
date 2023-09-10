@@ -23,6 +23,6 @@ public class MemberEntity extends BaseEntity{
     private String memberPhone; // 전화번호
     private String memberStatus; // 상태
     private String memberEmail; // 이메일
-    private String memberScore; // 점수
+    private int memberScore; // 점수
     private String memberGitUrl; // 깃주소
 }

@@ -16,7 +16,7 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
 
-    public void join(MemberDTO.MemberJoinRequest dto) {
+    public void signUp(MemberDTO.MemberSignUpRequest dto) {
 
         String StuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
@@ -41,7 +41,7 @@ public class MemberService {
                 .memberMajor(dto.getMemberMajor())
                 .memberPhone(dto.getMemberPhone())
                 .memberStatus("신입생")
-                .memberScore("0")
+                .memberScore(0)
                 .memberEmail(dto.getMemberEmail())
                 .memberGitUrl(dto.getMemberGitUrl())
                 .build();
@@ -49,7 +49,7 @@ public class MemberService {
     }
 
     //로그인
-    public void login(MemberDTO.MemberLoginRequest dto) {
+    public void signIn(MemberDTO.MemberSignInRequest dto) {
         String stuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
 
