@@ -35,15 +35,15 @@ public class MemberController {
         return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
     }
 
-    // login 페이지 가져오기
+    // 로그인 페이지 가져오기
     @GetMapping("/signin")
     public String getSignIn() {
         return "signin";
     }
 
-    // login 진행
+    // 로그인 진행
     @PostMapping("/signin")
-    public String postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
+    public ResponseEntity<String> postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
         String token = memberService.signIn(dto);
 
         Cookie cookie = new Cookie("Authorization", token);
@@ -52,7 +52,7 @@ public class MemberController {
         cookie.setHttpOnly(true); // JavaScript에서 쿠키에 접근할 수 없도록 설정
         response.addCookie(cookie);
 
-        return "index";
+        return ResponseUtil.successResponse("로그인에 성공했습니다.");
     }
 
     // 마이페이지

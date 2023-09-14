@@ -55,7 +55,7 @@ public class MemberService {
         return name;
     }
 
-    //로그인
+    // 로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
         String stuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
