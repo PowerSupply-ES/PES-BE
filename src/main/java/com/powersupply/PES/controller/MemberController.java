@@ -2,7 +2,9 @@ package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.service.MemberService;
+import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,19 +20,19 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    // join 페이지 가져오기
+    // 회원가입 페이지 가져오기
     @GetMapping("/signup")
     public String getSignUp() {
         return "signup";
     }
 
-    // join 정보 저장
+    // 회원가입 정보 저장
     @PostMapping("/signup")
-    public String postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
-        memberService.signUp(dto);
+    public ResponseEntity<String> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
+        String name = memberService.signUp(dto);
 
         // 회원가입 완료시 로그인 페이지로 이동
-        return "redirect:/signin";
+        return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
     }
 
     // login 페이지 가져오기

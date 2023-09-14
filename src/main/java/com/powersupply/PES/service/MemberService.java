@@ -20,25 +20,26 @@ public class MemberService {
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public void signUp(MemberDTO.MemberSignUpRequest dto) {
+    public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
-        String StuNum = dto.getMemberStuNum();
+        String stuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
+        String name = dto.getMemberName();
 
         // Email 및 password 빈칸 체크
-        if (StuNum.isBlank() || pw.isBlank()) {
+        if (stuNum.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
 
         // memberEmail 중복 체크
-        memberRepository.findByMemberStuNum(StuNum)
+        memberRepository.findByMemberStuNum(stuNum)
                 .ifPresent(member -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
         // 저장
         MemberEntity memberEntity = MemberEntity.builder()
-                .memberStuNum(StuNum)
+                .memberStuNum(stuNum)
                 .memberPw(encoder.encode(pw))
                 .memberName(dto.getMemberName())
                 .memberCardiNum(dto.getMemberCardiNum())
@@ -50,6 +51,8 @@ public class MemberService {
                 .memberGitUrl(dto.getMemberGitUrl())
                 .build();
         memberRepository.save(memberEntity);
+
+        return name;
     }
 
     //로그인
