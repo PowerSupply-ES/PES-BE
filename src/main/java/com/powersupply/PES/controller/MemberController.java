@@ -60,4 +60,12 @@ public class MemberController {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
     }
+
+
+    // 비밀번호 페이지 가져오기
+    @GetMapping("/finduser")
+    public String getFindUser() {
+        return "finduser";
+    }
+
 }
