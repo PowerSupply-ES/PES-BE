@@ -100,4 +100,23 @@ public class MemberService {
                 .build();
         return myPageResponse;
     }
+
+    public void findUser(MemberDTO.MemberFindPwRequest dto) {
+        String stuNum = dto.getMemberStuNum();
+        String name = dto.getMemberName();
+
+        // 학번 및 password 빈칸 체크
+        if (stuNum.isBlank() || name.isBlank()) {
+            throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
+        }
+
+        // 학번과 이름이 DB에 없는 경우
+        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum).orElse(null);
+
+        if(selectedMember == null || !selectedMember.getMemberName().equals(name)){
+            throw new AppException(ErrorCode.INVALID_INPUT, "계정 찾기를 실패했습니다.");
+        }
+
+        // 추후 이메일로 임의 수정된 비밀번호 전송 로직 추가
+    }
 }

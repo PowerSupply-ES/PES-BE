@@ -68,4 +68,11 @@ public class MemberController {
         return "finduser";
     }
 
+    // 비밀번호 찾기
+    @PostMapping("/finduser")
+    public ResponseEntity<String> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {
+        memberService.findUser(dto);
+
+        return ResponseUtil.successResponse("가입한 이메일로 임시 비밀번호를 전송했습니다.");
+    }
 }

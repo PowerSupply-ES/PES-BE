@@ -36,4 +36,10 @@ public class MemberDTO {
         private int memberScore; // 점수
         private String memberGitUrl; // 깃주소
     }
+
+    @Getter
+    public static class MemberFindPwRequest {
+        private String memberStuNum;
+        private String memberName;
+    }
 }
