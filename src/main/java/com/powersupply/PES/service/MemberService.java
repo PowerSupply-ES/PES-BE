@@ -119,4 +119,17 @@ public class MemberService {
 
         // 추후 이메일로 임의 수정된 비밀번호 전송 로직 추가
     }
+
+    // 상단 사용자 정보 불러오기
+    public MemberDTO.MemberMyUserResponse myUser() {
+        String stuNum = JwtUtil.getMemberStuNumFromToken();
+
+        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
+
+        return MemberDTO.MemberMyUserResponse.builder()
+                .memberName(selectedMember.getMemberName())
+                .memberScore(selectedMember.getMemberScore())
+                .build();
+    }
 }

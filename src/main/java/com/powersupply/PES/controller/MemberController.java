@@ -75,4 +75,10 @@ public class MemberController {
 
         return ResponseUtil.successResponse("가입한 이메일로 임시 비밀번호를 전송했습니다.");
     }
+
+    // 상단 사용자 정보
+    @GetMapping("/myuser")
+    public ResponseEntity<MemberDTO.MemberMyUserResponse> myUser() {
+        return ResponseEntity.ok().body(memberService.myUser());
+    }
 }

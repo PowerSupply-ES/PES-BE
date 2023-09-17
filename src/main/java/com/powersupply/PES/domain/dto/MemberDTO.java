@@ -42,4 +42,11 @@ public class MemberDTO {
         private String memberStuNum;
         private String memberName;
     }
+
+    @Getter
+    @Builder
+    public static class MemberMyUserResponse {
+        private String memberName;
+        private int memberScore;
+    }
 }
