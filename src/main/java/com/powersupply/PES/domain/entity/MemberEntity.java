@@ -18,7 +18,7 @@ public class MemberEntity extends BaseEntity{
     private String memberStuNum; // 학번
     private String memberPw; // 멤버 비밀번호
     private String memberName; // 이름
-    private int memberCardiNum; // 기수
+    private int memberGen; // 기수
     private String memberMajor; // 학과
     private String memberPhone; // 전화번호
     private String memberStatus; // 상태
