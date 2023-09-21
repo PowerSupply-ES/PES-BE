@@ -43,7 +43,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 토큰이 없거나 토큰이 시작이 "Bearer "가 아니라면 다음 필터로
-        if (token == null) {
+        if (token == null || !token.startsWith("Bearer ")) {
             log.error("Authorization이 잘못되었습니다.");
             filterChain.doFilter(request, response);
             return;
