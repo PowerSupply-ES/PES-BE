@@ -37,13 +37,14 @@ public class JwtFilter extends OncePerRequestFilter {
             for (Cookie cookie : cookies) {
                 if ("Authorization".equals(cookie.getName())) {
                     token = cookie.getValue();
+                    log.info("token : {}", token);
                     break;
                 }
             }
         }
 
         // 토큰이 없거나 토큰이 시작이 "Bearer "가 아니라면 다음 필터로
-        if (token == null || !token.startsWith("Bearer ")) {
+        if (token == null) {
             log.error("Authorization이 잘못되었습니다.");
             filterChain.doFilter(request, response);
             return;
