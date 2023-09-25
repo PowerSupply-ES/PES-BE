@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -121,15 +124,36 @@ public class MemberService {
     }
 
     // 상단 사용자 정보 불러오기
-    public MemberDTO.MemberMyUserResponse myUser() {
+    public MemberDTO.NameScoreResponse myUser() {
         String stuNum = JwtUtil.getMemberStuNumFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        return MemberDTO.MemberMyUserResponse.builder()
+        return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberScore(selectedMember.getMemberScore())
                 .build();
+    }
+
+    public List<MemberDTO.NameScoreResponse> memberRank() {
+
+        List<MemberEntity> memberEntityList = memberRepository.findAll();
+        List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
+
+        // 리스트 체크
+        if(memberEntityList.isEmpty()) {
+            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
+        }
+
+        // 저장
+        for(MemberEntity memberEntity: memberEntityList) {
+            MemberDTO.NameScoreResponse dto = MemberDTO.NameScoreResponse.builder()
+                    .memberName(memberEntity.getMemberName())
+                    .memberScore(memberEntity.getMemberScore())
+                    .build();
+            nameScoreResponseList.add(dto);
+        }
+        return nameScoreResponseList;
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -78,7 +79,13 @@ public class MemberController {
 
     // 상단 사용자 정보
     @GetMapping("/myuser")
-    public ResponseEntity<MemberDTO.MemberMyUserResponse> myUser() {
+    public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
         return ResponseEntity.ok().body(memberService.myUser());
+    }
+
+    // 랭킹 확인하기
+    @GetMapping("/rank")
+    public ResponseEntity<List<MemberDTO.NameScoreResponse>> memberRank() {
+        return ResponseEntity.ok().body(memberService.memberRank());
     }
 }
