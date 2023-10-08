@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
                 .antMatchers("/signin","/signup","/finduser").permitAll() // main 페이지는 언제나 접근 가능
-                .anyRequest().authenticated()
+                .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -67,7 +67,7 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT");
+        roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
         return roleHierarchy;
     }
 }

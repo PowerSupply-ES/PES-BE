@@ -90,12 +90,15 @@ public class JwtFilter extends OncePerRequestFilter {
                 authority = new SimpleGrantedAuthority("ROLE_MANAGER");
                 break;
             default:
-                authority = new SimpleGrantedAuthority("ROLE_UNKNOWN");
+                authority = new SimpleGrantedAuthority("ROLE_USER");
                 break;
         }
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberStuNum, null, List.of(authority));
+
+        // 여기에 로깅 추가
+        log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());
 
         // 디테일 넣기
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
