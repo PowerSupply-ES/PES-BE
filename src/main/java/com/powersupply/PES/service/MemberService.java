@@ -45,7 +45,7 @@ public class MemberService {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
-        // MemberEntity 생성
+        // MemberEntity 먼저 생성
         MemberEntity memberEntity = MemberEntity.builder()
                 .memberStuNum(stuNum)
                 .memberName(name)
@@ -53,11 +53,10 @@ public class MemberService {
                 .memberStatus("신입생")
                 .memberScore(0)
                 .memberGitUrl(dto.getMemberGitUrl())
-
                 .build();
         memberRepository.save(memberEntity);
 
-        // DetailMemberEntity 먼저 생성
+        // DetailMemberEntity 생성
         DetailMemberEntity detailMemberEntity = DetailMemberEntity.builder()
                 .memberEmail(dto.getMemberEmail())
                 .memberPw(encoder.encode(pw))
@@ -90,7 +89,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberStuNum(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberStuNum(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
     public MemberEntity findByMemberStuNum(String memberStuNum) {

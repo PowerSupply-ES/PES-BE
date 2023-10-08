@@ -24,7 +24,6 @@ import java.util.List;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final MemberService memberService;
     private final String secretKey;
 
     @Override
@@ -76,8 +75,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String memberStuNum = JwtUtil.getMemberStuNum(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
-        MemberEntity memberEntity = memberService.findByMemberStuNum(memberStuNum);
-        String memberStatus = memberEntity.getMemberStatus();
+        String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
+        log.info("멤버 상태 : {}", memberStatus);
         SimpleGrantedAuthority authority;
 
         switch (memberStatus) {
