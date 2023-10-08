@@ -9,22 +9,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MemberController {
 
     private final MemberService memberService;
-
-    // 회원가입 페이지 가져오기
-    @GetMapping("/signup")
-    public String getSignUp() {
-        return "signup";
-    }
 
     // 회원가입 정보 저장
     @PostMapping("/signup")
@@ -33,12 +28,6 @@ public class MemberController {
 
         // 회원가입 완료시 로그인 페이지로 이동
         return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
-    }
-
-    // 로그인 페이지 가져오기
-    @GetMapping("/signin")
-    public String getSignIn() {
-        return "signin";
     }
 
     // 로그인 진행
@@ -60,13 +49,6 @@ public class MemberController {
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPage() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
-    }
-
-
-    // 비밀번호 페이지 가져오기
-    @GetMapping("/finduser")
-    public String getFindUser() {
-        return "finduser";
     }
 
     // 비밀번호 찾기
