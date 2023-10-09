@@ -135,15 +135,16 @@ public class MemberService {
     }
 
     // 상단 사용자 정보 불러오기
-    public MemberDTO.NameScoreResponse myUser() {
+    public MemberDTO.NameScoreStatusResponse myUser() {
         String stuNum = JwtUtil.getMemberStuNumFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        return MemberDTO.NameScoreResponse.builder()
+        return MemberDTO.NameScoreStatusResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberScore(selectedMember.getMemberScore())
+                .memberStatus(selectedMember.getMemberStatus())
                 .build();
     }
 

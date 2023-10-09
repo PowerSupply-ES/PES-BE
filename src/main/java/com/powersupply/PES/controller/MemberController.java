@@ -93,8 +93,8 @@ public class MemberController {
     }
 
     // 상단 사용자 정보
-    @GetMapping("/myuser")
-    public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
+    @GetMapping("/api/myuser")
+    public ResponseEntity<MemberDTO.NameScoreStatusResponse> myUser() {
         return ResponseEntity.ok().body(memberService.myUser());
     }
 

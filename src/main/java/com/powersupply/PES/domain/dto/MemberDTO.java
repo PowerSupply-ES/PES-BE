@@ -49,4 +49,12 @@ public class MemberDTO {
         private String memberName;
         private int memberScore;
     }
+
+    @Getter
+    @Builder
+    public static class NameScoreStatusResponse {
+        private String memberName;
+        private int memberScore;
+        private String memberStatus;
+    }
 }
