@@ -52,7 +52,7 @@ public class MemberController {
     }
 
     // 회원가입 정보 저장
-    @PostMapping("/signup")
+    @PostMapping("/api/signup")
     public ResponseEntity<String> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
         String name = memberService.signUp(dto);
 
@@ -61,7 +61,7 @@ public class MemberController {
     }
 
     // 로그인 진행
-    @PostMapping("/signin")
+    @PostMapping("/api/signin")
     public ResponseEntity<String> postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
         String token = memberService.signIn(dto);
 
@@ -75,14 +75,14 @@ public class MemberController {
     }
 
     // 마이페이지
-    @GetMapping("/mypage")
+    @GetMapping("/api/mypage")
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
     }
 
     // 비밀번호 찾기
-    @PostMapping("/finduser")
+    @PostMapping("/api/finduser")
     public ResponseEntity<String> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {
         memberService.findUser(dto);
 

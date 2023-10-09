@@ -31,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
 
-        List<String> skipUrls = Arrays.asList("/", "/signin", "/signup", "/finduser");
+        List<String> skipUrls = Arrays.asList("/signin", "/signup", "/finduser", "/api/signin", "/api/signup", "/api/finduser");
 
         // 인증이 필요없는 경로는 바로 통과
         if (skipUrls.contains(requestURI)) {
