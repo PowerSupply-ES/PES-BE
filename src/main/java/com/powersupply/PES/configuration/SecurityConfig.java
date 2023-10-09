@@ -1,6 +1,5 @@
 package com.powersupply.PES.configuration;
 
-import com.powersupply.PES.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

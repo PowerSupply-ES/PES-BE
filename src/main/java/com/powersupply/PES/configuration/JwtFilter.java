@@ -1,7 +1,5 @@
 package com.powersupply.PES.configuration;
 
-import com.powersupply.PES.domain.entity.MemberEntity;
-import com.powersupply.PES.service.MemberService;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

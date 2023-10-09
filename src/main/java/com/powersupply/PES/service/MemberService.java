@@ -16,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Collections;
-import java.util.Comparator;
 
 @Service
 @RequiredArgsConstructor
@@ -170,12 +168,7 @@ public class MemberService {
         }
 
         // memberScore를 기준으로 정렬 (내림차순)
-        Collections.sort(nameScoreResponseList, new Comparator<MemberDTO.NameScoreResponse>() {
-            @Override
-            public int compare(MemberDTO.NameScoreResponse o1, MemberDTO.NameScoreResponse o2) {
-                return Integer.compare(o2.getMemberScore(), o1.getMemberScore());
-            }
-        });
+        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
 
         return nameScoreResponseList;
     }
