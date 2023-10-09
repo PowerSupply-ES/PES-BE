@@ -36,6 +36,9 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
                 .antMatchers("/signin","/signup","/finduser").permitAll() // main 페이지는 언제나 접근 가능
+                .antMatchers("/api/submit/**","/api/answer/**").hasRole("NEW_STUDENT")
+                .antMatchers("/api/comment/**","/api/commentlist/**","/api/questions/**").hasRole("REGULAR_STUDENT")
+                .antMatchers("/api/manage/**").hasRole("MANAGER")
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
@@ -67,7 +70,10 @@ public class SecurityConfig {
     @Bean
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-        roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
+        //roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
+        String hierarchy =  "ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER\n" +
+                "ROLE_NEW_STUDENT > ROLE_USER";
+        roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;
     }
 }
