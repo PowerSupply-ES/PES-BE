@@ -21,6 +21,36 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    // 회원가입 페이지 불러오기
+    @GetMapping("/signup")
+    public String getSignUp() {
+        return "signup";
+    }
+
+    // 로그인 페이지 불러오기
+    @GetMapping("/signin")
+    public String getSignIn() {
+        return "signin";
+    }
+
+    // 계정 찾기 페이지 불러오기
+    @GetMapping("/finduser")
+    public String getFindUser() {
+        return "finduser";
+    }
+
+    // 마이페이지 불러오기
+    @GetMapping("/mypage")
+    public String getMyPage() {
+        return "mypage";
+    }
+
+    // 메인화면 불러오기
+    @GetMapping("/main")
+    public String getMain() {
+        return "main";
+    }
+
     // 회원가입 정보 저장
     @PostMapping("/signup")
     public ResponseEntity<String> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
@@ -46,7 +76,7 @@ public class MemberController {
 
     // 마이페이지
     @GetMapping("/mypage")
-    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPage() {
+    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
     }
