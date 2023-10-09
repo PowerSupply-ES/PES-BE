@@ -106,12 +106,11 @@ public class MemberService {
                 .memberStuNum(memberEntity.getMemberStuNum())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
-//                .memberMajor(memberEntity.getMemberMajor())
-//                .memberPhone(memberEntity.getMemberPhone())
-                .memberStatus(memberEntity.getMemberStatus())
-                .memberScore(memberEntity.getMemberScore())
-//                .memberEmail(memberEntity.getMemberEmail())
                 .memberGitUrl(memberEntity.getMemberGitUrl())
+                .memberStatus(memberEntity.getMemberStatus())
+                .memberMajor(memberEntity.getDetailMemberEntity().getMemberMajor())
+                .memberEmail(memberEntity.getDetailMemberEntity().getMemberEmail())
+                .memberPhone(memberEntity.getDetailMemberEntity().getMemberPhone())
                 .build();
         return myPageResponse;
     }
