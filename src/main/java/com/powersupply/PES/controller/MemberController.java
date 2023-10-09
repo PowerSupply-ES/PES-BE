@@ -99,7 +99,7 @@ public class MemberController {
     }
 
     // 랭킹 확인하기
-    @GetMapping("/rank")
+    @GetMapping("/api/rank")
     public ResponseEntity<List<MemberDTO.NameScoreResponse>> memberRank() {
         return ResponseEntity.ok().body(memberService.memberRank());
     }
