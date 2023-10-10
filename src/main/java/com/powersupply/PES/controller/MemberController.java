@@ -52,7 +52,7 @@ public class MemberController {
 
     // 회원가입 정보 저장
     @PostMapping("/api/signup")
-    public ResponseEntity<String> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
+    public ResponseEntity<?> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
         String name = memberService.signUp(dto);
 
         // 회원가입 완료시 로그인 페이지로 이동
@@ -61,7 +61,7 @@ public class MemberController {
 
     // 로그인 진행
     @PostMapping("/api/signin")
-    public ResponseEntity<String> postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
+    public ResponseEntity<?> postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
         String token = memberService.signIn(dto);
 
         Cookie cookie = new Cookie("Authorization", token);
@@ -85,7 +85,7 @@ public class MemberController {
 
     // 비밀번호 찾기
     @PostMapping("/api/finduser")
-    public ResponseEntity<String> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {
+    public ResponseEntity<?> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {
         memberService.findUser(dto);
 
         return ResponseUtil.successResponse("가입한 이메일로 임시 비밀번호를 전송했습니다.");
