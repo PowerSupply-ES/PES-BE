@@ -1,7 +1,5 @@
 package com.powersupply.PES.configuration;
 
-import com.powersupply.PES.domain.entity.MemberEntity;
-import com.powersupply.PES.service.MemberService;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +22,6 @@ import java.util.List;
 @Slf4j
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final MemberService memberService;
     private final String secretKey;
 
     @Override
@@ -32,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String requestURI = request.getRequestURI();
 
-        List<String> skipUrls = Arrays.asList("/", "/signin", "/signup", "/finduser");
+        List<String> skipUrls = Arrays.asList("/signin", "/signup", "/finduser", "/api/signin", "/api/signup", "/api/finduser");
 
         // 인증이 필요없는 경로는 바로 통과
         if (skipUrls.contains(requestURI)) {
@@ -76,8 +73,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String memberStuNum = JwtUtil.getMemberStuNum(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
-        MemberEntity memberEntity = memberService.findByMemberStuNum(memberStuNum);
-        String memberStatus = memberEntity.getMemberStatus();
+        String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
+        log.info("멤버 상태 : {}", memberStatus);
         SimpleGrantedAuthority authority;
 
         switch (memberStatus) {
@@ -91,12 +88,15 @@ public class JwtFilter extends OncePerRequestFilter {
                 authority = new SimpleGrantedAuthority("ROLE_MANAGER");
                 break;
             default:
-                authority = new SimpleGrantedAuthority("ROLE_UNKNOWN");
+                authority = new SimpleGrantedAuthority("ROLE_USER");
                 break;
         }
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberStuNum, null, List.of(authority));
+
+        // 여기에 로깅 추가
+        log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());
 
         // 디테일 넣기
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

@@ -45,7 +45,7 @@ public class MemberService {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
-        // MemberEntity 생성
+        // MemberEntity 먼저 생성
         MemberEntity memberEntity = MemberEntity.builder()
                 .memberStuNum(stuNum)
                 .memberName(name)
@@ -53,11 +53,10 @@ public class MemberService {
                 .memberStatus("신입생")
                 .memberScore(0)
                 .memberGitUrl(dto.getMemberGitUrl())
-
                 .build();
         memberRepository.save(memberEntity);
 
-        // DetailMemberEntity 먼저 생성
+        // DetailMemberEntity 생성
         DetailMemberEntity detailMemberEntity = DetailMemberEntity.builder()
                 .memberEmail(dto.getMemberEmail())
                 .memberPw(encoder.encode(pw))
@@ -90,7 +89,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberStuNum(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberStuNum(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
     public MemberEntity findByMemberStuNum(String memberStuNum) {
@@ -107,12 +106,11 @@ public class MemberService {
                 .memberStuNum(memberEntity.getMemberStuNum())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
-//                .memberMajor(memberEntity.getMemberMajor())
-//                .memberPhone(memberEntity.getMemberPhone())
-                .memberStatus(memberEntity.getMemberStatus())
-                .memberScore(memberEntity.getMemberScore())
-//                .memberEmail(memberEntity.getMemberEmail())
                 .memberGitUrl(memberEntity.getMemberGitUrl())
+                .memberStatus(memberEntity.getMemberStatus())
+                .memberMajor(memberEntity.getDetailMemberEntity().getMemberMajor())
+                .memberEmail(memberEntity.getDetailMemberEntity().getMemberEmail())
+                .memberPhone(memberEntity.getDetailMemberEntity().getMemberPhone())
                 .build();
         return myPageResponse;
     }
@@ -137,15 +135,16 @@ public class MemberService {
     }
 
     // 상단 사용자 정보 불러오기
-    public MemberDTO.NameScoreResponse myUser() {
+    public MemberDTO.NameScoreStatusResponse myUser() {
         String stuNum = JwtUtil.getMemberStuNumFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        return MemberDTO.NameScoreResponse.builder()
+        return MemberDTO.NameScoreStatusResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberScore(selectedMember.getMemberScore())
+                .memberStatus(selectedMember.getMemberStatus())
                 .build();
     }
 
@@ -167,6 +166,10 @@ public class MemberService {
                     .build();
             nameScoreResponseList.add(dto);
         }
+
+        // memberScore를 기준으로 정렬 (내림차순)
+        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
+
         return nameScoreResponseList;
     }
 }
