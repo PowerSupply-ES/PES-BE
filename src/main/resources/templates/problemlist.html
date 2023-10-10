@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>메인화면</title>
+</head>
+<body>
+    <!-- 사용자정보 -->
+    <div class="top_user_info">
+        <!-- 이름 -->
+        <div class="memberName"></div> 
+        <!-- 획득한 점수 -->
+        <div class="memberScore"></div>
+        <!-- 상태(신입생/재학생/관리자) -->
+        <div class="memberStatus"></div>
+    </div>
+
+    <!-- 네비게이션바 -->
+    <div class="navbar">
+        <div class="navbar_left">
+            <button class="btn_level">level</button>
+            <button class="btn_gaze">경험치 바</button>
+        </div>
+
+        <div class="navbar_logo">로고</div>
+
+        <div class="navbar_right">
+            <form action="new_mypage.html">
+                <button type="submit" class="btn_mypage">마이페이지</button>
+            </form>
+            <button type="submit" class="btn_logout">로그아웃</button>
+        </div>
+    </div>
+
+
+    <!-- 필터 -->
+    <div class="header_main">
+        <div class="title_main">
+            <div class="title_question_list">문제 목록</div>  
+            <div class="title_rank">순위</div>
+        </div>
+    
+        <div class="filter_main">
+            <div class="h2">필터: </div>
+            <div class="filtering">
+                <button type="submit" class="btn_filter1">푼 문제 보기</button>
+                <button type="submit" class="btn_filter2">안푼 문제 보기</button>
+                <button type="submit" class="btn_filter3">FAIL</button>
+                <button type="submit" class="btn_filter4">CLEAR</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content_main">
+        <!-- 문제 목록 -->
+        <div class="question_list">
+            <div class="question">
+                <!-- 문제 제목 -->
+                <div class="problemTitle">1.</div>
+                <!-- 문제 점수 -->
+                <div class="problemScore"></div> 
+                <!-- 문제 상태 -->
+                <div class="problemState"></div>
+                <!-- <form action="new_correct.html">
+                    <button type="submit" class="btn_clear">CLEAR</button>
+                </form> -->
+                
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div>
+
+            <div class="question">
+                <div class="problemTitle">2.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <!-- <form action="new_incorrect.html">
+                    <button type="submit" class="btn_fail">FAIL</button>
+                </form> -->
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>
+            </div>
+
+            <div class="question">
+                <div class="problemTitle">3.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <!-- <form action="new_solving.html">
+                    <button type="submit" class="btn_goto_question">문제 풀기</button>
+                </form> -->
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>
+            </div>
+
+            <div class="question">
+                <div class="problemTitle">4.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <!-- <form action="new_solving.html">
+                    <button type="submit" class="btn_solving">풀이 중</button>
+                </form> -->
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div>
+
+            <!-- 
+            <div class="question">
+                <div class="problemTitle">5.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <form action="new_solving.html">
+                    <button type="submit" class="btn_goto_question">문제 풀기</button>
+                </form>
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div>
+
+
+            <div class="question">
+                <div class="problemTitle">6.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <form action="new_solving.html">
+                    <button type="submit" class="btn_goto_question">문제 풀기</button>
+                </form>
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div>
+
+
+            <div class="question">
+                <div class="problemTitle">7.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <form action="new_solving.html">
+                    <button type="submit" class="btn_goto_question">문제 풀기</button>
+                </form>
+
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div>
+
+
+            <div class="question">
+                <div class="problemTitle">8.</div>
+                <div class="problemScore"></div>
+                <div class="problemState"></div>
+                <form action="new_solving.html">
+                    <button type="submit" class="btn_goto_question">문제 풀기</button>
+                </form>
+                
+                <form action="new_solution.html">
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>
+                </form>            
+            </div> -->
+
+        </div>
+        <!-- 랭킹 -->
+        <div class="ranking_main">순위</div>
+
+    </div>
+
+    <script src="problemlist.js"></script>
+
+
+    
+</body>
+</html>
