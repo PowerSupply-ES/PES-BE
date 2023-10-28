@@ -11,4 +11,9 @@ public class AnswerDTO {
         private String answerFst;
         private String answerSec;
     }
+
+    @Getter
+    public static class gitUrl {
+        private String answerUrl;
+    }
 }
