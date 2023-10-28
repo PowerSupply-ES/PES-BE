@@ -23,6 +23,7 @@ public class AnswerService {
         AnswerEntity answerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum,problemId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "아직 채점되지 않았습니다."));
 
+        answerEntity.setAnswerState("UnderReview");
         answerEntity.setAnswerFst(dto.getAnswerFst());
         answerEntity.setAnswerSec(dto.getAnswerSec());
         answerRepository.save(answerEntity);
