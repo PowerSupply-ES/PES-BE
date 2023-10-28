@@ -24,6 +24,11 @@ public class AnswerService {
         AnswerEntity answerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum,problemId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "아직 채점되지 않았습니다."));
 
+        // answerFst와 answerSec가 null이 아닌 경우에 AppException 발생
+        if(answerEntity.getAnswerFst() != null || answerEntity.getAnswerSec() != null) {
+            throw new AppException(ErrorCode.INVALID_INPUT, "이미 답변이 있는 경우 수정해 주세요.");
+        }
+
         answerEntity.setAnswerState("UnderReview");
         answerEntity.setAnswerFst(dto.getAnswerFst());
         answerEntity.setAnswerSec(dto.getAnswerSec());
