@@ -23,4 +23,11 @@ public class AnswerController {
         answerService.saveAnswer(problemId, memberStuNum, dto);
         return ResponseUtil.successResponse("성공");
     }
+
+    // 답변 수정 하기
+    @PatchMapping("/api/answer/{problemId}/{memberStuNum}")
+    public ResponseEntity<?> patchAnswer(@PathVariable Long problemId, @PathVariable String memberStuNum, @RequestBody AnswerDTO.answerRequest dto) {
+        answerService.patchAnswer(problemId, memberStuNum, dto);
+        return ResponseUtil.successResponse("성공");
+    }
 }
