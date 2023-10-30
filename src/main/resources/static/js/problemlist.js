@@ -3,28 +3,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const storageToken = localStorage.getItem('Authorization');
     //const serverUrl = 'http://3.34.28.73:8080/';
     const serverUrl = 'http://localhost:8080/';
-
-    // 사용자 정보 가져오기
-    //fetchUserInfo(storageToken);
-    
-    // 현재 페이지 URL에서 query string을 가져옵니다.
-    //const queryString = window.location.search;
-
-    // query string을 객체로 파싱합니다.
-    //const params = new URLSearchParams(queryString);
-
-    // "std" 변수의 값을 추출하고, 문자열로 변환하여 "memberStuNum" 변수에 저장합니다.
-    //const memberStuNum = params.get("std");
-
-    // 결과를 확인합니다.
-    //console.log("memberStuNum:", memberStuNum);
-
-    // 문제 목록 가져오기
-    //if (memberStuNum) {
-    //    fetchProblemList(storageToken, memberStuNum);
-    //}
-    //fetchData();
-
     
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
@@ -117,53 +95,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
         });
     }
-    
-    // function fetchProblemList() {
-    //     .then(data => {
-    //         // 문제 목록을 화면에 표시
-    //         const problemListContainer = document.querySelector('.problem-list-container');
-    //         problemListContainer.innerHTML = ''; // 기존 내용 지우기
 
-    //         for (const problem of data) {
-    //         // 서버에서 가져온 data 배열을 순환하면서 각 문제에 대한 정보를 가져옴
-    //             const problemItem = document.createElement('div');
-    //             problemItem.classList.add('problem-item');
-    //             problemItem.textContent = problem.title;
-    //             problemListContainer.appendChild(problemItem);
-    //         }
-    //     })  
-    // }
-     
-    // 쿠키에서 JWT 토큰 가져오기
-    // function getCookie(name) {
-    //     // ...
-    // }
+    fetchUserInfo(storageToken)
+    fetchProblemList(storageToken)
 
-    // 쿠키에서 JWT 토큰 가져오기
-    // function getCookie(name) {
-    //     const cookieString = document.cookie;
-    //     const cookies = cookieString.split('; '); //세미콜론과 공백으로 분할
-
-    //     for (const cookie of cookies) { // 배열에 있는 각 쿠키에 대해 반복
-    //         // 쿠키의 이름과 값으로 분리하고 그 결과를 name과 value 변수에 할당
-    //         const [cookieName, cookieValue] = cookie.split('=');
-    //         if (cookieName === name) {
-    //             return cookieValue;
-    //         }
-    //     }
-    //     return null; // JWT 토큰이 없을 경우 null 반환
-    // }
-
-    // function getCookie(name) {
-    //     const cookieString = document.cookie;
-    //     const cookies = cookieString.split('; ');
-      
-    //     for (const cookie of cookies) {
-    //       const [cookieName, cookieValue] = cookie.split('=');
-    //       if (decodeURIComponent(cookieName) === name) {
-    //         return decodeURIComponent(cookieValue);
-    //       }
-    //     }
-    //     return null;
-    //  }
 });
