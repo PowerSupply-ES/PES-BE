@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.access.expression.SecurityExpressionHandler;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
@@ -34,12 +35,14 @@ public class SecurityConfig {
                 .csrf().disable() // cross site 기능
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
-                .antMatchers("/js/**","/css/**").permitAll()
-                .antMatchers("/signin","/signup","/finduser").permitAll() // main 페이지는 언제나 접근 가능
-                .antMatchers("/api/signin","/api/signup","/api/finduser").permitAll() // 기본 요청 언제나 접근 가능
+                .antMatchers("/css/**","/js/**").permitAll() // 정적 메소드 누구나 접근 가능
+                .antMatchers("/signin","/signup","/finduser","/problem/**").permitAll() // 누구나 접근 가능
+                .antMatchers("/api/signin","/api/signup","/api/finduser","/api/rank","/api/problemlist/**","/api/problem/**").permitAll() // 기본 요청 언제나 접근 가능
+                .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
                 .antMatchers("/api/submit/**","/api/answer/**").hasRole("NEW_STUDENT")
-                .antMatchers("/api/comment/**","/api/commentlist/**","/api/questions/**").hasRole("REGULAR_STUDENT")
-                .antMatchers("/api/manage/**").hasRole("MANAGER")
+                .antMatchers("/api/comment/**","/api/commentlist/**").hasRole("REGULAR_STUDENT")
+                .antMatchers(HttpMethod.GET, "/api/questions/**").hasRole("REGULAR_STUDENT")
+                .antMatchers("/api/manage/**","/api/questions/**").hasRole("MANAGER")
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
