@@ -25,7 +25,9 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    const serverUrl = 'http://3.34.28.73:8080/';
+    //const serverUrl = 'http://3.34.28.73:8080/';
+    const serverUrl = 'http://localhost:8080/';
+
 
     const uri = 'api/signup';  
 
@@ -63,7 +65,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
           displayResult(resultMessage);
 
           // 페이지 이동
-          window.location.href = 'signin.html'; 
+          window.location.href = serverUrl + 'signin'; 
         })
         // 요청 또는 응답처리 중에 오류가 발생한 경우
         .catch((error) => {

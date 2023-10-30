@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(event) {      
         
     // 서버 URL 및 URI
-    const serverUrl = 'http://3.34.28.73:8080/';
+    //const serverUrl = 'http://3.34.28.73:8080/';
+    const serverUrl = 'http://localhost:8080/';
+
 
 
     const uri = 'api/mypage';

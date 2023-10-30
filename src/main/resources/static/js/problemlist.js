@@ -1,38 +1,36 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
-    const serverUrl = 'http://3.34.28.73:8080/';
-
-
+    //const serverUrl = 'http://3.34.28.73:8080/';
+    const serverUrl = 'http://localhost:8080/';
 
     // 사용자 정보 가져오기
-    fetchUserInfo(storageToken);
+    //fetchUserInfo(storageToken);
     
     // 현재 페이지 URL에서 query string을 가져옵니다.
-    const queryString = window.location.search;
+    //const queryString = window.location.search;
 
     // query string을 객체로 파싱합니다.
-    const params = new URLSearchParams(queryString);
+    //const params = new URLSearchParams(queryString);
 
     // "std" 변수의 값을 추출하고, 문자열로 변환하여 "memberStuNum" 변수에 저장합니다.
-    const memberStuNum = params.get("std");
+    //const memberStuNum = params.get("std");
 
     // 결과를 확인합니다.
-    console.log("memberStuNum:", memberStuNum);
+    //console.log("memberStuNum:", memberStuNum);
 
     // 문제 목록 가져오기
-    if (memberStuNum) {
-        fetchProblemList(storageToken, memberStuNum);
-    }
+    //if (memberStuNum) {
+    //    fetchProblemList(storageToken, memberStuNum);
+    //}
     //fetchData();
 
     
-    // 서버로부터 사용자 정보를 가져오는 함수
+    // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
         const userInfoUri = 'api/myuser';
-
         fetch(serverUrl + userInfoUri, {
-            credentials: "include",
+            //credentials: "include",
             method: 'GET',
             headers: {
                 'Authorization': storageToken
@@ -56,12 +54,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     // 서버로부터 문제 목록 동적으로 가져오는 함수
-    function fetchProblemList(storageToken, memberStuNum) {
-    const problemListUri = `api/problemlist?std=${memberStuNum}`;
-
-
+    function fetchProblemList(storageToken) {
+    const problemListUri = `api/problemlist`;
         fetch(serverUrl + problemListUri, {
-            credentials: "include",
+            //credentials: "include",
             method: 'GET',
             headers: {
                 'Cookie': storageToken
