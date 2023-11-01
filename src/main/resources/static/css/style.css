@@ -147,7 +147,9 @@ a {
     text-align: center;
 }
 
-.memberName, .memberScore, .memberStatus{
+.top_user_info>.memberName,
+.top_user_info>.memberScore,
+.top_user_info>.memberStatus{
     background-color: var(--LightGray);
     border-style: solid;
     border-radius: 1px;
@@ -412,24 +414,6 @@ a {
     color: var(--AlmostGray);
     border-color: var(--Gray);
 }
-
-
-
-
-/* 순위 */
-.ranking_main{
-    height: 493px;
-    width: 332px;
-    background-color: var(--Gray);
-    color: var(--Black);
-    font-size: var(--font-big);
-    font-weight: bold;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-
 
 /* -------------- 마이페이지 -------------- */
 /* 마이페이지 네비게이션바 */
@@ -841,3 +825,30 @@ a {
 }
 
 /* ---------------랭킹--------------- */
+.ranking_main{
+    height: 520px;
+    width: 400px;
+    background-color: var(--Gray);
+    color: var(--Black);
+    font-size: var(--font-big);
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.user{
+    display: flex;
+}
+
+.user > .memberName,
+.user> .memberScore{
+    background-color: var(--LightGray);
+    border-style: solid;
+    border-radius: 1px;
+    border-color: var(--AlmostGray);
+    height: fit-content;
+    width: 80px;
+    color: var(--Black);
+    font-size: var(--font-small);
+}

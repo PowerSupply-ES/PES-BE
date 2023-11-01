@@ -4,8 +4,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //const serverUrl = 'http://3.34.28.73:8080/';
     const serverUrl = 'http://localhost:8080/';
 
-
-
     const uri = 'api/mypage';
         
     // 서버로부터 정보를 가져오는 함수

@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             const rankingMainDiv = document.querySelector(".ranking_main");
     
             // data 배열을 순환하면서 각 사용자 정보를 동적으로 생성
-            data.forEach((userInfo, index) => {
+            data.forEach((userInfo) => {
                 // 사용자 정보를 나타내는 요소를 만들기
                 const userDiv = document.createElement("div");
                 userDiv.classList.add("user");
@@ -99,14 +99,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 // content_main 요소 선택
                 const contentMain = document.querySelector(".question_list");
         
-                // 새로운 문제를 나타내는 요소를 만들기
+                // 새로운 문제를 나타내는 요소 만들기
                 const questionDiv = document.createElement("div");
                 questionDiv.classList.add("question"); // 각 요소를 클래스에 추가하고 텍스트 내용 채우기
-    
 
                 // 문제 id를 요소에 추가
                 questionDiv.dataset.problemId = response.id;
-                
                 
                 // 문제 제목을 표시하는 요소 만들기
                 const problemTitleDiv = document.createElement("div");
@@ -118,25 +116,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 problemScoreDiv.classList.add("problemScore");
                 problemScoreDiv.textContent = `점수: ${response.problemScore}`;
         
-                // 문제 상태를 표시하는 요소 만들기
-                const problemStateDiv = document.createElement("div");
-                problemStateDiv.classList.add("problemState");
-                problemStateDiv.textContent = `상태: ${response.problemState}`;
+                // 문제 상태 표시하는 버튼 만들기
+                const stateForm = document.createElement("form"); //<form>요소 생성
+                const btn_goto_question = document.createElement("button");
+                btn_goto_question.classList.add("btn_goto_question");
+                btn_goto_question.textContent = `${response.problemState}`;  
+                btn_goto_question.addEventListener("click", () => {
+                    // 클릭 시 페이지 이동(url수정하기)
+                    window.location.href = serverUrl+ '';
+                });
+                stateForm.appendChild(btn_goto_question); // <button> 요소를 <form>에 추가
         
-                // 풀이 보기 버튼을 담은 폼 요소 만들기
-                const goToSolutionForm = document.createElement("form");
-                goToSolutionForm.action = "new_solution.html";
-                const goToSolutionButton = document.createElement("button");
-                goToSolutionButton.type = "submit";
-                goToSolutionButton.classList.add("btn_goto_solution");
-                goToSolutionButton.textContent = "풀이 보기";
-                goToSolutionForm.appendChild(goToSolutionButton);
+                // 풀이 보기 버튼 만들기
+                const solutionForm = document.createElement("form");
+                const btn_goto_solution = document.createElement("button");
+                btn_goto_solution.type = "submit";
+                btn_goto_solution.classList.add("btn_goto_solution");
+                btn_goto_solution.textContent = "풀이 보기";
+                btn_goto_solution.addEventListener("click", () => {
+                    // 클릭 시 페이지 이동(url수정하기)
+                    window.location.href = serverUrl + '';
+                });
+                solutionForm.appendChild(btn_goto_solution);
         
                 // 만든 요소들을 문제 목록에 추가하기
                 questionDiv.appendChild(problemTitleDiv);
                 questionDiv.appendChild(problemScoreDiv);
-                questionDiv.appendChild(problemStateDiv);
-                questionDiv.appendChild(goToSolutionForm);
+                questionDiv.appendChild(stateForm);
+                questionDiv.appendChild(solutionForm);
                 contentMain.appendChild(questionDiv); // 문제 요소를 content_main에 추가
             });
         })
@@ -150,4 +157,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     fetchProblemList()
     fetchRankInfo()
 
+    // 마이페이지 버튼 클릭 시 페이지 이동(url수정하기)
+    const btn_mypage = document.getElementsByClassName("btn_mypage")[0]; // 마이페이지 버튼 요소를 가져오기
+    btn_mypage.addEventListener("click", () => {
+        console.log("클릭");
+        window.location.href = serverUrl + 'api/mypage';
+    });
+    
 });
