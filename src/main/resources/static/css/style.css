@@ -798,10 +798,6 @@ a {
     margin-bottom: var(--margin-middle);
 }
 
-
-
-
-
 .doit{
     display: flex;
     flex-direction: column;
@@ -844,4 +840,4 @@ a {
     background:var(--Black);
 }
 
-
+/* ---------------랭킹--------------- */
