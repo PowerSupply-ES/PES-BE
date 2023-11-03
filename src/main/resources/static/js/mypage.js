@@ -39,14 +39,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
         .then(data => {
             // 데이터를 화면에 표시
-            document.querySelector(".memberStuNum").textContent = "학번: " + data.memberStuNum;
-            document.querySelector(".memberName").textContent = "이름: " + data.memberName;
-            document.querySelector(".memberGen").textContent = "성별: " + data.memberGen;
-            document.querySelector(".memberMajor").textContent = "전공: " + data.memberMajor;
-            document.querySelector(".memberPhone").textContent = "전화번호: " + data.memberPhone;
-            document.querySelector(".memberStatus").textContent = "상태: " + data.memberStatus;
-            document.querySelector(".memberEmail").textContent = "이메일: " + data.memberEmail;
-            document.querySelector(".memberGitUrl").textContent = "GitHub URL: " + data.memberGitUrl;
+            document.querySelector(".memberStuNum").textContent = data.memberStuNum;
+            document.querySelector(".memberName").textContent = data.memberName;
+            document.querySelector(".memberGen").textContent = data.memberGen;
+            document.querySelector(".memberMajor").textContent = data.memberMajor;
+            document.querySelector(".memberPhone").textContent =  data.memberPhone;
+            document.querySelector(".memberStatus").textContent = data.memberStatus;
+            document.querySelector(".memberEmail").textContent = data.memberEmail;
+            document.querySelector(".memberGitUrl").textContent = data.memberGitUrl;
         })
         .catch(error => {
             console.error("데이터 가져오기 실패:", error);

@@ -161,7 +161,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const btn_mypage = document.getElementsByClassName("btn_mypage")[0]; // 마이페이지 버튼 요소를 가져오기
     btn_mypage.addEventListener("click", () => {
         console.log("클릭");
-        window.location.href = serverUrl + 'api/mypage';
+        console.log(serverUrl + 'mypage');
+        window.location.href = serverUrl + 'mypage';
     });
     
 });
