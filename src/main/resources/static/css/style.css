@@ -852,3 +852,85 @@ a {
     color: var(--Black);
     font-size: var(--font-small);
 }
+
+
+/* ----------------------풀이보기---------------------- */
+.problem > .problem_num{
+    margin-right: 20px;
+}
+
+.problem_bar, .problem, .stu_list, .stu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font-medium);
+}
+
+.problem_bar{
+    justify-content: space-between;
+}
+
+.problem > .problem_num,
+.stu > .process_clear,
+.stu > .process_fail,
+.stu > .process_wait{ 
+    /* 수정 */
+    border-style: solid;
+    border-radius: 8px;
+    /* border-width: 4px; */
+    padding: 4px;
+    height: 32px;
+    color: var(--TextBlue);
+    border-color: var(--Blue);
+    font-size: var(--font-medium);
+    padding: 8px;
+}
+
+.problem > .problem_num,
+.stu > .process_clear{
+    color: var(--TextBlue);
+    border-color: var(--Blue);
+}
+.stu > .process_fail{
+    color: var(--Orange);
+    border-color: var(--Orange);
+}
+.stu > .process_wait{
+    color: var(--AlmostGray);
+    border-color: var(--AlmostGray);
+}
+.stu > .btn_goto_solving{
+    /* 수정 */
+    border-radius: 5px;
+    background: var(--Blue);
+    color: var(--White);
+    display: flex;
+    width: 160px;
+    height: 48px;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.stu_list > .stu{
+    /* 수정 */
+    display: flex;
+    font-size: var(--font-medium);
+}
+
+.stu_list{
+    margin-bottom: 8px;
+    justify-content: space-between;
+}
+.solving_list{
+    margin-top: var(--margin-middle);
+}
+
+
+
+
+.stu > *:not(:last-child) {
+    /* 수정 */
+    margin-right: 32px;
+}
+
