@@ -423,7 +423,7 @@ a {
 }
 
 /* body */
-.btn_goto_quetions{
+.btn_goto_questions{
     display: flex;
     justify-content: center;
     /* margin: 0px auto; */
@@ -431,15 +431,38 @@ a {
 }
 
 .btn_goto1,
-.btn_goto2{
+.btn_goto2,
+.btn_mycomment{
     width: 216px;
     height: 42px;
     background-color: var(--Blue);
     font-size: var(--font-small);
     color: var(--White);
-    border-radius: 5px;
     border-style: solid;
+    border-radius: 5px;
     border-color: var(--Blue);
+    cursor: pointer;
+}
+.btn_question_bank{
+    /* width: 216px; */
+    height: 42px;
+    background-color: var(--Orange);
+    font-size: var(--font-small);
+    color: var(--White);
+    border-style: solid;
+    border-radius: 5px;
+    border-color: var(--Orange);
+    cursor: pointer;
+}
+.btn_manage_student{
+    /* width: 216px; */
+    height: 42px;
+    background-color: var(--Gray);
+    font-size: var(--font-small);
+    color: var(--Black);
+    border-style: solid;
+    border-radius: 5px;
+    border-color: var(--Gray);
     cursor: pointer;
 }
 

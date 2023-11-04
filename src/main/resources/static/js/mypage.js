@@ -8,14 +8,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         
     // 서버로부터 정보를 가져오는 함수
     function sendGetRequest(url) {
-        
-        // // 서버에서 설정한 쿠키 값 가져오기
-        // const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*=\s*([^;]*).*$)|^.*$/, "$1");
-
-        // // 만약 쿠키 값이 존재한다면 로컬 스토리지에 저장
-        // if (cookieValue) {
-        // localStorage.setItem('Authorization', cookieValue);
-        // }
 
         // localStorage에서 토큰 가져오기
         const storageToken = localStorage.getItem('Authorization');
@@ -46,28 +38,41 @@ document.addEventListener("DOMContentLoaded", function(event) {
             document.querySelector(".memberPhone").textContent =  data.memberPhone;
             document.querySelector(".memberStatus").textContent = data.memberStatus;
             document.querySelector(".memberEmail").textContent = data.memberEmail;
+            document.querySelector(".memberScore").textContent = data.memberScore;
             document.querySelector(".memberGitUrl").textContent = data.memberGitUrl;
+
+
+             // 바로가기 버튼
+            const buttonDiv = document.querySelector(".btn_goto_questions");
+            const stateForm = document.createElement("form"); // <form>요소 생성
+
+            function createButton(classname, text, url) {
+                const button = document.createElement("button");
+                button.classList.add(classname);
+                button.textContent = text;
+                button.addEventListener("click", () => {
+                    // 클릭 시 페이지 이동
+                    window.location.href = serverUrl + url;
+                });
+
+                buttonDiv.appendChild(button);
+            }
+
+            // ----------------- url 수정하기 !!!!
+            if (data.memberStatus === '재학생') {
+                createButton("btn_mycomment", "내가 푼 문제 보기", "url1");
+                createButton("btn_question_bank", "문제 은행", "url2");
+                createButton("btn_manage_student", "학생 관리", "url3");
+            } else if (data.memberStatus === '신입생') {
+                createButton("btn_goto1", "내가 푼 문제 보기", "url4");
+                createButton("btn_goto2", "내가 답한 문제 보기", "url5");
+            }
         })
         .catch(error => {
             console.error("데이터 가져오기 실패:", error);
         });
     }
-
+    
     // 페이지가 로드될 때 데이터 가져오기 함수 호출
     sendGetRequest(serverUrl + uri);
-
-    //쿠키에서 JWT 토큰 가져오기
-    // function getCookie(name) {
-    //     const cookieString = document.cookie;
-    //     const cookies = cookieString.split('; '); //세미콜론과 공백으로 분할
-
-    //     for (const cookie of cookies) { // 배열에 있는 각 쿠키에 대해 반복
-    //         // 쿠키의 이름과 값으로 분리하고 그 결과를 name과 value 변수에 할당
-    //         const [cookieName, cookieValue] = cookie.split('=');
-    //         if (cookieName === name) {
-    //             return cookieValue;
-    //         }
-    //     }
-    //     return null; // JWT 토큰이 없을 경우 null 반환
-    // }
 });
