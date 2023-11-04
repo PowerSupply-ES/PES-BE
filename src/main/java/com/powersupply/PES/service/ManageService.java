@@ -61,4 +61,17 @@ public class ManageService {
 
         return memberListArrayList;
     }
+
+    // 멤버 수정하기
+    public void patchMember(String memberStuNum, ManageDTO.PatchMember dto) {
+        MemberEntity memberEntity = memberRepository.findByMemberStuNum(memberStuNum)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 멤버가 없습니다."));
+        int memberGen = dto.getMemberGen();
+        if(memberGen != 0) {
+            memberEntity.setMemberGen(memberGen);
+        }
+        memberEntity.setMemberStatus(dto.getMemberStatus());
+
+        memberRepository.save(memberEntity);
+    }
 }
