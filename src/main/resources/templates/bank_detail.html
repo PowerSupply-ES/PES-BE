@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>문제은행 상세</title>
+</head>
+<body>
+    <!-- 사용자정보 -->
+    <div class="top_user_info">
+        <!-- 이름 -->
+        <div class="memberName"></div> 
+        <!-- 획득한 점수 -->
+        <div class="memberScore"></div>
+        <!-- 상태(신입생/재학생/관리자) -->
+        <div class="memberStatus"></div>
+    </div>
+
+    <!-- 네비게이션바 -->
+    <div class="navbar">
+        <div class="navbar_left">
+            <button class="btn_level">level</button>
+            <button class="btn_gaze">경험치 바</button>
+        </div>
+
+        <div class="navbar_logo">로고</div>
+
+         <div class="navbar_right_mypage">
+            <div class="btn_mypage_hide"></div>
+            <button type="submit" class="btn_back">뒤로가기</button>
+        </div>
+    </div>
+
+
+    <div class="bank_detail_main">
+        <!-- 문제 설명 -->
+        <div class="problem_bar">
+            <!-- 문제 -->
+            <div class="problem">
+                <div class="problem_num">문제1</div>
+                <div class="problem_title">문제 제목</div>
+            </div>
+
+            <!-- 성공인원 -->
+            <div class="stu">
+                <div class="stu_success">성공한 인원수</div>
+                <div class="stu_num">8/20</div>
+            </div>
+        </div>
+
+        <!-- 문제설명 -->
+        <div class="problem_detail">문제에 대한 자세한 설명</div>
+
+        <!-- 질문목록(EASY) -->
+        <div class="semi_title">EASY</div>
+        <div class="bank_detail_list">
+            <!-- 주석처리예정 -->
+            <div class="bankDetailDiv">
+                <div class="problem_num">질문1</div>    
+                <div class="question">그건 왜 그렇게 짠거죠?</div>    
+            </div>
+        </div>
+
+        <!-- 질문목록(HARD) -->
+        <div class="semi_title">HARD</div>
+        <div class="bank_detail_list">
+            <!-- 주석처리예정 -->
+            <div class="bankDetailDiv">
+                <div class="problem_num">질문1</div>    
+                <div class="question">그건 왜 그렇게 짠거죠?</div>    
+            </div>
+        </div>
+
+    </div>
+    
+    <script src="/js/bank_detail.js"></script>
+</body>
+</html>
