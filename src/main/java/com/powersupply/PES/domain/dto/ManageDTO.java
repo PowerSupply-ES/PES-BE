@@ -21,4 +21,10 @@ public class ManageDTO {
         private String memberStatus; // 상태
         private String memberEmail; // 이메일
     }
+
+    @Getter
+    public static class PatchMember {
+        private int memberGen;
+        private String memberStatus;
+    }
 }

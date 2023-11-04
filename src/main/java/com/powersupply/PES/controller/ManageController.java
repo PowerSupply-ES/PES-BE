@@ -6,9 +6,7 @@ import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +32,12 @@ public class ManageController {
     @GetMapping("/api/manage")
     public ResponseEntity<List<ManageDTO.MemberList>> getMemberList() {
         return ResponseEntity.ok().body(manageService.getMemberList());
+    }
+
+    // 멤버 수정하기
+    @PatchMapping("/api/manage/{memberStuNum}")
+    public ResponseEntity<?> patchMember(@PathVariable String memberStuNum, @RequestBody ManageDTO.PatchMember dto) {
+        manageService.patchMember(memberStuNum, dto);
+        return ResponseUtil.successResponse("성공적으로 수정하였습니다.");
     }
 }
