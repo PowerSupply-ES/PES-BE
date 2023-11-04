@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 rankingMainDiv.appendChild(userDiv);
             });
         })
-
         .catch(error => {
             console.error('랭킹 정보 가져오기 오류:', error);
         });
@@ -117,16 +116,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 problemScoreDiv.textContent = `점수: ${response.problemScore}`;
         
                 // 문제 상태 표시하는 버튼 만들기
-                const stateForm = document.createElement("form"); //<form>요소 생성
-                const btn_goto_question = document.createElement("button");
-                btn_goto_question.classList.add("btn_goto_question");
-                btn_goto_question.textContent = `${response.problemState}`;  
-                btn_goto_question.addEventListener("click", () => {
-                    // 클릭 시 페이지 이동(url수정하기)
-                    window.location.href = serverUrl+ '';
-                });
-                stateForm.appendChild(btn_goto_question); // <button> 요소를 <form>에 추가
-        
+                // 신입생일때만 표시
+                console.log(response);
+                if (response.memberStatus === '신입생'){
+                    const stateForm = document.createElement("form"); //<form>요소 생성
+                    const btn_goto_question = document.createElement("button");
+                    btn_goto_question.classList.add("btn_goto_question");
+                    btn_goto_question.textContent = `${response.answerState}`;  
+                    btn_goto_question.addEventListener("click", () => {
+                        // 클릭 시 페이지 이동(url수정하기)
+                        window.location.href = serverUrl+ '';
+                    });
+                    stateForm.appendChild(btn_goto_question); // <button> 요소를 <form>에 추가    
+                }
+                      
                 // 풀이 보기 버튼 만들기
                 const solutionForm = document.createElement("form");
                 const btn_goto_solution = document.createElement("button");
@@ -142,7 +145,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 // 만든 요소들을 문제 목록에 추가하기
                 questionDiv.appendChild(problemTitleDiv);
                 questionDiv.appendChild(problemScoreDiv);
-                questionDiv.appendChild(stateForm);
+                if (data.memberStatus === '신입생') { 
+                    questionDiv.appendChild(stateForm);
+                }
                 questionDiv.appendChild(solutionForm);
                 contentMain.appendChild(questionDiv); // 문제 요소를 content_main에 추가
             });
