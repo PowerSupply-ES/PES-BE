@@ -58,12 +58,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 buttonDiv.appendChild(button);
             }
 
-            // ----------------- url 수정하기 !!!!
+            
             if (data.memberStatus === '재학생') {
-                createButton("btn_mycomment", "내가 푼 문제 보기", "url1");
-                createButton("btn_question_bank", "문제 은행", "url2");
-                createButton("btn_manage_student", "학생 관리", "url3");
-            } else if (data.memberStatus === '신입생') {
+                createButton("btn_mycomment", "내가 쓴 댓글 보기", "mycomment");
+                createButton("btn_question_bank", "문제 은행", "problembank");
+                createButton("btn_manage_student", "학생 관리", "management");
+            } else if (data.memberStatus === '신입생') { // -----------------url 수정하기 !!!!
                 createButton("btn_goto1", "내가 푼 문제 보기", "url4");
                 createButton("btn_goto2", "내가 답한 문제 보기", "url5");
             }
