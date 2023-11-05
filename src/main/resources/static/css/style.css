@@ -526,8 +526,7 @@ a {
     background-color: var(--White);
     border-color: var(--White);
 }
-.btn_back,
-.btn_goto_edit{
+.btn_back{
     display: flex;
     width: fit-content;
     padding: 4px 8px;       
@@ -971,7 +970,8 @@ a {
     justify-content: space-between;
     margin: var(--margin-top) 300px;
 }
-.comment_list{
+.comment_list,
+.bank_list{
     margin-top: 80px;
     padding: 12px;
     border-style: solid;
@@ -992,7 +992,7 @@ a {
     justify-content: space-between;
 }
 
-.commentDiv > .btn_goto_edit,
+.commentDiv > .btn_goto_comment,
 .bankDiv > .btn_goto_question{
     width: 100px;
     height: 42px;
@@ -1010,7 +1010,11 @@ a {
 .bankDiv > .question{
     font-size: var(--font-normal);
 }
-
+.comment_left > .stu_name{
+    font-weight: bold;
+    font-size: var(--font-normal);
+    margin-right: 20px;
+}
 
 /* -------------------- 문제은행 상세 --------------------*/
 .problem_detail{
@@ -1028,13 +1032,6 @@ a {
 .bank_detail_list
 {
     margin-top: 8px;
-    padding: 12px;
-    border-style: solid;
-    border-radius: 4px;
-    border-color: var(--Gray);
-}
-
-.bank_list{
     padding: 12px;
     border-style: solid;
     border-radius: 4px;
