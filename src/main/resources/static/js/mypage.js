@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
             if (data.memberStatus === '재학생') {
                 createButton("btn_mycomment", "내가 쓴 댓글 보기", "mycomment");
                 createButton("btn_question_bank", "문제 은행", "problembank");
-                createButton("btn_manage_student", "학생 관리", "management");
             } else if (data.memberStatus === '신입생') { // -----------------url 수정하기 !!!!
                 createButton("btn_goto1", "내가 푼 문제 보기", "url4");
                 createButton("btn_goto2", "내가 답한 문제 보기", "url5");
