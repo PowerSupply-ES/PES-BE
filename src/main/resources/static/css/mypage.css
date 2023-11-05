@@ -1,0 +1,102 @@
+@import url("common.css");
+
+/* 마이페이지 네비게이션바 */
+.btn_mypage_hide{
+    width: 216px;
+    height: 42px;
+    background-color: var(--White);
+    border-color: var(--White);
+}
+
+/* body */
+.btn_goto_questions{
+    display: flex;
+    justify-content: center;
+    /* margin: 0px auto; */
+    gap: 10px;
+}
+
+.btn_goto1,
+.btn_goto2,
+.btn_mycomment{
+    width: 216px;
+    height: 42px;
+    background-color: var(--Blue);
+    font-size: var(--font-small);
+    color: var(--White);
+    border-style: solid;
+    border-radius: 5px;
+    border-color: var(--Blue);
+    cursor: pointer;
+}
+.btn_question_bank{
+    /* width: 216px; */
+    height: 42px;
+    background-color: var(--Orange);
+    font-size: var(--font-small);
+    color: var(--White);
+    border-style: solid;
+    border-radius: 5px;
+    border-color: var(--Orange);
+    cursor: pointer;
+}
+.btn_manage_student{
+    /* width: 216px; */
+    height: 42px;
+    background-color: var(--Gray);
+    font-size: var(--font-small);
+    color: var(--Black);
+    border-style: solid;
+    border-radius: 5px;
+    border-color: var(--Gray);
+    cursor: pointer;
+}
+
+.h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: var(--margin-middle) auto;
+    font-size: var(--font-medium);
+    width: 280px;
+    height: 46px;
+}
+
+.user-info{
+    width: 1142px;
+    height: 493px;
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    flex-direction: column;
+    background-color: var(--Gray);
+}
+
+
+/* 모든 자식요소 */
+.user-info > * {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 10px;
+    gap: 20p;
+}
+
+
+.info > p{
+    width: 100px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.info > div{
+
+    width: 600px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    margin-left: 6px;
+    padding-left: 3px;
+}
