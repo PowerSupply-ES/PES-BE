@@ -1,5 +1,14 @@
 @import url("common.css");
 
+.solving_main{
+    width: 1142px;
+    height: 493px;
+    display: flex;
+    justify-content: center;
+    margin: 10px auto;
+    flex-direction: column;
+}
+
 .problem_bar, .problem, .stu_list, .stu{
     display: flex;
     align-items: center;
@@ -48,7 +57,6 @@
     align-items: center;
 }
 
-
 .stu_list > .stu{
     /* 수정 */
     display: flex;
@@ -62,6 +70,8 @@
 .solving_list{
     margin-top: var(--margin-middle);
 }
+
+
 
 
 
