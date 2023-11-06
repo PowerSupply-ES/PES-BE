@@ -11,10 +11,12 @@ import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.repository.ProblemRepository;
 import com.powersupply.PES.repository.QuestionRepository;
 import com.powersupply.PES.utils.JwtUtil;
+import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +35,7 @@ public class AnswerService {
 
     // 채점 하기
     @Transactional
-    public void submit(Long problemId, String memberStuNum, AnswerDTO.gitUrl dto) {
+    public ResponseEntity<?> submit(Long problemId, String memberStuNum, AnswerDTO.gitUrl dto) {
         if(!JwtUtil.getMemberStuNumFromToken().equals(memberStuNum)) {
             throw new AppException(ErrorCode.INVALID_INPUT,"채점할 권한이 없는 유저 입니다.");
         }
@@ -48,62 +50,76 @@ public class AnswerService {
             throw new AppException(ErrorCode.INVALID_INPUT,"제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
         }
 
-        // 채점 로직 추후 추가
-        boolean check = true;
-
         Optional<AnswerEntity> optionalAnswerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum,problemId);
         AnswerEntity answerEntity;
 
-        // 무작위 2개의 질문 선택
-        Pageable pageable = PageRequest.of(0, 2, Sort.unsorted());
-        List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
-
         // answer table에 저장되어 있는지 판단
         if (optionalAnswerEntity.isPresent()) {
+            // DB에 있을 경우
             answerEntity = optionalAnswerEntity.get();
 
-            if(check) {
-                // 성공 시 로직
-                answerEntity.setAnswerState("Answerme");
-                answerEntity.setAnswerUrl(dto.getAnswerUrl());
-                answerEntity.setQuestionFst(questions.get(0));
-                answerEntity.setQuestionSec(questions.get(1));
-            } else {
-                // 실패 시 로직
-                try {
-                    // 숫자에 1 더해서 저장
-                    int currentState = Integer.parseInt(answerEntity.getAnswerState());
-                    currentState += 1;
-                    answerEntity.setAnswerState(String.valueOf(currentState));
-                } catch (NumberFormatException e) {
-                    // 숫자가 아닌 문자열이 저장되어 있을 경우
-                    throw new AppException(ErrorCode.INVALID_INPUT, "answerState 값이 유효한 숫자 형식이 아닙니다.");
-                }
-                answerEntity.setAnswerUrl(dto.getAnswerUrl());
+            // 문제가 이미 채점 중일 경우 오류 전송
+            if(answerEntity.getAnswerState().equals("Grading")) {
+                return ResponseUtil.noContentResponse("이미 채점 중입니다.");
             }
+
+            answerEntity.setAnswerUrl(dto.getAnswerUrl());
+            answerEntity.setAnswerState("Grading");
         } else {
-            if(check) {
-                // 성공 시 초기화 로직
-                answerEntity = AnswerEntity.builder()
-                        .memberEntity(memberEntity)
-                        .problemEntity(problemRepository.findById(problemId).get())
-                        .answerState("Answerme")
-                        .answerUrl(dto.getAnswerUrl())
-                        .questionFst(questions.get(0))
-                        .questionSec(questions.get(1))
-                        .build();
-            } else {
-                // 실패 시 초기화 로직
-                answerEntity = AnswerEntity.builder()
-                        .memberEntity(memberEntity)
-                        .problemEntity(problemRepository.findById(problemId).get())
-                        .answerState("1")
-                        .answerUrl(dto.getAnswerUrl())
-                        .build();
-            }
+            // 무작위 2개의 질문 선택
+            Pageable pageable = PageRequest.of(0, 2, Sort.unsorted());
+            List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
+
+            // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
+            answerEntity = AnswerEntity.builder()
+                    .memberEntity(memberEntity)
+                    .problemEntity(problemRepository.findById(problemId).get())
+                    .answerState("Grading")
+                    .answerUrl(dto.getAnswerUrl())
+                    .questionFst(questions.get(0))
+                    .questionSec(questions.get(1))
+                    .build();
+
         }
-        answerRepository.save(answerEntity);
+        Long answerId = answerRepository.save(answerEntity).getAnswerId();
+
+        // 채점 서버로 요청 전송
+
+
+        return null;
     }
+
+    // 채점 서버로 요청 전송 하기
+
+
+    // 채점 결과 받기
+//    public void gradeCode() {
+//        // 채점 결과
+//        boolean check = true;
+//
+//        AnswerEntity answerEntity = answerRepository.
+//
+//        // 채점 결과에 따라
+//        if(check) {
+//            // 성공 시 로직
+//            answerEntity.setAnswerState("Answerme");
+//        } else {
+//            // 실패 시 로직
+//            // 추후 시도 횟수 추가
+////            try {
+////                // 숫자에 1 더해서 저장
+////                int currentState = Integer.parseInt(answerEntity.getAnswerState());
+////                currentState += 1;
+////                answerEntity.setAnswerState(String.valueOf(currentState));
+////            } catch (NumberFormatException e) {
+////                // 숫자가 아닌 문자열이 저장되어 있을 경우
+////                throw new AppException(ErrorCode.INVALID_INPUT, "answerState 값이 유효한 숫자 형식이 아닙니다.");
+////            }
+//            answerEntity.setAnswerState("1");
+//        }
+//        answerRepository.save(answerEntity);
+//    }
+
 
     public void saveAnswer(Long problemId, String memberStuNum, AnswerDTO.answerRequest dto) {
         if(!JwtUtil.getMemberStuNumFromToken().equals(memberStuNum)) {
