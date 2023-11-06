@@ -1,9 +1,14 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
-    //const serverUrl = 'http://3.34.28.73:8080/';
+    //const serverUrl = 'http://3.34.28.73:80/';
+    //const serverUrl = 'http://www.pes23.com/;;
+
     const serverUrl = 'http://localhost:8080/';
     
+    // 회원 상태 전역 변수로 선언
+    let memstate;
+
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
         const userInfoUri = 'api/myuser';
@@ -25,6 +30,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             document.querySelector(".memberName").textContent = "이름: " + data.memberName;
             document.querySelector(".memberScore").textContent = "획득한 점수: " + data.memberScore;
             document.querySelector(".memberStatus").textContent = "상태(신입생/재학생/관리자): " + data.memberStatus;
+            
+            // memberStatus 값을 memstate에 저장
+            memstate = data.memberStatus;
         })
         .catch(error => {
             console.error('사용자 정보 가져오기 오류:', error);
@@ -58,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 // 사용자 이름을 표시하는 요소 만들기
                 const memberNameDiv = document.createElement("div");
                 memberNameDiv.classList.add("memberName");
-                memberNameDiv.textContent = `이름: ${userInfo.memberName}`;
+                memberNameDiv.textContent = `${userInfo.memberName}`;
     
                 // 사용자 점수를 표시하는 요소 만들기
                 const memberScoreDiv = document.createElement("div");
@@ -118,17 +126,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 // 문제 상태 표시하는 버튼 만들기
                 // 신입생일때만 표시
                 console.log(response);
-                if (response.memberStatus === '신입생'){
-                    const stateForm = document.createElement("form"); //<form>요소 생성
-                    const btn_goto_question = document.createElement("button");
-                    btn_goto_question.classList.add("btn_goto_question");
-                    btn_goto_question.textContent = `${response.answerState}`;  
-                    btn_goto_question.addEventListener("click", () => {
-                        // 클릭 시 페이지 이동(url수정하기)
-                        window.location.href = serverUrl+ '';
-                    });
-                    stateForm.appendChild(btn_goto_question); // <button> 요소를 <form>에 추가    
-                }
                       
                 // 풀이 보기 버튼 만들기
                 const solutionForm = document.createElement("form");
@@ -141,14 +138,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     window.location.href = serverUrl + '';
                 });
                 solutionForm.appendChild(btn_goto_solution);
-        
-                // 만든 요소들을 문제 목록에 추가하기
-                questionDiv.appendChild(problemTitleDiv);
-                questionDiv.appendChild(problemScoreDiv);
-                if (data.memberStatus === '신입생') { 
-                    questionDiv.appendChild(stateForm);
+
+                if (memstate === '신입생'){
+                    // 문제풀러가기 null값일때
+
+
+                    const btn_goto_question = document.createElement("button");
+                    btn_goto_question.classList.add("btn_goto_question");
+                    //btn_goto_question.textContent = `${response.answerState}`;
+                    btn_goto_question.textContent = `문제풀러가기`;  
+
+                    btn_goto_question.addEventListener("click", () => {
+                        // 클릭 시 페이지 이동(url수정하기)
+                        window.location.href = serverUrl+ '';
+                    });
+                    // 만든 요소들을 문제 목록에 추가하기
+                    questionDiv.appendChild(problemTitleDiv);
+                    questionDiv.appendChild(problemScoreDiv);
+                    questionDiv.appendChild(btn_goto_question); // 문제풀러가기 버튼 추가
+                    questionDiv.appendChild(solutionForm);
+                }else {
+                    // 만든 요소들을 문제 목록에 추가하기 (신입생이 아닌 경우)
+                    questionDiv.appendChild(problemTitleDiv);
+                    questionDiv.appendChild(problemScoreDiv);
+                    questionDiv.appendChild(solutionForm);
                 }
-                questionDiv.appendChild(solutionForm);
+                
                 contentMain.appendChild(questionDiv); // 문제 요소를 content_main에 추가
             });
         })

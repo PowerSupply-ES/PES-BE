@@ -47,6 +47,9 @@
     justify-content: center;
     text-align: center;
 }
+button:hover {
+    background-color: #87c1ff;
+}
 
 .top_user_info>.memberName,
 .top_user_info>.memberScore,

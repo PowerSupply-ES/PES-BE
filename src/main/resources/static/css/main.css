@@ -123,6 +123,7 @@
     font-size: var(--font-big);
     font-weight: bold;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
 }
