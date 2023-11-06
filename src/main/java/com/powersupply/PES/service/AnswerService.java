@@ -20,6 +20,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +49,8 @@ public class AnswerService {
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
 
         // 깃 주소가 해당 url로 시작 하지 않으면 AppException 실행
-        String memberGitUrl = memberEntity.getMemberGitUrl();
-        if(!dto.getAnswerUrl().startsWith(memberGitUrl)) {
+        String gitUrl = dto.getAnswerUrl();
+        if(!gitUrl.startsWith(memberEntity.getMemberGitUrl())) {
             throw new AppException(ErrorCode.INVALID_INPUT,"제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
         }
 
@@ -63,7 +67,7 @@ public class AnswerService {
                 return ResponseUtil.noContentResponse("이미 채점 중입니다.");
             }
 
-            answerEntity.setAnswerUrl(dto.getAnswerUrl());
+            answerEntity.setAnswerUrl(gitUrl);
             answerEntity.setAnswerState("Grading");
         } else {
             // 무작위 2개의 질문 선택
@@ -75,7 +79,7 @@ public class AnswerService {
                     .memberEntity(memberEntity)
                     .problemEntity(problemRepository.findById(problemId).get())
                     .answerState("Grading")
-                    .answerUrl(dto.getAnswerUrl())
+                    .answerUrl(gitUrl)
                     .questionFst(questions.get(0))
                     .questionSec(questions.get(1))
                     .build();
@@ -84,12 +88,50 @@ public class AnswerService {
         Long answerId = answerRepository.save(answerEntity).getAnswerId();
 
         // 채점 서버로 요청 전송
+        sendCode(answerId,gitUrl);
 
 
         return null;
     }
 
     // 채점 서버로 요청 전송 하기
+    private void sendCode(Long answerId, String gitUrl) {
+        String requestURL = "http://www.pes23.com:5000/api/v2/submit";
+
+        try {
+            URL url = new URL(requestURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            // POST 요청을 위한 설정
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Accept", "application/json");
+            conn.setDoOutput(true);
+
+            // JSON 바디 데이터
+            String jsonInputString = "{\"answerId\": " + answerId + ", \"answerUrl\": \"" + gitUrl + "\"}";
+
+            // 요청 바디에 데이터 쓰기
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = jsonInputString.getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
+            }
+
+            // 응답 코드 확인 및 응답 내용 읽기
+            int responseCode = conn.getResponseCode();
+            if (responseCode == HttpURLConnection.HTTP_OK) {
+                // 요청 성공
+                // 응답 내용을 처리하는 로직을 여기에 작성하세요
+                System.out.println("Response Code : " + responseCode);
+                System.out.println("Response Message : " + conn.getResponseMessage());
+            } else {
+                // 요청 실패
+                System.out.println("Request did not work: " + responseCode);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     // 채점 결과 받기
