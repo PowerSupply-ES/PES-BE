@@ -22,8 +22,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .then(data => {
             // 서버 응답 데이터를 처리하여 문제 목록에 추가
             data.forEach((response) => {
-                // 서버 응답 데이터를 반복하며 문제 목록 생성 및 화면에 추가하기
-        
+                console.log(response);
+                console.log(response.commentContent);
+
+
                 // content_main 요소 선택
                 const commentDiv = document.querySelector(".comment_list");
         
@@ -33,9 +35,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 const comment_left = document.createElement("div");
                 comment_left.classList.add("comment_left");
 
-                // 문제 id를 요소에 추가
-                questionDiv.dataset.problemId = response.id;
-                
+                //----------------------------pass/fail(1,0)으로 받아서 표시
+
                 // 문제 제목을표시하는 요소 만들기
                 const problem_num = document.createElement("div");
                 problem_num.classList.add("problem_num");
@@ -54,13 +55,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                         
                 // 보러가기 버튼 만들기
+                // ---------- memberStuNum 버튼에 링크걸기
                 const btn_goto_comment = document.createElement("button");
                 btn_goto_comment.type = "submit";
                 btn_goto_comment.classList.add("btn_goto_comment");
                 btn_goto_comment.textContent = "보러가기";
                 btn_goto_comment.addEventListener("click", () => {
                     // 클릭 시 페이지 이동(url수정하기)
-                    window.location.href = serverUrl + '';
+                    window.location.href = `${serverUrl}${response.memberStuNum}${response.problemId}`;
                 });
 
                 // 만든 요소들을 리스트에 추가하기
