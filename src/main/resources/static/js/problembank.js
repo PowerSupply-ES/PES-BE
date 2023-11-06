@@ -48,9 +48,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
           
             .then(data => {
                 // 서버 응답 데이터를 처리하여 문제 목록에 추가
-                data.forEach((response, index) => {
-                    // 서버 응답 데이터를 반복하며 문제 목록 생성 및 화면에 추가하기
-            
+                data.forEach((response) => {
+                    // console.log(response)
+
                     // content_main 요소 선택
                     const contentMain = document.querySelector(".bank_list");
             
@@ -73,21 +73,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     question.textContent = `${response.problemTitle}`;
             
                     // 풀이 보기 버튼 만들기
-                    const solutionForm = document.createElement("form");
                     const btn_goto_solution = document.createElement("button");
                     btn_goto_solution.type = "submit";
                     btn_goto_solution.classList.add("btn_goto_solution");
                     btn_goto_solution.textContent = "풀이 보기";
                     btn_goto_solution.addEventListener("click", () => {
                         // -------- 클릭 시 페이지 이동(url수정하기)
-                        window.location.href = `${serverUrl}${response.problemId}`;
+                        console.log(`${serverUrl}problembank/${response.problemId}`);
+                        window.location.href = `${serverUrl}problembank/${response.problemId}`;
                     });
-                    solutionForm.appendChild(btn_goto_solution);
     
                     // 만든 요소들을 문제 목록에 추가하기 (신입생이 아닌 경우)
                     bankDiv.appendChild(problem_num);
                     bankDiv.appendChild(question);
-                    bankDiv.appendChild(solutionForm);
+                    bankDiv.appendChild(btn_goto_solution);
                     contentMain.appendChild(bankDiv); // 문제 요소를 content_main에 추가
                 });
             })
