@@ -16,7 +16,7 @@ public class ProblemController {
 
     private final ProblemService problemService;
 
-    @GetMapping("/problem/{memberStuNum}/{problemId}")
+    @GetMapping("/problem/{problemId}/{memberStuNum}")
     public String getProb() {
         return "prob";
     }
