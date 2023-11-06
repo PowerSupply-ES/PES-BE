@@ -69,9 +69,16 @@ public class AnswerService {
                 answerEntity.setQuestionFst(questions.get(0));
                 answerEntity.setQuestionSec(questions.get(1));
             } else {
-                int currentState = Integer.parseInt(answerEntity.getAnswerState());
-                currentState += 1; // 상태 값에 1을 더합니다.
-                answerEntity.setAnswerState(String.valueOf(currentState));
+                // 실패 시 로직
+                try {
+                    // 숫자에 1 더해서 저장
+                    int currentState = Integer.parseInt(answerEntity.getAnswerState());
+                    currentState += 1;
+                    answerEntity.setAnswerState(String.valueOf(currentState));
+                } catch (NumberFormatException e) {
+                    // 숫자가 아닌 문자열이 저장되어 있을 경우
+                    throw new AppException(ErrorCode.INVALID_INPUT, "answerState 값이 유효한 숫자 형식이 아닙니다.");
+                }
                 answerEntity.setAnswerUrl(dto.getAnswerUrl());
             }
         } else {
