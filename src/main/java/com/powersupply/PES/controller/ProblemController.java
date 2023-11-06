@@ -4,13 +4,13 @@ import com.powersupply.PES.domain.dto.ProblemDTO;
 import com.powersupply.PES.service.ProblemService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class ProblemController {
 
@@ -21,9 +21,25 @@ public class ProblemController {
         return "prob";
     }
 
+    @GetMapping("/problembank")
+    public String getProblemBank() {
+        return "problembank";
+    }
+
+    @GetMapping("/problembank/{problemId}")
+    public String getQuestionBank() {
+        return "questionbank";
+    }
+
     @GetMapping("/api/problemlist")
     public ResponseEntity<List<ProblemDTO.ProblemResponse>> getProblemList() {
         return ResponseEntity.ok().body(problemService.getProblemList());
+    }
+
+    // 특정 문제의 요약 칼럼
+    @GetMapping("/api/problem/{problemId}/simple")
+    public ResponseEntity<ProblemDTO.ShowProblemSimple> getProblemSimple(@PathVariable Long problemId) {
+        return ResponseEntity.ok().body(problemService.getProblemSimple(problemId));
     }
 
     @GetMapping("/api/problem/{problemId}")
