@@ -1,9 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {      
-        
     // 서버 URL 및 URI
     //const serverUrl = 'http://3.34.28.73:8080/';
     const serverUrl = 'http://localhost:8080/';
-
     const uri = 'api/mypage';
         
     // 서버로부터 정보를 가져오는 함수
@@ -54,11 +52,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     // 클릭 시 페이지 이동
                     window.location.href = serverUrl + url;
                 });
-
                 buttonDiv.appendChild(button);
             }
 
-            
             if (data.memberStatus === '재학생') {
                 createButton("btn_mycomment", "내가 쓴 댓글 보기", "mycomment");
                 createButton("btn_question_bank", "문제 은행", "problembank");

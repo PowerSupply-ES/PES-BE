@@ -28,7 +28,6 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     //const serverUrl = 'http://3.34.28.73:8080/';
     const serverUrl = 'http://localhost:8080/';
 
-
     const uri = 'api/signup';  
 
 
