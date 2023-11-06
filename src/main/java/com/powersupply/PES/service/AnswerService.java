@@ -16,10 +16,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -85,23 +87,30 @@ public class AnswerService {
                     .build();
 
         }
-        Long answerId = answerRepository.save(answerEntity).getAnswerId();
 
-        // 채점 서버로 요청 전송
-        sendCode(answerId,gitUrl);
+        try {
+            Long answerId = answerRepository.save(answerEntity).getAnswerId();
 
+            // 채점 서버로 요청 전송
+            sendCode(answerId, gitUrl);
 
-        return null;
+            // 성공 응답 반환
+            return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
+        } catch (Exception e) {
+            // 예외 발생 시 에러 응답 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("채점 요청 중 오류가 발생했습니다: " + e.getMessage());
+        }
     }
 
     // 채점 서버로 요청 전송 하기
-    private void sendCode(Long answerId, String gitUrl) {
+    private void sendCode(Long answerId, String gitUrl) throws IOException {
         String requestURL = "http://www.pes23.com:5000/api/v2/submit";
 
-        try {
-            URL url = new URL(requestURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        URL url = new URL(requestURL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
+        try {
             // POST 요청을 위한 설정
             conn.setRequestMethod("POST");
             conn.setRequestProperty("Content-Type", "application/json");
@@ -130,37 +139,40 @@ public class AnswerService {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
     }
 
 
     // 채점 결과 받기
-//    public void gradeCode() {
-//        // 채점 결과
-//        boolean check = true;
-//
-//        AnswerEntity answerEntity = answerRepository.
-//
-//        // 채점 결과에 따라
-//        if(check) {
-//            // 성공 시 로직
-//            answerEntity.setAnswerState("Answerme");
-//        } else {
-//            // 실패 시 로직
-//            // 추후 시도 횟수 추가
-////            try {
-////                // 숫자에 1 더해서 저장
-////                int currentState = Integer.parseInt(answerEntity.getAnswerState());
-////                currentState += 1;
-////                answerEntity.setAnswerState(String.valueOf(currentState));
-////            } catch (NumberFormatException e) {
-////                // 숫자가 아닌 문자열이 저장되어 있을 경우
-////                throw new AppException(ErrorCode.INVALID_INPUT, "answerState 값이 유효한 숫자 형식이 아닙니다.");
-////            }
-//            answerEntity.setAnswerState("1");
-//        }
-//        answerRepository.save(answerEntity);
-//    }
+    public void returnSubmit(AnswerDTO.returnSubmit dto) {
+        // 채점 결과
+        AnswerEntity answerEntity = answerRepository.findById(dto.getAnswerId())
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 Id가 없다."));
+
+        // 채점 결과에 따라
+        if(dto.getAnswerState() == 1) {
+            // 성공 시 로직
+            answerEntity.setAnswerState("Answerme");
+        } else {
+            // 실패 시 로직
+            // 추후 시도 횟수 추가
+//            try {
+//                // 숫자에 1 더해서 저장
+//                int currentState = Integer.parseInt(answerEntity.getAnswerState());
+//                currentState += 1;
+//                answerEntity.setAnswerState(String.valueOf(currentState));
+//            } catch (NumberFormatException e) {
+//                // 숫자가 아닌 문자열이 저장되어 있을 경우
+//                throw new AppException(ErrorCode.INVALID_INPUT, "answerState 값이 유효한 숫자 형식이 아닙니다.");
+//            }
+            answerEntity.setAnswerState("1");
+        }
+        answerRepository.save(answerEntity);
+    }
 
 
     public void saveAnswer(Long problemId, String memberStuNum, AnswerDTO.answerRequest dto) {
