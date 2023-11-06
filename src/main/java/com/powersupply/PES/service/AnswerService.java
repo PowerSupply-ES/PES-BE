@@ -64,11 +64,14 @@ public class AnswerService {
 
             if(check) {
                 // 성공 시 로직
-                answerEntity.setAnswerState("InProgress");
+                answerEntity.setAnswerState("Answerme");
                 answerEntity.setAnswerUrl(dto.getAnswerUrl());
                 answerEntity.setQuestionFst(questions.get(0));
                 answerEntity.setQuestionSec(questions.get(1));
             } else {
+                int currentState = Integer.parseInt(answerEntity.getAnswerState());
+                currentState += 1; // 상태 값에 1을 더합니다.
+                answerEntity.setAnswerState(String.valueOf(currentState));
                 answerEntity.setAnswerUrl(dto.getAnswerUrl());
             }
         } else {
@@ -77,7 +80,7 @@ public class AnswerService {
                 answerEntity = AnswerEntity.builder()
                         .memberEntity(memberEntity)
                         .problemEntity(problemRepository.findById(problemId).get())
-                        .answerState("Answer")
+                        .answerState("Answerme")
                         .answerUrl(dto.getAnswerUrl())
                         .questionFst(questions.get(0))
                         .questionSec(questions.get(1))
@@ -87,7 +90,7 @@ public class AnswerService {
                 answerEntity = AnswerEntity.builder()
                         .memberEntity(memberEntity)
                         .problemEntity(problemRepository.findById(problemId).get())
-                        .answerState("InProgress")
+                        .answerState("1")
                         .answerUrl(dto.getAnswerUrl())
                         .build();
             }
