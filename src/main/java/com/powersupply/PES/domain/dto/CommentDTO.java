@@ -34,7 +34,6 @@ public class CommentDTO {
     @Builder
     public static class MyComment {
         private Long problemId;
-        private String memberStuNum;
         private String memberName;
         private String commentContent;
         private int commentPassFail;
