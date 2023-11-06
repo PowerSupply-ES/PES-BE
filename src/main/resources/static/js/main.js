@@ -135,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 btn_goto_solution.textContent = "풀이 보기";
                 btn_goto_solution.addEventListener("click", () => {
                     // 클릭 시 페이지 이동(url수정하기)
+                    //-----------링크연결하기!-----------
                     window.location.href = serverUrl + '';
                 });
                 solutionForm.appendChild(btn_goto_solution);

@@ -62,7 +62,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 btn_goto_comment.textContent = "보러가기";
                 btn_goto_comment.addEventListener("click", () => {
                     // 클릭 시 페이지 이동(url수정하기)
-                    window.location.href = `${serverUrl}${response.memberStuNum}${response.problemId}`;
+                    //window.location.href = serverUrl + "problem" + "/" + response.memberStuNum +"/" + response.problemId;
+                    window.location.href = `${serverUrl}problem/${response.memberStuNum}/${response.problemId}`;
                 });
 
                 // 만든 요소들을 리스트에 추가하기
