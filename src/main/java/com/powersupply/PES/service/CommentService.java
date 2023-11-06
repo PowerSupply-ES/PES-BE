@@ -137,6 +137,7 @@ public class CommentService {
         for(CommentEntity commentEntity: commentEntityList) {
             CommentDTO.MyComment myComment = CommentDTO.MyComment.builder()
                     .problemId(commentEntity.getAnswerEntity().getProblemEntity().getProblemId())
+                    .memberStuNum(commentEntity.getAnswerEntity().getMemberEntity().getMemberStuNum())
                     .memberName(commentEntity.getAnswerEntity().getMemberEntity().getMemberName())
                     .commentContent(commentEntity.getCommentContent())
                     .commentPassFail(commentEntity.getCommentPassFail())
