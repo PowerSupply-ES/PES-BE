@@ -42,11 +42,13 @@ public class ProblemController {
         return ResponseEntity.ok().body(problemService.getProblemSimple(problemId));
     }
 
+    // 문제 보기
     @GetMapping("/api/problem/{problemId}")
     public ResponseEntity<ProblemDTO.ShowProblem> getProblem(@PathVariable Long problemId) {
         return ResponseEntity.ok().body(problemService.getProblem(problemId));
     }
 
+    // 풀이 form 보기
     @GetMapping("/api/problem/{problemId}/{memberStuNum}")
     public ResponseEntity<ProblemDTO.SolveForm> getSolveForm(@PathVariable Long problemId, @PathVariable String memberStuNum) {
         return ResponseEntity.ok().body(problemService.getSolveForm(problemId,memberStuNum));

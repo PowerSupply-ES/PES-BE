@@ -106,6 +106,7 @@ public class ProblemService {
                  .build();
     }
 
+    // 특정 문제의 요약 칼럼
     public ProblemDTO.ShowProblemSimple getProblemSimple(Long problemId) {
         ProblemEntity problemEntity = problemRepository.findById(problemId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 문제가 없습니다."));
