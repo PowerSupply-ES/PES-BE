@@ -25,7 +25,13 @@ public class AnswerController {
     // 채점 하기
     @PostMapping("/api/submit/{problemId}/{memberStuNum}")
     public ResponseEntity<?> submit(@PathVariable Long problemId, @PathVariable String memberStuNum, @RequestBody AnswerDTO.gitUrl dto) {
-        answerService.submit(problemId, memberStuNum, dto);
+        return answerService.submit(problemId, memberStuNum, dto);
+    }
+
+    // 채점 결과 받기
+    @PostMapping("/api/v2/return")
+    public ResponseEntity<?> returnSubmit(@RequestBody AnswerDTO.returnSubmit dto) {
+        answerService.returnSubmit(dto);
         return ResponseUtil.successResponse("성공");
     }
 
