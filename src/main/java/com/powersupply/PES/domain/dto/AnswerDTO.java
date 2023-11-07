@@ -25,4 +25,10 @@ public class AnswerDTO {
         private int commentCount;
         private String answerState;
     }
+
+    @Getter
+    public static class returnSubmit {
+        private Long answerId;
+        private int answerState;
+    }
 }

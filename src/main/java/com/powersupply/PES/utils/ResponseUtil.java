@@ -13,6 +13,10 @@ public class ResponseUtil {
         return createStatusResponse(msg, HttpStatus.OK);
     }
 
+    public static ResponseEntity<?> noContentResponse(String msg) {
+        return createStatusResponse(msg, HttpStatus.NO_CONTENT);
+    }
+
     // 최종 성공 메시지 출력
     private static ResponseEntity<?> createStatusResponse(String message, HttpStatus status) {
         Map<String, String> body = new HashMap<>();
