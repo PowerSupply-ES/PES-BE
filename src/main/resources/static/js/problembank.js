@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     // 문제 제목을 표시하는 요소 만들기
                     // <--------------- 문제 상태 표시하는 버튼 만들기
                     // <--------------- 신입생일때만 표시
-                    bankDiv.dataset.problemId = response.id;
                     const problem_num = document.createElement("div");
                     problem_num.classList.add("problem_num");
                     problem_num.textContent = `문제${response.problemId}`;
@@ -79,16 +78,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     btn_goto_solution.textContent = "풀이 보기";
                     btn_goto_solution.addEventListener("click", () => {
                         // -------- 클릭 시 페이지 이동(url수정하기)
+                        localStorage.setItem('problemId', response.problemId); //로컬스토리지에 저장
+
                         console.log(`${serverUrl}problembank/${response.problemId}`);
                         window.location.href = `${serverUrl}problembank/${response.problemId}`;
                     });
-    
+
                     // 만든 요소들을 문제 목록에 추가하기 (신입생이 아닌 경우)
                     bankDiv.appendChild(problem_num);
                     bankDiv.appendChild(question);
                     bankDiv.appendChild(btn_goto_solution);
                     contentMain.appendChild(bankDiv); // 문제 요소를 content_main에 추가
+
                 });
+
+
             })
     
             .catch(error => {
