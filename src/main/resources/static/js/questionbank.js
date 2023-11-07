@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const storageToken = localStorage.getItem('Authorization');
     const serverUrl = 'http://localhost:8080/';
     const problemId = localStorage.getItem('problemId'); // 로컬스토리지에서 problemId불러오기
-
+    console.log(problemId)
 
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
@@ -85,14 +85,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
             // --------------------난이도별 문제표시
             // 서버 응답 데이터를 처리하여 문제 목록에 추가
             data.forEach((response) => {
-                // console.log(response)
+                console.log("난이도= " + response.questionDifficulty)
 
                 // content_main 요소 선택
-                const contentMain = document.querySelector(".bank_detail_list");
-        
-                // 새로운 질문 나타내는 요소 만들기
+                if (response.questionDifficulty === 0) {
+                    contentMain = document.querySelector('.bank_detail_lis_easy');
+                } else if (response.questionDifficulty === 1) {
+                contentMain = document.querySelector('.bank_detail_list_hard');
+
                 const bankDetailDiv = document.createElement("div");
-                bankDetailDiv.classList.add("bankDetailDiv"); // 각 요소를 클래스에 추가하고 텍스트 내용 채우기
+
+                if(contentMain){  //hard일때
+                    bankDetailDiv.classList.add("bank_detail_list_hard");
+                } else{
+                    bankDetailDiv.classList.add("bank_detail_list_easy");
+                }
+                //easy일때
+
 
                 // 질문 id를 요소에 추가
                 // 질문 제목을 표시하는 요소 만들기
@@ -103,32 +112,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 // 질문 표시하는 요소 만들기
                 const question = document.createElement("div");
                 question.classList.add("question");
-                question.textContent = `${response.problemTitle}`;
+                question.textContent = `${response.questionContent}`;
     
                 // 만든 요소들을 문제 목록에 추가하기 (신입생이 아닌 경우)
-                bankDiv.appendChild(problem_num);
-                bankDiv.appendChild(question);
-                contentMain.appendChild(bankDiv); // 문제 요소를 content_main에 추가
+                bankDetailDiv.appendChild(problem_num);
+                bankDetailDiv.appendChild(question);
+                contentMain.appendChild(bankDetailDiv); // 문제 요소를 content_main에 추가
+                }
             });
             
-
-
-
-
-
-
-
         })
         .catch(error => {
             console.error("데이터 가져오기 실패:", error);
         });
     }
-
-
-
-
-
-
 
     fetchUserInfo(storageToken)
     Getproblem(serverUrl)
