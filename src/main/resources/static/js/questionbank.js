@@ -53,9 +53,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
             return response.json(); // JSON 형식의 응답 데이터를 파싱
         })
         .then(data => {
-            // 문제내용 화면에 표시
-            //-------------문제제목도 추가하기!
+            //문제id
+            document.querySelector(".problem_num").textContent = "문제" + data.problemId;
+            //문제제목
+            document.querySelector(".problem_title").textContent = data.problemTitle;
+            //문제내용
             document.querySelector(".problem_detail").textContent = data.problemContent;
+
+            //-------------------문제점수도 넣기???
 
         })
         .catch(error => {

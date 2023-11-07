@@ -42,7 +42,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
              // 바로가기 버튼
             const buttonDiv = document.querySelector(".btn_goto_questions");
-            const stateForm = document.createElement("form"); // <form>요소 생성
 
             function createButton(classname, text, url) {
                 const button = document.createElement("button");

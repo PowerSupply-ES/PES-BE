@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .then(data => {
             // 서버 응답 데이터를 처리하여 문제 목록에 추가
             data.forEach((response) => {
-                console.log(response);
                 console.log(response.commentContent);
 
 
