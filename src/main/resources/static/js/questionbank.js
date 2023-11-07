@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     const storageToken = localStorage.getItem('Authorization');
     const serverUrl = 'http://localhost:8080/';
+
     const problemId = localStorage.getItem('problemId'); // 로컬스토리지에서 problemId불러오기
-    console.log(problemId)
+    console.log("problemId: ", problemId)
 
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
@@ -39,7 +40,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function Getproblem(url) {
         const uri = `api/problem/${problemId}`;
         fetch(url + uri, {
-            credentials: "include",
             method: "GET",
             headers: {
                 'Authorization': storageToken
