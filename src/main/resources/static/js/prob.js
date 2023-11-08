@@ -63,19 +63,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 if (data.answerState == "1") { // 임시로 1
                     // 실패 페이지
                     console.log("문제 실패 페이지");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "1");
                     submitGitAddr();
                 }
                 else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
                     // 문제 풀기 화면 떠야 함 + 채점중
                     console.log("채점중");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "Grading");
                     document.querySelector('.title_is_complete').innerHTML = '채점중';
                 }
                 else if (data.answerState == "Answerme") {
                     // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
                     console.log("답변하기 페이지");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "Answerme");
                     document.querySelector('.title_is_complete').innerHTML = '정답';
                     document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                     document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 else if (data.answerState == "UnderReview") {
                     // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
                     console.log("피드백 기다리는 중");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "UnderReview");
                     document.querySelector('.title_is_complete').innerHTML = '리뷰중';
                     document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                     document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 else if (data.answerState == "Success") {
                     // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
                     console.log("최종 성공");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "Success");
                     document.querySelector('.title_is_complete').innerHTML = '완료';
                     document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                     document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 else if (data.answerState == "Failure") {
                     // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
                     console.log("최종 실패");
-                    fetchProblem(problemId);
+                    fetchProblem(problemId, "Failure");
                     document.querySelector('.title_is_complete').innerHTML = '실패';
                     document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                     document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
@@ -177,8 +177,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
                     // document.querySelector('.container_pass').appendChild(passBnt);
                 }
-                else {
-                    fetchProblem(problemId);
+                else if (data.status == 204) {
+                    fetchProblem(problemId, "first");
                     submitGitAddr();
                 }
             } catch (error) {
@@ -192,28 +192,69 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     
     // 문제 띄우기 get : ok
-    function fetchProblem(problemId) {
+    async function fetchProblem(problemId, state) {
         const problemUri = `api/problem/${problemId}`;
-    
-            fetch(serverUrl + problemUri, {
+        
+        try {
+            const response = await fetch(serverUrl + problemUri, {
                 method: 'GET'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('문제 가져오기 실패');
-                }
-                return response.json();
-            })
-          
-            .then(data => {
-                document.querySelector('.title_prob_id').innerHTML = "질문" + problemId;
-                document.querySelector('.title_prob_name').innerHTML = data.problemTitle;
-                document.querySelector('.content_prob').innerHTML = data.problemContent;
-            })
-    
-            .catch(error => {
-                console.error("데이터를 가져오는 중 오류 발생:", error);
             });
+    
+            if (!response.ok) {
+                throw new Error('문제 가져오기 실패');
+            }
+    
+            const data = await response.json();
+    
+            const header = document.createElement('div'); // 질문 헤더
+            header.classList.add('header_prob');
+            const title = document.createElement('div'); // title
+            title.classList.add('title_prob');
+            const id = document.createElement('span'); // 질문1 표시
+            id.classList.add('title_prob_id');
+            const name = document.createElement('h2'); // 질문 제목
+            name.classList.add('title_prob_name');
+            const complete = document.createElement('span'); // 완료 상태
+            complete.classList.add('title_is_complete');
+            const content = document.createElement('div'); // 질문 내용
+            content.classList.add('content_prob');
+    
+            title.appendChild(id);
+            title.appendChild(name);
+            title.appendChild(complete);
+            header.appendChild(title);
+    
+            if (state == "first") {
+                complete.innerHTML = "미완료";
+            }
+            else if (state == "1") {
+                complete.innerHTML = "오답";
+            }
+            else if (state == "Grading") {
+                complete.innerHTML = "채점중";
+            }
+            else if (state == "Answerme") {
+                complete.innerHTML = "답변중";
+            }
+            else if (state == "UnderReview") {
+                complete.innerHTML = "리뷰중";
+            }
+            else if (state == "Success") {
+                complete.innerHTML = "완료";
+            }
+            else if (state == "Failure") {
+                complete.innerHTML = "실패";
+            }
+    
+            id.innerHTML = "질문" + problemId;
+            name.innerHTML = data.problemTitle;
+            content.innerHTML = data.problemContent;
+    
+            document.querySelector('.container_problem').appendChild(header);
+            document.querySelector('.container_problem').appendChild(content);
+        } catch (error) {
+            console.error("데이터를 가져오는 중 오류 발생:", error);
+        }
     }
     
     // git 주소 display : ok
@@ -605,4 +646,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     getState(problemId, memberStuNum); // 처음에 answerState 값 가져옴
     
-    });
+});
