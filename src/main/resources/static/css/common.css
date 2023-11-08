@@ -125,9 +125,13 @@ button:hover {
 .navbar_logo{
     width: 448px;
     height: 100px;
-    background-color: var(--Gray);
-    color: var(--Black);
-    border-color: var(--Gray);
+    background-image: url(logo_main.jpg);
+    background-size: cover;
+    border-color: var(--White);
+}
+#logo{
+    width: 100%;
+    height: 100%;
 }
 
 .btn_mypage_hide{

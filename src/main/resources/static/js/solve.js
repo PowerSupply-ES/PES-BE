@@ -120,7 +120,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
             btn_goto_solving.textContent = "보러가기";
             btn_goto_solving.addEventListener("click", () => {
                 //-----------클릭 시 페이지 이동(url수정하기)
-                window.location.href = `${serverUrl}problem/${response.memberStuNum}/${response.problemId}`;
+                localStorage.setItem('problemId', problemId); //로컬스토리지에 저장
+                console.log(`${serverUrl}problembank/${problemId}`);
+                window.location.href = `${serverUrl}problem/${problemId}/${response.memberStuNum}`;
             });
 
             // 만든 요소들을 리스트에 추가하기
