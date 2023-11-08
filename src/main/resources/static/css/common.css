@@ -42,22 +42,31 @@
     display: flex;
     flex-direction: column;
     float: right;
-    width: 400px;
-    height: 116px;
+    width: 300px;
+    height: 80px;
     justify-content: center;
+    margin: 40px 40px 0px 0px;
     text-align: center;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 4px;
+    border-color: #6A6B6F;
 }
 button:hover {
     background-color: #87c1ff;
+    cursor: pointer;
+
 }
 
 .top_user_info>.memberName,
 .top_user_info>.memberScore,
 .top_user_info>.memberStatus{
-    background-color: var(--LightGray);
+    /* background-color: var(--LightGray);
     border-style: solid;
     border-radius: 1px;
-    border-color: var(--AlmostGray);
+    border-color: var(--AlmostGray); */
+    justify-content: center;
+    text-align: center;
     width: 300px;
     height: 24px;
     margin-right: 20px;
@@ -72,7 +81,7 @@ button:hover {
     text-align: center;
     width: 1376px;
     height: 116px;
-    margin: var(--margin-top) auto var(--margin-middle);
+    margin: 0px auto var(--margin-middle);
     gap: 20px;
 }
 
@@ -86,14 +95,22 @@ button:hover {
     gap: 10px;
 }
 
+.btn_level,.btn_gaze,.navbar_logo{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-normal);
+    border-radius: 5px;
+    border-style: solid;
+}
+
+
 .btn_level{
     width: 100px;
     height: 42px;
     background-color: var(--Orange);
-    font-size: var(--font-medium);
     color: var(--text-color);
-    border-radius: 5px;
-    border-style: solid;
     border-color: var(--Orange);
 }
 
@@ -101,28 +118,16 @@ button:hover {
     width: 332px;
     height: 40px;
     background-color: var(--Gray);
-    font-size: var(--font-medium);
     color: var(--Black);
-    border-radius: 5px;
-    border-style: solid;
     border-color: var(--Gray);
 }
 
-
 .navbar_logo{
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 448px;
     height: 100px;
     background-color: var(--Gray);
-    font-size: var(--font-medium);
     color: var(--Black);
-    border-radius: 5px;
-    border-style: solid;
     border-color: var(--Gray);
-    cursor: pointer;
-
 }
 
 .btn_mypage_hide{
@@ -145,6 +150,49 @@ button:hover {
     background: var(--SecondBlue);
 }
 
+
+.problem_num,
+.stu > .process_clear,
+.stu > .process_fail,
+.stu > .process_wait{ 
+    /* 수정 */
+    border-style: solid;
+    border-radius: 8px;
+    width: fit-content;
+    padding: 4px;
+    height: 24px;
+    color: var(--TextBlue);
+    border-color: var(--Blue);
+    font-size: var(--font-normal);
+    padding: 8px;
+    margin-right: 20px;
+}
+
+.stu > .process_fail{
+    color: var(--Orange);
+    border-color: var(--Orange);
+}
+.stu > .process_wait{
+    color: var(--AlmostGray);
+    border-color: var(--AlmostGray);
+}
+.stu > .btn_goto_solving{
+    /* 수정 */
+    border-radius: 5px;
+    background: var(--Blue);
+    border-color: var(--Blue);
+    color: var(--White);
+}
+
+
+
+
+
+
+
+
+
+
 /* 버튼 */
 .btn_mypage{
     width: 216px;
@@ -155,8 +203,6 @@ button:hover {
     border-radius: 5px;
     border-style: solid;
     border-color: var(--Blue);
-    cursor: pointer;
-
 }
 
 .btn_logout{
@@ -168,7 +214,6 @@ button:hover {
     border-radius: 5px;
     border-style: solid;
     border-color: var(--Gray);
-    cursor: pointer;
 }
 
 .btn_clear,
@@ -176,6 +221,7 @@ button:hover {
 .btn_solving,
 .btn_goto_question,
 .btn_goto_solution,
+.btn_goto_solving,
 .btn_solution_waiting
 {
     height: 42px;

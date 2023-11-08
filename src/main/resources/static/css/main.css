@@ -1,9 +1,12 @@
 @import url("common.css");
 
 /* 타이틀 */
-.title_main{
-    width: 1376px;
+
+.title_question_list{
+    width: fit-content;
     height: 52px;
+    /* margin: 0 auto; */
+
     font-size: var(--font-medium);
     font-weight: bold;
     display: flex;
@@ -11,31 +14,12 @@
     margin: var(--margin-top) auto;
 }
 
-.title_main > .title_rank{
-    /* background-color: pink; */
-    display: flex;
-    text-align: center;
-    justify-content: right;
-}
-
-.title_question_list{
-    width: 912px;
-    height: 52px;
-}
-
-.title_rank{
-    width: 332px;
-    height: 52px;
-}
-
-
 /* 필터 */
 .filter_main{
-    width: 1376px;
+    /* width: 1376px; */
     height: 52px;
     display: flex;
     justify-content: center;
-    /* background-color: #3C5882; */
 }
 
 .filter_main > .h2{
@@ -57,31 +41,32 @@
     border-radius: 5px;
     padding-inline: 4px;
 }
-
-/* 문제 & 랭킹 */
 .content_main{
+    /* width: 912px; */
+    margin:0px auto;
+}
+
+.content {
     display: flex;
+    justify-content: space-between; /* content_main과 ranking 사이의 공간을 균등하게 분배 */
+    margin: 40px auto;
+}
+
+
+/* 문제 목록 */
+.question_list{
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    width: 1376px;
-    height: 493px;
-    /* background-color: var(--Gray); */
+    font-size: var(--font-small);
     margin: var(--margin-middle) auto;
 }
 
-/* 문제 목록 */
-.content_main > .question_list{
-    height: 493px;
-    width: 912px;
-    /* background-color: #69A3F5; */
-    margin-right: 132px;
-    font-size: var(--font-small);
-}
 .question_list > .question{
     height: 48px;
     width: 912px;
     display: flex;
     align-items: center;
-    /* background-color: green; */
     margin: 0px auto 2px;
 }
 
@@ -90,9 +75,10 @@
 .question > .problemState{
     display: flex;
     align-items: center;
-    background-color: var(--LightGray);
+    background-color: var(--White);
     border-style: solid;
-    border-color: var(--AlmostGray);
+    border-color: var(--LightGray);
+    border-radius: 4px;
 }
 
 .question > .problemTitle,
@@ -106,6 +92,7 @@
     height: 42px;
     width: 216px;
     justify-content: center;
+    margin-right: 12px;
 }
 .question > .problemState{
     height: 42px;
@@ -115,10 +102,27 @@
 
 
 /* 랭킹 */
+.ranking{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+}
+.title_rank{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 332px;
+    height: 52px;
+    font-size: var(--font-medium);
+    font-weight: bold;
+    color: var(--Black);
+    margin: 0px auto;
+}
 .ranking_main{
     height: 520px;
     width: 400px;
-    background-color: var(--Gray);
+    background-color: var(--LightGray);
     color: var(--Black);
     font-size: var(--font-big);
     font-weight: bold;
@@ -126,20 +130,20 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin: 40px;
 }
+
 
 .user{
     display: flex;
 }
-
+.user > .memberName{
+    margin-right: 12px;
+}
 .user > .memberName,
 .user> .memberScore{
-    background-color: var(--LightGray);
-    border-style: solid;
-    border-radius: 1px;
-    border-color: var(--AlmostGray);
     height: fit-content;
     width: 80px;
     color: var(--Black);
-    font-size: var(--font-small);
+    font-size: var(--font-normal);
 }

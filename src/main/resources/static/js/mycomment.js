@@ -57,11 +57,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
                 // content_main 요소 선택
-                const commentDiv = document.querySelector(".comment_list");
+                const comment_list = document.querySelector(".comment_list");
         
                 // 새로운 comment 나타내는 요소 만들기
-                const questionDiv = document.createElement("div");
-                questionDiv.classList.add("commentDiv");
+                const commentDiv = document.createElement("div");
+                commentDiv.classList.add("commentDiv");
                 const comment_left = document.createElement("div");
                 comment_left.classList.add("comment_left");
 
@@ -91,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 btn_goto_comment.textContent = "보러가기";
                 btn_goto_comment.addEventListener("click", () => {
                     // 클릭 시 페이지 이동(url수정하기)
-                    //window.location.href = serverUrl + "problem" + "/" + response.memberStuNum +"/" + response.problemId;
                     window.location.href = `${serverUrl}problem/${response.problemId}/${response.memberStuNum}`;
                 });
 
@@ -99,8 +98,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 comment_left.appendChild(problem_num);
                 comment_left.appendChild(stu_name);
                 comment_left.appendChild(comment);
-                commentDiv.appendChild(comment_left); // 요소들을 commentDiv에 추가
+                commentDiv.appendChild(comment_left); 
                 commentDiv.appendChild(btn_goto_comment);
+                comment_list.appendChild(commentDiv); // 요소들을 comment_list에 추가
             });
         })
         .catch(error => {

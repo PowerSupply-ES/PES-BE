@@ -1,18 +1,14 @@
 @import url("common.css");
-
+@import url("solve.css");
 .header_main{
     margin-top: 100px;
 }
-.titles_comment > .title_mypage{
-    font-size: var(--font-normal);
+.title_mycomment{
     width: fit-content;
-    justify-content: center;
-    margin: 0px auto 40px;
-}
-.titles_commen > .title_mycomment{
     margin: auto;
+    font-size: var(--font-medium);
+    font-weight: bold;
 }
-
 
 .comment_main,
 .bank_main{
@@ -64,8 +60,19 @@
     font-size: var(--font-normal);
     margin-right: 20px;
 }
+.bankDiv{
+    margin-bottom: 8px;
+}
 
 /* -------------------- 문제은행 상세 --------------------*/
+.problem_bar, .problem, .stu{
+    display: flex;
+}
+.problem > *,
+.stu > *{
+    margin-right: 8px;
+}
+
 .problem_detail{
     display: flex;
     justify-content: center;
@@ -104,4 +111,5 @@
     align-items: center;
     justify-content: left;
     font-size: var(--font-normal);
+    margin-bottom: 4px;
 }

@@ -3,10 +3,11 @@
 .solving_main{
     width: 1142px;
     height: 493px;
-    display: flex;
-    justify-content: center;
     margin: 10px auto;
-    flex-direction: column;
+
+    /* display: flex; */
+    /* justify-content: center; */
+    /* flex-direction: column; */
 }
 
 .problem_bar, .problem, .stu_list, .stu{
@@ -18,43 +19,6 @@
 
 .problem_bar{
     justify-content: space-between;
-}
-
-.problem_num,
-.stu > .process_clear,
-.stu > .process_fail,
-.stu > .process_wait{ 
-    /* 수정 */
-    border-style: solid;
-    border-radius: 8px;
-    /* border-width: 4px; */
-    padding: 4px;
-    height: 24px;
-    color: var(--TextBlue);
-    border-color: var(--Blue);
-    font-size: var(--font-normal);
-    padding: 8px;
-    margin-right: 20px;
-}
-
-.stu > .process_fail{
-    color: var(--Orange);
-    border-color: var(--Orange);
-}
-.stu > .process_wait{
-    color: var(--AlmostGray);
-    border-color: var(--AlmostGray);
-}
-.stu > .btn_goto_solving{
-    /* 수정 */
-    border-radius: 5px;
-    background: var(--Blue);
-    color: var(--White);
-    display: flex;
-    width: 160px;
-    height: 48px;
-    justify-content: center;
-    align-items: center;
 }
 
 .stu_list > .stu{
