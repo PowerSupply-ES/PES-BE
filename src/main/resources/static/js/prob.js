@@ -4,7 +4,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const seniorNum = localStorage.getItem('stuNum');
     console.log(`재학생 학번: ${seniorNum}`);
     console.log(`storageToken: ${storageToken}`);
-    const serverUrl = 'http://localhost:8080/';
+    
+    const serverUrl = 'http://pes23.com/';
+
     
     var url = new URL(window.location.href);
     var problemId = url.pathname.split('/')[2];

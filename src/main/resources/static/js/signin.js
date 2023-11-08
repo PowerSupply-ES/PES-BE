@@ -12,9 +12,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    //const serverUrl = 'http://3.34.28.73:8080/';
-    const serverUrl = 'http://localhost:8080/';
-
+    const serverUrl = 'http://pes23.com/';
     const uri = 'api/signin';
 
     function sendPostRequest(url, data) {
