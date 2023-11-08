@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", async function(event) {
     const storageToken = localStorage.getItem('Authorization');
     const memStuNum = localStorage.getItem('stuNum');
 
-    const serverUrl = 'http://localhost:8080/';
+    const serverUrl = 'http://pes23.com/';
+
     
     // 회원 상태 전역 변수로 선언
     let memstate;

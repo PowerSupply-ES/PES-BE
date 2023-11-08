@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function(event) {      
     // 서버 URL 및 URI
-    //const serverUrl = 'http://3.34.28.73:8080/';
-    const serverUrl = 'http://localhost:8080/';
+    const serverUrl = 'http://pes23.com/';
+
     const uri = 'api/mypage';
         
     // 서버로부터 정보를 가져오는 함수

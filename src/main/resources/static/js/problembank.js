@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
-    const serverUrl = 'http://localhost:8080/';
-    
+    const serverUrl = 'http://pes23.com/';
+
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {
         const userInfoUri = 'api/myuser';

@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function(event) {
     const storageToken = localStorage.getItem('Authorization');
-    const serverUrl = 'http://localhost:8080/';
+    const serverUrl = 'http://pes23.com/';
 
     const problemId = localStorage.getItem('problemId'); // 로컬스토리지에서 problemId불러오기
     console.log("problemId: ", problemId)
