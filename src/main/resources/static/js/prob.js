@@ -41,24 +41,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     fetchUserInfo(storageToken);
 
     // answerState(문제상태)에 관련된 모든 것들
-    function getState(problemId, memberStuNum) {
+    async function getState(problemId, memberStuNum) {
         const stateUri = `api/problem/${problemId}/${memberStuNum}`;
-    
-        fetch(serverUrl + stateUri, {
-            method: 'GET'
-        })
-        .then(response => {
-            if (!response.ok) {
-            }
-            // if (response.status === 404) {
-            //     console.log("Answer Entity 없음");
-            //     fetchProblem(problemId);
-            //     submitGitAddr();
-            // }
-            return response.json();
-        })
-        .then((data) => {
             try {
+                const response = await fetch(serverUrl + stateUri, {
+                    method: 'GET'
+                });
+        
+                if (!response.ok) {
+                    // Handle error here
+                    console.log("서버 응답 오류");
+                    return;
+                }
+        
+                const data = await response.json();
+                
                 if (data.status == 204) {
                     console.log(data.status);
                     fetchProblem(problemId, "first");
@@ -181,12 +178,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
             } catch (error) {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
             }
-        })
-        .catch(error => {
-            console.error("데이터를 가져오는 중 오류 발생:", error);
-            console.log(error.message);
-        });
     }
+    
     
     // 문제 띄우기 get : ok
     async function fetchProblem(problemId, state) {
