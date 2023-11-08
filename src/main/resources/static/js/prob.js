@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     const serverUrl = 'http://pes23.com/';
 
-    
     var url = new URL(window.location.href);
     var problemId = url.pathname.split('/')[2];
     var memberStuNum = url.pathname.split('/')[3];
     let memstate;
 
+    console.log(`url : ${url}`);
     console.log(`problemId : ${problemId}`);
     console.log(`memberStuNum : ${memberStuNum}`);
     
@@ -41,180 +41,200 @@ document.addEventListener("DOMContentLoaded", function(event) {
     fetchUserInfo(storageToken);
 
     // answerState(문제상태)에 관련된 모든 것들
-    function getState(problemId, memberStuNum) {
+    async function getState(problemId, memberStuNum) {
         const stateUri = `api/problem/${problemId}/${memberStuNum}`;
-    
-        fetch(serverUrl + stateUri, {
-            method: 'GET'
-        })
-        .then(response => {
-            if (!response.ok) {
-            }
-            // if (response.status === 404) {
-            //     console.log("Answer Entity 없음");
-            //     fetchProblem(problemId);
-            //     submitGitAddr();
-            // }
-            return response.json();
-        })
-        .then((data) => {   
-            
             try {
-                if (data.answerState == "1") { // 임시로 1
-                    // 실패 페이지
-                    console.log("문제 실패 페이지");
-                    fetchProblem(problemId);
+                const response = await fetch(serverUrl + stateUri, {
+                    method: 'GET'
+                });
+        
+                if (!response.ok) {
+                    // Handle error here
+                    console.log("서버 응답 오류");
+                    return;
+                }
+        
+                if (response.status == 204) {
+                    console.log(response.status);
+                    fetchProblem(problemId, "first");
                     submitGitAddr();
                 }
-                else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
-                    // 문제 풀기 화면 떠야 함 + 채점중
-                    console.log("채점중");
-                    fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '채점중';
-                }
-                else if (data.answerState == "Answerme") {
-                    // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
-                    console.log("답변하기 페이지");
-                    fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '정답';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    openQuestion(); // 질문 열어보기 버튼
-                    document.querySelector('.btn_answer').addEventListener('click', () => {
-                        const valFst = String(document.querySelector("#content_answer_1").value).trim();
-                        const valSec = String(document.querySelector("#content_answer_2").value).trim();
-                        const data = { answerFst: valFst, answerSec: valSec };
-                        postAnswer(data);
-                    })
-                }
-                else if (data.answerState == "UnderReview") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
-                    console.log("피드백 기다리는 중");
-                    fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '리뷰중';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-    
-                    getComment();
-                }
-                else if (data.answerState == "Success") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
-                    console.log("최종 성공");
-                    fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '완료';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-                    
-                    getComment();
-    
-                    // const passBnt = document.createElement('li');
-                    // passBnt.classList.add('pass_comment');
-                    // passBnt.innerHTML = `축하합니다! 성공적으로 통과했습니다! (${passCount}/3)`; // passCount 넘어오는 거
-    
-                    // document.querySelector('.container_pass').appendChild(passBnt);
-                }
-                else if (data.answerState == "Failure") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
-                    console.log("최종 실패");
-                    fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '실패';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-    
-                    getComment();
-    
-                    // const passBnt = document.createElement('div');
-                    // passBnt.classList.add('fail_comment');
-                    // passBnt.innerHTML = `질문테스트에 통과하지 못했습니다.`;
-    
-                    // document.querySelector('.container_pass').appendChild(passBnt);
-                }
-                else {
-                    fetchProblem(problemId);
-                    submitGitAddr();
+                else if (response.status == 200) {
+                    console.log(response.status);
+                    const data = await response.json();
+                    if (data.answerState == "1") { // 임시로 1
+                        // 실패 페이지
+                        console.log("문제 실패 페이지");
+                        fetchProblem(problemId, "1");
+                        submitGitAddr();
+                    }
+                    else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
+                        // 문제 풀기 화면 떠야 함 + 채점중
+                        console.log("채점중");
+                        fetchProblem(problemId, "Grading");
+                    }
+                    else if (data.answerState == "Answerme") {
+                        // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
+                        console.log("답변하기 페이지");
+                        fetchProblem(problemId, "Answerme");
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        openQuestion(); // 질문 열어보기 버튼
+                        document.querySelector('.btn_answer').addEventListener('click', () => {
+                            const valFst = String(document.querySelector("#content_answer_1").value).trim();
+                            const valSec = String(document.querySelector("#content_answer_2").value).trim();
+                            const data = { answerFst: valFst, answerSec: valSec };
+                            postAnswer(data);
+                        })
+                    }
+                    else if (data.answerState == "UnderReview") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
+                        console.log("피드백 기다리는 중");
+                        fetchProblem(problemId, "UnderReview");
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+        
+                        getComment();
+                    }
+                    else if (data.answerState == "Success") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
+                        console.log("최종 성공");
+                        fetchProblem(problemId, "Success");
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+                        
+                        getComment();
+                    }
+                    else if (data.answerState == "Failure") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
+                        console.log("최종 실패");
+                        fetchProblem(problemId, "Failure");
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+        
+                        getComment();
+                    }
                 }
             } catch (error) {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
             }
-        })
-        .catch(error => {
-            console.error("데이터를 가져오는 중 오류 발생:", error);
-            console.log(error.message);
-        });
     }
+    
     
     // 문제 띄우기 get : ok
-    function fetchProblem(problemId) {
+    async function fetchProblem(problemId, state) {
         const problemUri = `api/problem/${problemId}`;
-    
-            fetch(serverUrl + problemUri, {
+        
+        try {
+            const response = await fetch(serverUrl + problemUri, {
                 method: 'GET'
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('문제 가져오기 실패');
-                }
-                return response.json();
-            })
-          
-            .then(data => {
-                document.querySelector('.title_prob_id').innerHTML = "질문" + problemId;
-                document.querySelector('.title_prob_name').innerHTML = data.problemTitle;
-                document.querySelector('.content_prob').innerHTML = data.problemContent;
-            })
-    
-            .catch(error => {
-                console.error("데이터를 가져오는 중 오류 발생:", error);
             });
+    
+            if (!response.ok) {
+                throw new Error('문제 가져오기 실패');
+            }
+    
+            const data = await response.json();
+    
+            const header = document.createElement('div'); // 질문 헤더
+            header.classList.add('header_prob');
+            const title = document.createElement('div'); // title
+            title.classList.add('title_prob');
+            const id = document.createElement('span'); // 질문1 표시
+            id.classList.add('title_prob_id');
+            const name = document.createElement('h2'); // 질문 제목
+            name.classList.add('title_prob_name');
+            const complete = document.createElement('span'); // 완료 상태
+            complete.classList.add('title_is_complete');
+            const content = document.createElement('div'); // 질문 내용
+            content.classList.add('content_prob');
+    
+            title.appendChild(id);
+            title.appendChild(name);
+            title.appendChild(complete);
+            header.appendChild(title);
+    
+            if (state == "first") {
+                complete.innerHTML = "미완료";
+            }
+            else if (state == "1") {
+                complete.innerHTML = "오답";
+            }
+            else if (state == "Grading") {
+                complete.innerHTML = "채점중";
+            }
+            else if (state == "Answerme") {
+                complete.innerHTML = "답변중";
+            }
+            else if (state == "UnderReview") {
+                complete.innerHTML = "리뷰중";
+            }
+            else if (state == "Success") {
+                complete.innerHTML = "완료";
+            }
+            else if (state == "Failure") {
+                complete.innerHTML = "실패";
+            }
+    
+            id.innerHTML = "질문" + problemId;
+            name.innerHTML = data.problemTitle;
+            content.innerHTML = data.problemContent;
+    
+            document.querySelector('.container_problem').appendChild(header);
+            document.querySelector('.container_problem').appendChild(content);
+        } catch (error) {
+            console.error("데이터를 가져오는 중 오류 발생:", error);
+        }
     }
+    
     
     // git 주소 display : ok
     const submitGitAddr = () => {
@@ -605,4 +625,4 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     getState(problemId, memberStuNum); // 처음에 answerState 값 가져옴
     
-    });
+});
