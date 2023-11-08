@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>메인화면</title>
+</head>
+<body>
+    <!-- 사용자정보 -->
+    <div class="top_user_info">
+        <!-- 이름 -->
+        <div class="memberName"></div> 
+        <!-- 획득한 점수 -->
+        <div class="memberScore"></div>
+        <!-- 상태(신입생/재학생/관리자) -->
+        <div class="memberStatus"></div>
+    </div>
+
+    <!-- 네비게이션바 -->
+    <div class="navbar">
+        <div class="navbar_left">
+            <div class="btn_level">level</div>
+            <div class="btn_gaze">경험치 바</div>
+        </div>
+
+        <a href="#" class="navbar_logo">로고</a>
+
+        <div class="navbar_right">
+            <form id="mypage-form" action="mypage">
+                <button type="submit" class="btn_mypage">마이페이지</button>
+            </form>
+            <button type="submit" class="btn_logout">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="content">
+        <!--왼쪽 -------------------A----------->
+        <div class="content_main">
+            <!-- 필터 -->
+            <div class="header_main">
+                
+                <div class="title_question_list">문제 목록</div>  
+            
+                <div class="filter_main">
+                    <div class="h2">필터: </div>
+                    <div class="filtering">
+                        <button type="submit" class="btn_filter1">푼 문제 보기</button>
+                        <button type="submit" class="btn_filter2">안푼 문제 보기</button>
+                        <button type="submit" class="btn_filter3">FAIL</button>
+                        <button type="submit" class="btn_filter4">CLEAR</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 문제 목록 -->
+            <div class="question_list">
+                <!-- <div class="question">
+                    <div class="problemTitle">1.</div>    
+                    <div class="problemScore"></div>
+                    <button type="submit" class="problemState">문제 상태</button>    
+                    <button type="submit" class="btn_goto_solution">풀이 보기</button>    
+                </div> -->
+
+                
+            </div>
+        </div>
+
+        <!--오른쪽-----------------------------B -->
+        <!-- 랭킹 -->
+        <div class="ranking">
+            <div class="title_rank">순위</div>
+            <div class="ranking_main">
+        </div>
+        
+
+        </div>
+    </div>
+    
+
+
+
+
+    <script src="/js/main.js"></script>
+</body>
+</html>

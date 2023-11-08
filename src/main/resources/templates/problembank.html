@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/commentAndbank.css">
+    <title>문제은행</title>
+</head>
+<body>
+    <!-- 사용자정보 -->
+    <div class="top_user_info">
+        <!-- 이름 -->
+        <div class="memberName"></div> 
+        <!-- 획득한 점수 -->
+        <div class="memberScore"></div>
+        <!-- 상태(신입생/재학생/관리자) -->
+        <div class="memberStatus"></div>
+    </div>
+
+    <!-- 네비게이션바 -->
+    <div class="navbar">
+        <div class="navbar_left">
+            <div class="btn_level">level</div>
+            <div class="btn_gaze">경험치 바</div>
+        </div>
+
+        <a href="main" class="navbar_logo">로고</a>
+
+        <div class="navbar_right_questionBank">
+            <form id="mypage-form" action="mypage">
+                <button type="submit" class="btn_mypage">마이페이지</button>
+            </form>
+            <button type="submit" class="btn_logout">로그아웃</button>
+        </div>
+    </div>
+
+    <div class="bank_main">
+        <!-- 타이틀 -->
+        <div class="header_main">
+            <div class="title_mycomment"><h1>문제은행</h1></div>
+        </div>
+
+        <!-- 문제 목록 -->
+        <div class="bank_list">
+            <!-- 주석처리예정 -->
+            <!-- <div class="bankDiv">
+                <div class="bank_left">
+                    <div class="problem_num">문제1</div>    
+                    <div class="question">문제 제목입니다</div>    
+                </div>
+                <button type="submit" class="btn_goto_solution">질문 보기</button>
+            </div> -->
+
+            
+        </div>
+    </div>
+    
+    <script src="/js/problembank.js"></script>
+</body>
+</html>

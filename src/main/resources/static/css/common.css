@@ -1,0 +1,272 @@
+/* 색상 정의 */
+:root {
+    --Blue: #5094F9;
+    --SecondBlue: #69A3F5;
+    --TextBlue: #325cc7;
+    --AlmostBlack: #151F36;
+    --Gray: #CFCFCF;
+    --AlmostGray: #6A6B6F;
+    --LightGray: #DEDEDE;
+    --White: #FFFFFF;
+    --Orange: #FF8412;
+    --SecondOrange: #FFAC30;
+    --LightOrange:#ffcd83;
+    --LightRed:#ea2727e4;
+    --Red: #CA0000;
+    --DarkBlue: #3C5882;
+    --Black:#000000;
+
+    --background-color: #CFCFCF;
+    --text-color: #FFFFFF;
+
+    --font-small:14px;
+    --font-normal:20px;
+    --font-medium:28px;
+    --font-big:30px;
+
+    --margin-top:40px;
+    --margin-middle:48px
+}
+
+/* 공통설정 */
+*{
+    margin: 0px;
+    padding: 0px;
+    font-family: Arial, sans-serif;
+    list-style-type: none; /* 리스트 앞에 붙은 점 제거 */
+    text-decoration: none; /* 밑줄 제거 */
+}
+
+/* 메인 네비게이션바 */
+.top_user_info{
+    display: flex;
+    flex-direction: column;
+    float: right;
+    width: 300px;
+    height: 80px;
+    justify-content: center;
+    margin: 40px 40px 0px 0px;
+    text-align: center;
+    border-style: solid;
+    border-radius: 8px;
+    border-width: 4px;
+    border-color: #6A6B6F;
+}
+button:hover {
+    background-color: #87c1ff;
+    cursor: pointer;
+
+}
+
+.top_user_info>.memberName,
+.top_user_info>.memberScore,
+.top_user_info>.memberStatus{
+    /* background-color: var(--LightGray);
+    border-style: solid;
+    border-radius: 1px;
+    border-color: var(--AlmostGray); */
+    justify-content: center;
+    text-align: center;
+    width: 300px;
+    height: 24px;
+    margin-right: 20px;
+    color: var(--Black);
+}
+
+.navbar {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 10px;
+    text-align: center;
+    width: 1376px;
+    height: 116px;
+    margin: 0px auto var(--margin-middle);
+    gap: 20px;
+}
+
+.navbar_left,
+.navbar_right,
+.navbar_right_mypage,
+.navbar_right_mycomment,
+.navbar_right_questionBank{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn_level,.btn_gaze,.navbar_logo{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    font-size: var(--font-normal);
+    border-radius: 5px;
+    border-style: solid;
+}
+
+
+.btn_level{
+    width: 100px;
+    height: 42px;
+    background-color: var(--Orange);
+    color: var(--text-color);
+    border-color: var(--Orange);
+}
+
+.btn_gaze{
+    width: 332px;
+    height: 40px;
+    background-color: var(--Gray);
+    color: var(--Black);
+    border-color: var(--Gray);
+}
+
+.navbar_logo{
+    width: 448px;
+    height: 100px;
+    background-color: var(--Gray);
+    color: var(--Black);
+    border-color: var(--Gray);
+}
+
+.btn_mypage_hide{
+    width: 216px;
+    height: 42px;
+    background-color: var(--White);
+    border-color: var(--White);
+}
+.btn_back{
+    display: flex;
+    width: fit-content;
+    padding: 4px 8px;       
+    justify-content: center;
+    align-items: center;
+    color: var(--White);
+    font-size: var(--font-normal);
+    font-weight: bold;
+    border: solid var(--SecondBlue);
+    border-radius: 5px;
+    background: var(--SecondBlue);
+}
+
+
+.problem_num,
+.stu > .process_clear,
+.stu > .process_fail,
+.stu > .process_wait{ 
+    /* 수정 */
+    border-style: solid;
+    border-radius: 8px;
+    width: fit-content;
+    padding: 4px;
+    height: 24px;
+    color: var(--TextBlue);
+    border-color: var(--Blue);
+    font-size: var(--font-normal);
+    padding: 8px;
+    margin-right: 20px;
+}
+
+.stu > .process_fail{
+    color: var(--Orange);
+    border-color: var(--Orange);
+}
+.stu > .process_wait{
+    color: var(--AlmostGray);
+    border-color: var(--AlmostGray);
+}
+.stu > .btn_goto_solving{
+    /* 수정 */
+    border-radius: 5px;
+    background: var(--Blue);
+    border-color: var(--Blue);
+    color: var(--White);
+}
+
+
+
+
+
+
+
+
+
+
+/* 버튼 */
+.btn_mypage{
+    width: 216px;
+    height: 42px;
+    background-color: var(--Blue);
+    font-size: var(--font-small);
+    color: var(--text-color);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--Blue);
+}
+
+.btn_logout{
+    width: 216px;
+    height: 42px;
+    background-color: var(--Gray);
+    font-size: var(--font-small);
+    color: var(--text-color);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--Gray);
+}
+
+.btn_clear,
+.btn_fail,
+.btn_solving,
+.btn_goto_question,
+.btn_goto_solution,
+.btn_goto_solving,
+.btn_solution_waiting
+{
+    height: 42px;
+    width: 128px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 3px;
+    border-style: solid;
+    font-size: var(--font-small);
+    border-radius: 5px;
+}
+
+.btn_clear{
+    background-color: var(--white);
+    color: var(--Orange);
+    border-color: var(--Orange);
+}
+
+.btn_fail{
+    background-color: var(--Gray);
+    color: var(--AlmostGray);
+    border-color: var(--Gray)
+}
+
+.btn_solving{
+    background-color: var(--LightOrange);
+    color: var(--White);
+    border-color: var(--LightOrange);
+}
+
+.btn_goto_question{
+    background-color: var(--Orange);
+    color: var(--text-color);
+    border-color: var(--Orange);
+}
+
+.btn_goto_solution{
+    background-color: var(--Blue);
+    color: var(--text-color);
+    border-color: var(--Blue);
+}
+
+.btn_solution_waiting{
+    background-color: var(--Gray);
+    color: var(--AlmostGray);
+    border-color: var(--Gray);
+}
