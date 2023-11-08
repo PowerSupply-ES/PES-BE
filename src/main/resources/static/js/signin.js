@@ -41,7 +41,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
             // 성공적으로 응답을 받았을 때 실행
             if (responseData.message) {
                 localStorage.setItem('stuNum', memberStuNum);
-                const resultMessage = '로그인 성공: ' + responseData.message;
+                const resultMessage = responseData.message;
                 displayResult(resultMessage);
             } else {
                 // 메시지 속성이 없는 경우 예외 처리
@@ -51,10 +51,10 @@ document.getElementById('signin-form').addEventListener('submit', function(event
             const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*=\s*([^;]*).*$)|^.*$/, "$1");
 
             // 만약 쿠키 값이 존재한다면 로컬 스토리지에 저장
-            if (cookieValue) {
-            localStorage.setItem('Authorization', cookieValue);
-            window.alert("쿠키를 로컬 스토리지에 저장했습니다!");
-            }
+            // if (cookieValue) {
+            // localStorage.setItem('Authorization', cookieValue);
+            // window.alert("쿠키를 로컬 스토리지에 저장했습니다!");
+            // }
 
             // 페이지 이동
             window.location.href = serverUrl + 'main';
