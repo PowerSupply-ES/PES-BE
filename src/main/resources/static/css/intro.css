@@ -17,6 +17,11 @@ h1 {
     color: #333;
 }
 
+#signin-form,
+#signup-form{
+    margin-top: 20px;
+}
+
 .input-container {
     margin-bottom: 15px;
     text-align: left;
