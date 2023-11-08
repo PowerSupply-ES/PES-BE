@@ -7,12 +7,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const serverUrl = 'http://localhost:8080/';
     
     var url = new URL(window.location.href);
-    var memberStuNum = url.pathname.split('/')[2];
-    var problemId = url.pathname.split('/')[3];
-    
+    var problemId = url.pathname.split('/')[2];
+    var memberStuNum = url.pathname.split('/')[3];
+    let memstate;
+
     console.log(`problemId : ${problemId}`);
     console.log(`memberStuNum : ${memberStuNum}`);
     
+    async function fetchUserInfo(storageToken) {
+        const userInfoUri = 'api/myuser';
+        try {
+            const response = await fetch(serverUrl + userInfoUri, {
+                method: 'GET',
+                headers: {
+                    'Authorization': storageToken
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error('사용자 정보 가져오기 실패');
+            }
+
+            const data = await response.json();
+            
+            memstate = data.memberStatus;
+        } catch (error) {
+            console.error('사용자 정보 가져오기 오류:', error);
+        }
+    }
+
+    fetchUserInfo(storageToken);
+
     // answerState(문제상태)에 관련된 모든 것들
     function getState(problemId, memberStuNum) {
         const stateUri = `api/problem/${problemId}/${memberStuNum}`;
@@ -23,11 +48,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .then(response => {
             if (!response.ok) {
             }
-            if (response.status === 404) {
-                console.log("Answer Entity 없음");
-                fetchProblem(problemId);
-                submitGitAddr();
-            }
+            // if (response.status === 404) {
+            //     console.log("Answer Entity 없음");
+            //     fetchProblem(problemId);
+            //     submitGitAddr();
+            // }
             return response.json();
         })
         .then((data) => {
@@ -39,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     fetchProblem(problemId);
                     submitGitAddr();
                 }
-                else if (data.answerState == "InProgress") { // Grading인지 InProgress인지 확인 필요!
+                else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
                     // 문제 풀기 화면 떠야 함 + 채점중
                     console.log("채점중");
                     fetchProblem(problemId);
@@ -64,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
                     console.log("피드백 기다리는 중");
                     fetchProblem(problemId);
-                    document.querySelector('.title_is_complete').innerHTML = '정답';
+                    document.querySelector('.title_is_complete').innerHTML = '리뷰중';
                     document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                     document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
                     document.querySelector('.btn_answer').innerHTML = '저장 완료';
@@ -150,6 +175,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
                     // document.querySelector('.container_pass').appendChild(passBnt);
                 }
+                else {
+                    fetchProblem(problemId);
+                    submitGitAddr();
+                }
             } catch (error) {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
             }
@@ -204,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             const value = {answerUrl: trimVal};
             fetchSubmit(value);
             submitElement.value = "";
+            // location.reload(true);
         });
             
         ulElement.appendChild(inputElement);
@@ -228,29 +258,41 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 if (!response.ok) {
                     throw new Error('fetch 실패');
                 }
-                return response.json();
+                if (response.status == 403) {
+                    alert("접근 권한이 없습니다.");
+                }
+                return response.text();
             })
-          
             .then(data => {
-                if (data.status === 200) {
+                if (data.message) {
+                    const resultMessage = '채점 요청: ' + data.message;
+                    alert(resultMessage);
+                }
+                else if (data.status == 200) {
                     console.log("id가 동일함");
                     console.log(data.message);
+                    location.reload(true);
                 }
-                else if (data.status === 204) {
+                else if (data.status == 204) {
                     console.log("이미 채점 중입니다.");
                     alert("이미 채점 중입니다.");
                 }
-                else if (data.status === 404) {
+                else if (data.status == 404) {
                     console.log("id가 존재하지 않음");
                 }
-                else if (data.status === 403) {
+                else if (data.status == 403) {
                     console.log("해당 주소에 권한이 없습니다.");
                     alert("해당 주소에 권한이 없습니다.");
                 }
+                else {
+                    alert("채점 요청을 보냈습니다.");
+                }
+                location.reload(true);
             })
-    
+            
             .catch(error => {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
+                
             });
     }
     
@@ -326,7 +368,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
         .then((data) => {
             if (!data) {
                 console.error("데이터가 비어있습니다.");
-                displayComment();
+                if (!(memstate === '신입생')) {
+                    displayComment();
+                }
             }
     
             data.forEach((item) => {
@@ -411,16 +455,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     // 댓글창 display : ok
     function displayComment() {
+
         const selected = document.querySelector('#rating-select');
-        document.querySelector('.container_feedback_enroll').style.display = 'block';
-        document.querySelector('.btn_feedback').addEventListener('click', () => {
-            const passVal = Number(selected.options[selected.selectedIndex].value);
-            const trimVal = String(document.querySelector('#content_feedback').value).trim();
-            const data = { writer: seniorNum, commentPassFail: passVal, commentContent: trimVal};
-            document.querySelector('#content_feedback').value = "";
-            // console.log(typeof(passVal));
-            postFeedback(data);
-        });
+
+        if (memstate != '신입생') {
+            document.querySelector('.container_feedback_enroll').style.display = 'block';
+            document.querySelector('.btn_feedback').addEventListener('click', () => {
+                const passVal = Number(selected.options[selected.selectedIndex].value);
+                const trimVal = String(document.querySelector('#content_feedback').value).trim();
+                const data = { writer: seniorNum, commentPassFail: passVal, commentContent: trimVal};
+                document.querySelector('#content_feedback').value = "";
+                // console.log(typeof(passVal));
+                postFeedback(data);
+            });
+        }
     }
     
     // 댓글 달기 post : ok
