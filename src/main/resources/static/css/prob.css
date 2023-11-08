@@ -1,5 +1,11 @@
 @import url("common.css");
 /*-------------- 문제 풀기 -------------- */
+.container_problem {
+    width: 1376px;
+    height: 380px;
+    margin: 0 auto;
+}
+
 .header_prob{
     width: 1376px;
     height: 78px;
