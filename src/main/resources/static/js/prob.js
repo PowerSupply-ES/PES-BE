@@ -7,12 +7,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     const serverUrl = 'http://pes23.com/';
 
-    
     var url = new URL(window.location.href);
     var problemId = url.pathname.split('/')[2];
     var memberStuNum = url.pathname.split('/')[3];
     let memstate;
 
+    console.log(`url : ${url}`);
     console.log(`problemId : ${problemId}`);
     console.log(`memberStuNum : ${memberStuNum}`);
     
@@ -72,13 +72,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         // 문제 풀기 화면 떠야 함 + 채점중
                         console.log("채점중");
                         fetchProblem(problemId, "Grading");
-                        document.querySelector('.title_is_complete').innerHTML = '채점중';
                     }
                     else if (data.answerState == "Answerme") {
                         // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
                         console.log("답변하기 페이지");
                         fetchProblem(problemId, "Answerme");
-                        document.querySelector('.title_is_complete').innerHTML = '정답';
                         document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                         document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
                         openQuestion(); // 질문 열어보기 버튼
@@ -93,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
                         console.log("피드백 기다리는 중");
                         fetchProblem(problemId, "UnderReview");
-                        document.querySelector('.title_is_complete').innerHTML = '리뷰중';
                         document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                         document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
                         document.querySelector('.btn_answer').innerHTML = '저장 완료';
@@ -119,7 +116,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
                         console.log("최종 성공");
                         fetchProblem(problemId, "Success");
-                        document.querySelector('.title_is_complete').innerHTML = '완료';
                         document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                         document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
                         document.querySelector('.btn_answer').innerHTML = '저장 완료';
@@ -140,18 +136,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         document.querySelector('.container_question_2').appendChild(secElement);
                         
                         getComment();
-        
-                        // const passBnt = document.createElement('li');
-                        // passBnt.classList.add('pass_comment');
-                        // passBnt.innerHTML = `축하합니다! 성공적으로 통과했습니다! (${passCount}/3)`; // passCount 넘어오는 거
-        
-                        // document.querySelector('.container_pass').appendChild(passBnt);
                     }
                     else if (data.answerState == "Failure") {
                         // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
                         console.log("최종 실패");
                         fetchProblem(problemId, "Failure");
-                        document.querySelector('.title_is_complete').innerHTML = '실패';
                         document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
                         document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
                         document.querySelector('.btn_answer').innerHTML = '저장 완료';
