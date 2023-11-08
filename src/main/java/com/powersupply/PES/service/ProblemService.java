@@ -87,8 +87,14 @@ public class ProblemService {
 
     // 풀이 폼 가져오기
     public ProblemDTO.SolveForm getSolveForm(Long problemId, String memberStuNum) {
+        problemRepository.findById(problemId).orElseThrow(()->new AppException(ErrorCode.NOT_FOUND,"해당 문제가 없습니다."));
+
          AnswerEntity answerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum, problemId)
-                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "관련 자료가 없음"));
+                 .orElse(null);
+
+        if (answerEntity == null) {
+            return null;
+        }
 
         LocalDateTime updateTime = answerEntity.getUpdatedTime();
          if(updateTime == null) {
