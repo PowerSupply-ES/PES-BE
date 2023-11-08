@@ -3,6 +3,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
     const storageToken = localStorage.getItem('Authorization');
     const serverUrl = 'http://localhost:8080/';
 
+    // 상단 사용자 정보 함수
+    function fetchUserInfo(storageToken) {
+        const userInfoUri = 'api/myuser';
+        fetch(serverUrl + userInfoUri, {
+            //credentials: "include",
+            method: 'GET',
+            headers: {
+                'Authorization': storageToken
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('사용자 정보 가져오기 실패');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 사용자 정보를 화면에 표시
+            document.querySelector(".memberName").textContent = "이름: " + data.memberName;
+            document.querySelector(".memberScore").textContent = "획득한 점수: " + data.memberScore;
+            document.querySelector(".memberStatus").textContent = "상태(신입생/재학생/관리자): " + data.memberStatus;
+            
+            // memberStatus 값을 memstate에 저장
+            memstate = data.memberStatus;
+        })
+        .catch(error => {
+            console.error('사용자 정보 가져오기 오류:', error);
+        });
+    }
+
+
     // 내가쓴댓글 동적생성 함수
     function fetchComments() {
         const problemListUri = 'api/comment/mycomment';
@@ -34,7 +65,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 const comment_left = document.createElement("div");
                 comment_left.classList.add("comment_left");
 
-                //----------------------------pass/fail(1,0)으로 받아서 표시
+                //----------------------------pass/fail(1,0)으로 받아서 표시하기(수정)
 
                 // 문제 제목을표시하는 요소 만들기
                 const problem_num = document.createElement("div");
@@ -54,15 +85,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                         
                 // 보러가기 버튼 만들기
-                // ---------- memberStuNum 버튼에 링크걸기
+                //memberStuNum 버튼에 링크걸기
                 const btn_goto_comment = document.createElement("button");
-                btn_goto_comment.type = "submit";
                 btn_goto_comment.classList.add("btn_goto_comment");
                 btn_goto_comment.textContent = "보러가기";
                 btn_goto_comment.addEventListener("click", () => {
                     // 클릭 시 페이지 이동(url수정하기)
                     //window.location.href = serverUrl + "problem" + "/" + response.memberStuNum +"/" + response.problemId;
-                    window.location.href = `${serverUrl}problem/${response.memberStuNum}/${response.problemId}`;
+                    window.location.href = `${serverUrl}problem/${response.problemId}/${response.memberStuNum}`;
                 });
 
                 // 만든 요소들을 리스트에 추가하기
@@ -77,6 +107,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
         });
     }
+    
+    fetchUserInfo(storageToken)
     fetchComments();
 
 

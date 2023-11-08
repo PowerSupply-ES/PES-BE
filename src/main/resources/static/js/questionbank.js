@@ -94,19 +94,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
                 // content_main 요소 선택
                 if (response.questionDifficulty === 0) {
-                    contentMain = document.querySelector('.bank_detail_lis_easy');
+                    contentMain = document.querySelector('.bank_detail_list_easy');
                 } else if (response.questionDifficulty === 1) {
-                contentMain = document.querySelector('.bank_detail_list_hard');
-
+                    contentMain = document.querySelector('.bank_detail_list_hard');
+                }
                 const bankDetailDiv = document.createElement("div");
 
                 if(contentMain){  //hard일때
-                    bankDetailDiv.classList.add("bank_detail_list_hard");
+                    bankDetailDiv.classList.add("bankDetailDiv_hard");
                 } else{
-                    bankDetailDiv.classList.add("bank_detail_list_easy");
+                    bankDetailDiv.classList.add("bankDetailDiv_easy");
                 }
-                //easy일때
-
 
                 // 질문 id를 요소에 추가
                 // 질문 제목을 표시하는 요소 만들기
@@ -123,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 bankDetailDiv.appendChild(problem_num);
                 bankDetailDiv.appendChild(question);
                 contentMain.appendChild(bankDetailDiv); // 문제 요소를 content_main에 추가
-                }
+                
             });
             
         })

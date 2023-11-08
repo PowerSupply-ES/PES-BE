@@ -91,8 +91,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     contentMain.appendChild(bankDiv); // 문제 요소를 content_main에 추가
 
                 });
-
-
             })
     
             .catch(error => {
