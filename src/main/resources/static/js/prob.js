@@ -54,15 +54,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     return;
                 }
         
-                const data = await response.json();
-                
-                if (data.status == 204) {
-                    console.log(data.status);
+                if (response.status == 204) {
+                    console.log(response.status);
                     fetchProblem(problemId, "first");
                     submitGitAddr();
                 }
-                else if (data.status == 200) {
-                    console.log(data.status);
+                else if (response.status == 200) {
+                    console.log(response.status);
+                    const data = await response.json();
                     if (data.answerState == "1") { // 임시로 1
                         // 실패 페이지
                         console.log("문제 실패 페이지");
