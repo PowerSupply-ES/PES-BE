@@ -3,9 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="/css/prob.css">
+    <title>문제풀기</title>
 </head>
 <body>
-    <div>HelloWorld</div>
+    <!-- 네비게이션바 -->
+    <div class="navbar">
+        <div class="navbar_left">
+            <button class="btn_level">level</button>
+            <button class="btn_gaze">경험치 바</button>
+        </div>
+
+        <div class="navbar_logo">로고</div>
+
+        <div class="navbar_right">
+            <form action="main">
+                <button type="submit" class="btn_back">돌아가기</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- 문제 헤더 -->
+    <div class="header_prob">
+        <div class="title_prob">
+            <span class="title_prob_id">문제1</span>  
+            <h2 class="title_prob_name">Analysis를 인당 2개씩 채워오세요!</h2>
+            <span class="title_is_complete">미완료</span>
+        </div>
+        <h2 class="title_pass_student">성공한 인원수 8/20</h2>
+    </div>
+
+    <div class="content_prob">
+        문제 내용
+    </div>
+
+    <div class="test"></div>
+<!-- 
+    <ul class="git_addr_container">
+        <input type="text" id="git_addr" name="git_addr" required>
+        <button type="submit" class="btn_git_submit">제출</button>
+    </ul>
+-->
+
+    <button type="submit" class="btn_open_questions">질문 열어보기</button>
+
+    <ul class="container_questions">
+        <li class="container_question_1">
+            <div class="header_question">
+                <span class="question_id_1">질문1</span>   
+                <h2 class="question_content_1">진짜 열심히 했음?</h2>  
+            </div>
+            <input type="text" id="content_answer_1">
+        </li>
+    
+        <li class="container_question_2">
+            <div class="header_question">
+                <span class="question_id_2">질문2</span>   
+                <h2 class="question_content_2">진짜진짜 열심히 했음?</h2>  
+            </div>
+            <input type="text" id="content_answer_2">
+        </li>
+        
+        <li class="container_btn">
+            <button type="submit" class="btn_answer">답변하기</button>
+        </li>
+    </ul>
+
+
+    <ul class="container_feedbacks">
+        <!--
+        <li class="container_feedback">
+            <div class="header_feedback">
+                <h2 class="header_feedback_id">Feedback1</h2>
+                <h2 class="header_feedback_name">최ㅇㅇ</h2>
+                <h2 class="header_pass_fail">PASS</h2>
+            </div>
+            <input type="text" id="content_feedback">
+            <li class="container_btn">
+                <button type="submit" class="btn_answer">답변하기</button>
+            </li>
+        </li>
+        -->
+    </ul>
+
+    <ul class="container_pass"></ul>
+
+    <ul class="container_feedback_enroll">
+        <div class="header_feedback">
+            <h2>Feedback 달기</h2>
+            <label for="rating-select">통과여부:</label>
+            <select name="rating" id="rating-select">
+                <option value="" disabled selected>선택</option>
+                <option value="1">PASS</option>
+                <option value="0">FAIL</option>
+            </select>
+        </div>
+        <input type="text" id="content_feedback">
+        <li class="container_btn">
+            <button type="submit" class="btn_feedback">댓글달기</button>
+        </li>
+    </ul>
+
+    <script src="/js/prob.js"></script>
+
 </body>
 </html>
