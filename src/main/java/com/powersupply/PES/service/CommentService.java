@@ -54,6 +54,7 @@ public class CommentService {
     }
 
     // 댓글 달기
+    @Transactional
     public void saveComment(Long problemId, String memberStuNum, CommentDTO.PostComment dto) {
 
         // 본인 확인 로직
@@ -90,6 +91,8 @@ public class CommentService {
                 .build();
         commentRepository.save(commentEntity);
 
+        commentEntities.add(commentEntity);
+
         // Pass와 Failure 개수 확인
         long passCount = commentEntities.stream()
                 .filter(comment -> comment.getCommentPassFail() == 1)
@@ -97,6 +100,7 @@ public class CommentService {
         long failCount = commentEntities.stream()
                 .filter(comment -> comment.getCommentPassFail() == 0)
                 .count();
+        System.out.println("pass : " + passCount);
 
         // 조건에 따라 answerState 업데이트
         if (passCount >= 2) {
