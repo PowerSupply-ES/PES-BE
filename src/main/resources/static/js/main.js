@@ -1,6 +1,8 @@
 document.addEventListener("DOMContentLoaded", async function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
+    const memStuNum = localStorage.getItem('stuNum');
+
     const serverUrl = 'http://localhost:8080/';
     
     // 회원 상태 전역 변수로 선언
@@ -139,7 +141,7 @@ document.addEventListener("DOMContentLoaded", async function(event) {
 
                     btn_goto_question.addEventListener("click", () => {
                         // ------------------클릭 시 페이지 이동(url수정하기)
-                        window.location.href = serverUrl + ``;
+                        window.location.href = serverUrl + `problem/${response.problemId}/${memStuNum}`;
                     });
                     // 만든 요소들을 문제 목록에 추가하기
                     questionDiv.appendChild(problemTitleDiv);

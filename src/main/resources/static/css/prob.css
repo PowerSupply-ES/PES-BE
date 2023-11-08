@@ -1,0 +1,318 @@
+@import url("common.css");
+/*-------------- 문제 풀기 -------------- */
+.header_prob{
+    width: 1376px;
+    height: 78px;
+    display: flex;
+    margin: 0 auto;
+    padding: 10px;
+    align-items: center;
+    gap: 540px;
+}
+
+.btn_back{
+    width: 216px;
+    height: 42px;
+    background-color: var(--Blue);
+    font-size: var(--font-small);
+    color: var(--text-color);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--Blue);
+    cursor: pointer;
+
+}
+
+.title_prob {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.title_prob_id {
+    width: 100px;
+    height: 52px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid #325cc7;
+    color: #325cc7;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.title_is_complete {
+    width: 100px;
+    height: 52px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid #DEDEDE;
+    color: #6A6B6F;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.content_prob {
+    width: 1376px;
+    height: 300px;
+    background-color: #CFCFCF;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+/*-------------- 풀이중 -------------- */
+.my_solution {
+    width: 1376px;
+    height: 300px;
+    background-color: #CFCFCF;
+    margin: 0 auto;
+    margin-top: 40px;
+}
+
+.git_addr_container {
+    width: 1376px;
+    height: 80px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 40px;
+}
+
+#git_addr {
+    width: 1028px;
+    height: 52px;
+    padding: 0px;
+}
+
+.btn_git_submit {
+    width: 100px;
+    height: 52px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 0px solid #DEDEDE;
+    background-color: #FF8412;
+    color: #FFFFFF;
+    font-size: 28px;
+}
+
+.btn_open_questions {
+    width: 216px;
+    height: 60px;
+    margin: 0 auto;
+    margin-top: 40px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 0px solid #DEDEDE;
+    background-color: #FF8412;
+    color: #FFFFFF;
+    font-size: 28px;
+    display: none;
+}
+
+/* -------------- 질문 열어보기 -------------- */
+.container_questions {
+    width: 1376px;
+    margin: 0 auto;
+    display: none;
+}
+
+.container_question_1 {
+    width: 1376px;
+    height:350px;
+    margin: 0 auto;
+}
+
+.container_question_2 {
+    width: 1376px;
+    height:350px;
+    margin: 0 auto;
+}
+
+.header_question {
+    width: 1376px;
+    height:80px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.question_id_1 {
+    width: 100px;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid #325cc7;
+    color: #325cc7;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.question_id_2 {
+    width: 100px;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 2px solid #325cc7;
+    color: #325cc7;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#content_answer_1 {
+    width: 1376px;
+    height: 250px;
+    background-color: #CFCFCF;
+}
+
+#content_answer_2 {
+    width: 1376px;
+    height: 250px;
+    background-color: #CFCFCF;
+}
+
+.content_answer {
+    width: 1376px;
+    height: 250px;
+    background-color: #CFCFCF;
+}
+
+.container_btn {
+    width: auto;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.btn_answer {
+    width: 216px;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 0px solid #DEDEDE;
+    background-color: #FF8412;
+    color: #FFFFFF;
+    font-size: 28px;
+    float: right;
+}
+
+.btn_feedback {
+    width: 216px;
+    height: 60px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    border-radius: 5px;
+    border: 0px solid #DEDEDE;
+    background-color: #FF8412;
+    color: #FFFFFF;
+    font-size: 28px;
+    float: right;
+}
+
+hr {
+    width: 1376px;
+    height: 2px;
+    margin: 0 auto;
+    background-color: #000000;
+}
+
+.container_feedbacks {
+    width: 1376px;
+    margin: 0 auto;
+    display: none;
+}
+
+.container_feedback {
+    width: 1376px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.container_feedback_enroll {
+    width: 1376px;
+    height: auto;
+    margin-bottom: 20px;
+    margin: 0 auto;
+    display: none;
+}
+
+.header_feedback {
+    width: 1376px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header_pass_fail {
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    font-size: 30px;
+    font-weight: bold;
+    float: right;
+    margin-left: auto;
+}
+
+#content_feedback {
+    width: 1376px;
+    height: 200px;
+    background-color: #CFCFCF;
+}
+
+.content_feedback {
+    width: 1376px;
+    height: 200px;
+    background-color: #CFCFCF;
+}
+
+.pass_comment {
+    width: 1376px;
+    height: 60px;
+    margin: 0 auto;
+    background-color: #5094f9;
+    color: #FFFFFF;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+    display: flex;
+}
+.fail_comment {
+    width: 1376px;
+    height: 60px;
+    margin: 0 auto;
+    background-color: #3C5882;
+    opacity: 0.6;
+    color: #FFFFFF;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+    display: flex;
+}

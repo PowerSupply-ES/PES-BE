@@ -40,6 +40,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         .then((responseData) => {
             // 성공적으로 응답을 받았을 때 실행
             if (responseData.message) {
+                localStorage.setItem('stuNum', memberStuNum);
                 const resultMessage = '로그인 성공: ' + responseData.message;
                 displayResult(resultMessage);
             } else {
@@ -71,6 +72,26 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         alert(message);
     }
 
+    // // 쿠키에 JWT 토큰 저장
+    // function getJwtTokenFromCookie() {
+    //     const cookies = document.cookie.split(';');
+    //     for (const cookie of cookies) {
+    //         const [name, value] = cookie.trim().split('=');
+    //         if (name === 'Authorization') {
+    //             // 'Authorization' 쿠키에서 토큰 값을 반환
+    //             return decodeURIComponent(value);
+    //         }
+    //     }
+    //     return null; // JWT 토큰을 찾지 못한 경우
+    // }
+
     // POST 요청
     sendPostRequest(serverUrl + uri, formData);
 });
+
+
+
+
+
+
+
