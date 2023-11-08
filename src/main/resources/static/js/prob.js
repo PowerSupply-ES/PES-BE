@@ -58,128 +58,125 @@ document.addEventListener("DOMContentLoaded", function(event) {
             return response.json();
         })
         .then((data) => {
-            
             try {
-                if (data.answerState == "1") { // 임시로 1
-                    // 실패 페이지
-                    console.log("문제 실패 페이지");
-                    fetchProblem(problemId, "1");
-                    submitGitAddr();
-                }
-                else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
-                    // 문제 풀기 화면 떠야 함 + 채점중
-                    console.log("채점중");
-                    fetchProblem(problemId, "Grading");
-                    document.querySelector('.title_is_complete').innerHTML = '채점중';
-                }
-                else if (data.answerState == "Answerme") {
-                    // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
-                    console.log("답변하기 페이지");
-                    fetchProblem(problemId, "Answerme");
-                    document.querySelector('.title_is_complete').innerHTML = '정답';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    openQuestion(); // 질문 열어보기 버튼
-                    document.querySelector('.btn_answer').addEventListener('click', () => {
-                        const valFst = String(document.querySelector("#content_answer_1").value).trim();
-                        const valSec = String(document.querySelector("#content_answer_2").value).trim();
-                        const data = { answerFst: valFst, answerSec: valSec };
-                        postAnswer(data);
-                    })
-                }
-                else if (data.answerState == "UnderReview") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
-                    console.log("피드백 기다리는 중");
-                    fetchProblem(problemId, "UnderReview");
-                    document.querySelector('.title_is_complete').innerHTML = '리뷰중';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-    
-                    getComment();
-                }
-                else if (data.answerState == "Success") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
-                    console.log("최종 성공");
-                    fetchProblem(problemId, "Success");
-                    document.querySelector('.title_is_complete').innerHTML = '완료';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-                    
-                    getComment();
-    
-                    // const passBnt = document.createElement('li');
-                    // passBnt.classList.add('pass_comment');
-                    // passBnt.innerHTML = `축하합니다! 성공적으로 통과했습니다! (${passCount}/3)`; // passCount 넘어오는 거
-    
-                    // document.querySelector('.container_pass').appendChild(passBnt);
-                }
-                else if (data.answerState == "Failure") {
-                    // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
-                    console.log("최종 실패");
-                    fetchProblem(problemId, "Failure");
-                    document.querySelector('.title_is_complete').innerHTML = '실패';
-                    document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
-                    document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
-                    document.querySelector('.btn_answer').innerHTML = '저장 완료';
-                    document.querySelector('.btn_answer').style.background = "#DEDEDE";
-                    document.querySelector('.btn_answer').style.color = "#151f36";
-                    document.querySelector('#content_answer_1').style.display = 'none';
-                    document.querySelector('#content_answer_2').style.display = 'none';
-                    document.querySelector('.container_questions').style.display = 'block';
-                    
-                    const fstElement = document.createElement('div');
-                    fstElement.classList.add('content_answer');
-                    fstElement.innerHTML = data.answerFst;
-                    document.querySelector('.container_question_1').appendChild(fstElement);
-    
-                    const secElement = document.createElement('div');
-                    secElement.classList.add('content_answer');
-                    secElement.innerHTML = data.answerSec;
-                    document.querySelector('.container_question_2').appendChild(secElement);
-    
-                    getComment();
-    
-                    // const passBnt = document.createElement('div');
-                    // passBnt.classList.add('fail_comment');
-                    // passBnt.innerHTML = `질문테스트에 통과하지 못했습니다.`;
-    
-                    // document.querySelector('.container_pass').appendChild(passBnt);
-                }
-                else if (data.status == 204) {
+                if (data.status == 204) {
+                    console.log(data.status);
                     fetchProblem(problemId, "first");
                     submitGitAddr();
+                }
+                else if (data.status == 200) {
+                    console.log(data.status);
+                    if (data.answerState == "1") { // 임시로 1
+                        // 실패 페이지
+                        console.log("문제 실패 페이지");
+                        fetchProblem(problemId, "1");
+                        submitGitAddr();
+                    }
+                    else if (data.answerState == "Grading") { // Grading인지 InProgress인지 확인 필요!
+                        // 문제 풀기 화면 떠야 함 + 채점중
+                        console.log("채점중");
+                        fetchProblem(problemId, "Grading");
+                        document.querySelector('.title_is_complete').innerHTML = '채점중';
+                    }
+                    else if (data.answerState == "Answerme") {
+                        // 질문 열어보기 떠야 함 + 질문 2개, 답변창, 답변하기 ok
+                        console.log("답변하기 페이지");
+                        fetchProblem(problemId, "Answerme");
+                        document.querySelector('.title_is_complete').innerHTML = '정답';
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        openQuestion(); // 질문 열어보기 버튼
+                        document.querySelector('.btn_answer').addEventListener('click', () => {
+                            const valFst = String(document.querySelector("#content_answer_1").value).trim();
+                            const valSec = String(document.querySelector("#content_answer_2").value).trim();
+                            const data = { answerFst: valFst, answerSec: valSec };
+                            postAnswer(data);
+                        })
+                    }
+                    else if (data.answerState == "UnderReview") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글창 떠야함
+                        console.log("피드백 기다리는 중");
+                        fetchProblem(problemId, "UnderReview");
+                        document.querySelector('.title_is_complete').innerHTML = '리뷰중';
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+        
+                        getComment();
+                    }
+                    else if (data.answerState == "Success") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
+                        console.log("최종 성공");
+                        fetchProblem(problemId, "Success");
+                        document.querySelector('.title_is_complete').innerHTML = '완료';
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+                        
+                        getComment();
+        
+                        // const passBnt = document.createElement('li');
+                        // passBnt.classList.add('pass_comment');
+                        // passBnt.innerHTML = `축하합니다! 성공적으로 통과했습니다! (${passCount}/3)`; // passCount 넘어오는 거
+        
+                        // document.querySelector('.container_pass').appendChild(passBnt);
+                    }
+                    else if (data.answerState == "Failure") {
+                        // 질문 2개, 답변내용, 저장완료, 피드백 댓글 3개 결과 뜸
+                        console.log("최종 실패");
+                        fetchProblem(problemId, "Failure");
+                        document.querySelector('.title_is_complete').innerHTML = '실패';
+                        document.querySelector('.question_content_1').innerHTML = data.questionContentFst;
+                        document.querySelector('.question_content_2').innerHTML = data.questionContentSec;
+                        document.querySelector('.btn_answer').innerHTML = '저장 완료';
+                        document.querySelector('.btn_answer').style.background = "#DEDEDE";
+                        document.querySelector('.btn_answer').style.color = "#151f36";
+                        document.querySelector('#content_answer_1').style.display = 'none';
+                        document.querySelector('#content_answer_2').style.display = 'none';
+                        document.querySelector('.container_questions').style.display = 'block';
+                        
+                        const fstElement = document.createElement('div');
+                        fstElement.classList.add('content_answer');
+                        fstElement.innerHTML = data.answerFst;
+                        document.querySelector('.container_question_1').appendChild(fstElement);
+        
+                        const secElement = document.createElement('div');
+                        secElement.classList.add('content_answer');
+                        secElement.innerHTML = data.answerSec;
+                        document.querySelector('.container_question_2').appendChild(secElement);
+        
+                        getComment();
+                    }
                 }
             } catch (error) {
                 console.error("데이터를 가져오는 중 오류 발생:", error);
@@ -256,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.error("데이터를 가져오는 중 오류 발생:", error);
         }
     }
+    
     
     // git 주소 display : ok
     const submitGitAddr = () => {
