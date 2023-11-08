@@ -12,7 +12,9 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    const serverUrl = 'http://pes23.com/';
+    // const serverUrl = 'http://pes23.com/';
+    const serverUrl = 'http://localhost:8080/';
+
     const uri = 'api/signin';
 
     function sendPostRequest(url, data) {
@@ -28,8 +30,11 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         // 서버 응답을 처리
         // 네트워크 오류가 발생한 경우
         .then((response) => {
+            console.log(response.status);
             if (!response.ok) { // HTTP 응답의 상태 코드가 성공적인(200-299 범위) 경우 true를 반환
-                window.alert('네트워크 응답이 실패했습니다.');
+                if (response.status === 404) {
+                    alert("일치하지 않습니다");
+                }
                 throw new Error('네트워크 응답이 실패했습니다.'); // 에러 강제적으로 발생시키고 catch에서 처리되도록 함
             }
             return response.json(); // JSON 응답 데이터를 파싱하여 .then 블록으로 전달
@@ -45,14 +50,9 @@ document.getElementById('signin-form').addEventListener('submit', function(event
                 // 메시지 속성이 없는 경우 예외 처리
                 displayResult('로그인 성공: 메시지 없음');
             }
+           
             // 서버에서 설정한 쿠키 값 가져오기
             const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*=\s*([^;]*).*$)|^.*$/, "$1");
-
-            // 만약 쿠키 값이 존재한다면 로컬 스토리지에 저장
-            // if (cookieValue) {
-            // localStorage.setItem('Authorization', cookieValue);
-            // window.alert("쿠키를 로컬 스토리지에 저장했습니다!");
-            // }
 
             // 페이지 이동
             window.location.href = serverUrl + 'main';
@@ -60,7 +60,9 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         // 요청 또는 응답처리 중에 오류가 발생한 경우
         .catch((error) => {
             // 오류 발생 시 실행되는 코드
-            const errorMessage = '오류 발생: ' + error.message;
+            // const errorMessage = '오류 발생: ' + error.message;
+            const errorMessage = '로그인 실패';
+
             displayResult(errorMessage);
         });
     }
