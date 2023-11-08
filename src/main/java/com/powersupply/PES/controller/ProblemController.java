@@ -3,6 +3,7 @@ package com.powersupply.PES.controller;
 import com.powersupply.PES.domain.dto.ProblemDTO;
 import com.powersupply.PES.service.ProblemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -51,6 +52,11 @@ public class ProblemController {
     // 풀이 form 보기
     @GetMapping("/api/problem/{problemId}/{memberStuNum}")
     public ResponseEntity<ProblemDTO.SolveForm> getSolveForm(@PathVariable Long problemId, @PathVariable String memberStuNum) {
-        return ResponseEntity.ok().body(problemService.getSolveForm(problemId,memberStuNum));
+        ProblemDTO.SolveForm solveForm = problemService.getSolveForm(problemId,memberStuNum);
+        if(solveForm == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 상태 코드 반환
+        }
+
+        return ResponseEntity.ok().body(solveForm);
     }
 }
