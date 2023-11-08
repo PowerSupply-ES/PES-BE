@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             // }
             return response.json();
         })
-        .then((data) => {
+        .then((data) => {   
             
             try {
                 if (data.answerState == "1") { // 임시로 1
