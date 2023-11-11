@@ -113,5 +113,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     fetchUserInfo(storageToken)
     fetchComments();
 
+    document.getElementById('btn_logout').addEventListener('click', function() {
+        // 쿠키 제거
+        document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // 로컬 스토리지 클리어
+        localStorage.clear();
+        alert('로그아웃되었습니다.');
+        window.location.href = serverUrl + 'signin';
+    });
+
+    // 마이페이지 버튼 클릭 시 페이지 이동(url수정하기)
+    const btn_mypage = document.getElementsByClassName("btn_mypage")[0]; // 마이페이지 버튼 요소를 가져오기
+    btn_mypage.addEventListener("click", () => {
+        console.log("클릭");
+        console.log(serverUrl + 'mypage');
+        window.location.href = serverUrl + 'mypage';
+    });
 
 });

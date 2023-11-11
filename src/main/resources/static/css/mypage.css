@@ -1,13 +1,6 @@
 @import url("common.css");
 
 /* 마이페이지 네비게이션바 */
-.btn_mypage_hide{
-    width: 216px;
-    height: 42px;
-    background-color: var(--White);
-    border-color: var(--White);
-}
-
 /* body */
 .btn_goto_questions{
     display: flex;

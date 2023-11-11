@@ -7,30 +7,38 @@
     <title>풀이 보기</title>
 </head>
 <body>
-    <!-- 사용자정보 -->
-    <div class="top_user_info">
-        <!-- 이름 -->
-        <div class="memberName"></div> 
-        <!-- 획득한 점수 -->
-        <div class="memberScore"></div>
-        <!-- 상태(신입생/재학생/관리자) -->
-        <div class="memberStatus"></div>
+    <!-- 네비게이션바 -->
+    <div class="top_bar">
+        <button type="submit" class="btn_mypage">마이페이지</button>
+        <button type="submit" id="btn_logout">로그아웃</button>
     </div>
 
-    <!-- 네비게이션바 -->
-    <div id="navbar">
+    <div id ="navbar">
         <div class="navbar_left">
-            <div class="btn_level">level</div>
-            <div class="btn_gaze">EXP 0</div>
+            <div class="btn_level">Level.1</div>
+            <div class="btn_gaze">
+                <div class="exp">EXP 0</div>
+                <div class="gaze">. </div>
+            </div>
         </div>
 
-        <a href="/main" class="navbar_logo">
-            <img src="/img/logo_main.jpg" id="logo">
+        <a href="#" class="navbar_logo">
+            <img src="/img/logo_main.png" id="logo">
         </a>
 
-        <div class="navbar_right_mypage">
-            <div class="btn_mypage_hide"></div>
-            <button type="submit" class="btn_back" onclick="history.back()">뒤로가기</button>
+        <div class="navbar_right">
+            
+            <!-- 사용자정보 -->
+            <div class="top_user_info">
+                <!-- 이름 -->
+                <div class="memberName"></div> 
+                <!-- 획득한 점수 -->
+                <div class="memberScore"></div>
+                <!-- 상태(신입생/재학생/관리자) -->
+                <div class="memberStatus"></div>
+            </div>
+            <button type="submit" class="btn_back" onclick="history.back()">돌아가기</button>
+
         </div>
     </div>
 
