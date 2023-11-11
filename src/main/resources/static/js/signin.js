@@ -1,3 +1,5 @@
+import serverConfig from './config.js';
+
 document.getElementById('signin-form').addEventListener('submit', function(event) {
     event.preventDefault();
 
@@ -12,8 +14,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    // const serverUrl = 'http://pes23.com/';
-    const serverUrl = 'http://localhost:8080/';
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
 
     const uri = 'api/signin';
 

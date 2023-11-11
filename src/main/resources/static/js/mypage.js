@@ -1,7 +1,8 @@
+import serverConfig from './config.js';
+
 document.addEventListener("DOMContentLoaded", function(event) {      
     // 서버 URL 및 URI
-    const serverUrl = 'http://pes23.com/';
-
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
     const uri = 'api/mypage';
         
     // 서버로부터 정보를 가져오는 함수

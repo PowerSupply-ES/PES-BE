@@ -1,3 +1,5 @@
+import serverConfig from './config.js';
+
 document.addEventListener("DOMContentLoaded", function(event) {
 
     const storageToken = localStorage.getItem('Authorization');
@@ -5,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     console.log(`재학생 학번: ${seniorNum}`);
     console.log(`storageToken: ${storageToken}`);
     
-    const serverUrl = 'http://pes23.com/';
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
 
     var url = new URL(window.location.href);
     var problemId = url.pathname.split('/')[2];

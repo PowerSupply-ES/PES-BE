@@ -1,7 +1,10 @@
+import serverConfig from './config.js';
+
 document.addEventListener("DOMContentLoaded", function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
-    const serverUrl = 'http://pes23.com/';
+    
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
 
     // 상단 사용자 정보 함수
     function fetchUserInfo(storageToken) {

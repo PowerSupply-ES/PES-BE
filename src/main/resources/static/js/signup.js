@@ -1,3 +1,5 @@
+import serverConfig from './config.js';
+
 document.getElementById('signup-form').addEventListener('submit', function(event) {
   event.preventDefault(); // 기본 폼 제출 동작을 막음
    
@@ -25,9 +27,8 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    const serverUrl = 'http://pes23.com/';
-    const uri = 'api/signup';  
-
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
+    const uri = 'api/signup'; 
 
     // POST 요청을 보내는 함수를 정의
     // fetch 함수를 사용하여 HTTP POST 요청을 생성

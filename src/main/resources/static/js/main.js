@@ -1,11 +1,11 @@
+import serverConfig from './config.js';
+
 document.addEventListener("DOMContentLoaded", async function(event) {
     // localStorage에서 토큰 가져오기
     const storageToken = localStorage.getItem('Authorization');
     const memStuNum = localStorage.getItem('stuNum');
 
-    // const serverUrl = 'http://pes23.com/';
-    const serverUrl = 'http://localhost:8080/';
-
+    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
     
     // 회원 상태 전역 변수로 선언
     let memstate;
