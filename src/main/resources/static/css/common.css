@@ -50,7 +50,7 @@
     border-style: solid;
     border-radius: 8px;
     border-width: 4px;
-    border-color: #6A6B6F;
+    border-color: var(--SecondBlue);
 }
 button:hover {
     background-color: #87c1ff;
@@ -62,10 +62,11 @@ button:hover {
     display: flex;
     text-align: center;
     justify-content: right;
-    margin-top: 20px;
+    padding-top: 20px;
 }
 .top_bar > *{
     margin-right: 20px;
+    color: var(--Black);
 }
 
 .btn_mypage{
@@ -141,18 +142,20 @@ button:hover {
     text-align: center;
     justify-content: center;
     align-items: center;
-    /* font-size: var(--font-normal); */
     border-radius: 5px;
     border-style: solid;
 }
 
 
 .btn_level{
-    width: 60px;
-    height: 36px;
+    width: 72px;
+    height: 40px;
     background-color: var(--White);
-    color: var(--Blue);
-    border-color: var(--Blue);
+    background-color: var(--SecondBlue);
+    color: var(--White);
+    border-color: var(--SecondBlue);
+    margin-right: 12px;
+    border-radius: 40px;
 }
 
 .btn_gaze{
@@ -161,15 +164,16 @@ button:hover {
     display: flex;
     justify-content: left;
     background-color: var(--White);
-    border-color: var(--Gray);
+    border-color: var(--SecondBlue);
     padding: 4px;
 }
 
-.btn_gaze > .exp{
+.exp{
+    width: 48px;
     font-size: var(--font-small);
     color: var(--Black);
-    margin-right: 6px;
 }
+
 .btn_gaze > .gaze{
     background-color: var(--SecondOrange);
     color: var(--SecondOrange);
@@ -284,19 +288,22 @@ button:hover {
 .btn_solving{
     background-color: var(--LightOrange);
     color: var(--White);
-    border-color: var(--LightOrange);
+    border-color: var(--White);
 }
 
 .btn_goto_question{
-    background-color: var(--Orange);
+    background-color: rgb(255, 182, 47);
     color: var(--text-color);
-    border-color: var(--Orange);
+    border-color: var(--White);
+}
+.btn_goto_question:hover {
+    background-color: rgb(255, 209, 123); /* 커서를 얹었을 때의 배경색 */
 }
 
 .btn_goto_solution{
     background-color: var(--Blue);
     color: var(--text-color);
-    border-color: var(--Blue);
+    border-color: var(--White);
 }
 
 .btn_solution_waiting{

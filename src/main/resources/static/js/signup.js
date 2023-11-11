@@ -11,7 +11,8 @@ document.getElementById('signup-form').addEventListener('submit', function(event
     const memberEmail = document.getElementById('email').value;
     const memberGitUrl = document.getElementById('git_address').value;
     const memberPw = document.getElementById('password').value;
-    const memberCardiNum = document.getElementById('generation').value;
+    const memberGen = document.getElementById('generation').value;
+    
 
     // POST 요청에 보낼 데이터를 JavaScript 객체로 준비
     const formData = {
@@ -23,7 +24,7 @@ document.getElementById('signup-form').addEventListener('submit', function(event
       memberEmail: memberEmail,
       memberGitUrl : memberGitUrl,
       memberPw: memberPw,
-      memberCardiNum : memberCardiNum
+      memberGen : memberGen
     };
 
     // 서버 URL 및 URI
