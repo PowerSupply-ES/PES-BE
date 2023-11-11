@@ -150,7 +150,7 @@ public class MemberService {
 
     public List<MemberDTO.NameScoreResponse> memberRank() {
 
-        List<MemberEntity> memberEntityList = memberRepository.findAll();
+        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("신입생");
         List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
 
         // 리스트 체크

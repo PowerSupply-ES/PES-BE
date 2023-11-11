@@ -3,6 +3,7 @@ package com.powersupply.PES.service;
 import com.powersupply.PES.domain.dto.AnswerDTO;
 import com.powersupply.PES.domain.entity.AnswerEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
+import com.powersupply.PES.domain.entity.ProblemEntity;
 import com.powersupply.PES.domain.entity.QuestionEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
@@ -76,16 +77,25 @@ public class AnswerService {
             Pageable pageable = PageRequest.of(0, 2, Sort.unsorted());
             List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
 
+            if (questions.size() < 2) {
+                throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
+            }
+
+            Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
+            if (problemEntityOptional.isEmpty()) {
+                throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
+            }
+            ProblemEntity problemEntity = problemEntityOptional.get();
+
             // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
             answerEntity = AnswerEntity.builder()
                     .memberEntity(memberEntity)
-                    .problemEntity(problemRepository.findById(problemId).get())
+                    .problemEntity(problemEntity)
                     .answerState("Grading")
                     .answerUrl(gitUrl)
                     .questionFst(questions.get(0))
                     .questionSec(questions.get(1))
                     .build();
-
         }
 
         try {

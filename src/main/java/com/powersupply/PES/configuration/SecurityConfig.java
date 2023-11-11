@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .csrf().disable() // cross site 기능
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
-                .antMatchers("/css/**","/js/**").permitAll() // 정적 메소드 누구나 접근 가능
+                .antMatchers("/css/**","/js/**","/img/**").permitAll() // 정적 메소드 누구나 접근 가능
                 .antMatchers("/","/signin","/signup","/finduser","/problem/**").permitAll() // 누구나 접근 가능
                 .antMatchers("/api/signin","/api/signup","/api/finduser","/api/rank","/api/problemlist/**","/api/problem/**").permitAll() // 기본 요청 언제나 접근 가능
                 .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
@@ -56,11 +56,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("*"));  // 모든 도메인 허용
-        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS"));  // POST, GET, OPTIONS 메서드 허용
+        configuration.setAllowedOrigins(Arrays.asList("http://www.pes23.com", "http://52.79.205.96")); // 여기에 IP 추가
+        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true); // 필요한 경우, 쿠키와 함께 요청을 보내는 것을 허용
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/**", configuration); // 모든 URL에 대해 설정 적용
 
         return source;
     }
