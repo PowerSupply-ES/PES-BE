@@ -7,21 +7,24 @@
     <title>메인화면</title>
 </head>
 <body>
-    <!-- 사용자정보 -->
-    <div class="top_user_info">
-        <!-- 이름 -->
-        <div class="memberName"></div> 
-        <!-- 획득한 점수 -->
-        <div class="memberScore"></div>
-        <!-- 상태(신입생/재학생/관리자) -->
-        <div class="memberStatus"></div>
+    
+    <!-- 네비게이션바 -->
+    <div class="top_bar">
+        <form id="mypage-form" action="mypage">
+                <button type="submit" class="btn_mypage">마이페이지</button>
+        </form>
+        <form id="logout-form" action="logout">
+            <button type="submit" class="btn_logout">로그아웃</button>
+        </form>
     </div>
 
-    <!-- 네비게이션바 -->
-    <div class="navbar">
+    <div id ="navbar">
         <div class="navbar_left">
-            <div class="btn_level">level</div>
-            <div class="btn_gaze">경험치 바</div>
+            <div class="btn_level">Level.1</div>
+            <div class="btn_gaze">
+                <div class="exp">EXP 0</div>
+                <div class="gaze">. </div>
+            </div>
         </div>
 
         <a href="#" class="navbar_logo">
@@ -29,12 +32,20 @@
         </a>
 
         <div class="navbar_right">
-            <form id="mypage-form" action="mypage">
-                <button type="submit" class="btn_mypage">마이페이지</button>
-            </form>
-            <button type="submit" class="btn_logout">로그아웃</button>
+            
+            <!-- 사용자정보 -->
+            <div class="top_user_info">
+                <!-- 이름 -->
+                <div class="memberName"></div> 
+                <!-- 획득한 점수 -->
+                <div class="memberScore"></div>
+                <!-- 상태(신입생/재학생/관리자) -->
+                <div class="memberStatus"></div>
+            </div>
+
         </div>
     </div>
+
 
     <div class="content">
         <!--왼쪽 -------------------A----------->
@@ -72,17 +83,11 @@
         <!-- 랭킹 -->
         <div class="ranking">
             <div class="title_rank">순위</div>
-            <div class="ranking_main">
-        </div>
+            <div class="ranking_main"></div>
         
-
         </div>
     </div>
     
-
-
-
-
     <script type="module" src="/js/main.js"></script>
 </body>
 </html>
