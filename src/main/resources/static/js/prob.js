@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // git 주소 display : ok
     const submitGitAddr = () => {
     
-        const ulElement = document.createElement('ul');
+        const ulElement = document.createElement('div');
         ulElement.classList.add('git_addr_container');
     
         const inputElement = document.createElement('input');
@@ -531,7 +531,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             document.querySelector('.title_is_complete').innerHTML = "실패";
         }
         else {
-            const liElement = document.createElement('li');
+            const liElement = document.createElement('div');
             liElement.classList.add('git_addr_container');
     
             const inputElement = document.createElement('input');
@@ -569,10 +569,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
             const data = await response.json();
     
             for (let i = 0; i < 2; i++) {
-                const ulElement = document.createElement('ul');
+                const ulElement = document.createElement('div');
                 ulElement.classList.add('container_questions');
     
-                const liElement = document.createElement('li');
+                const liElement = document.createElement('div');
                 liElement.classList.add('container_question');
     
                 const divElement = document.createElement('div');

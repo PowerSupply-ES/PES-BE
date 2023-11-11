@@ -9,6 +9,7 @@
 <body>
     <!-- 네비게이션바 -->
     <div class="top_bar">
+        <button type="submit" class="btn_mypage">마이페이지</button>
         <button type="submit" id="btn_logout">로그아웃</button>
     </div>
 
@@ -31,9 +32,13 @@
 
         <div class="navbar_right"></div>
     </div>
+    
+    <div class="back_container">
+        <button type="submit" class="btn_back" onclick="history.back()">돌아가기</button>
+    </div>
 
     <!-- 문제 헤더 -->
-    <ul class="container_problem"></ul>
+    <div class="container_problem"></div>
     <!--
         <div class="header_prob">
             <div class="title_prob">
