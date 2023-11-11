@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 
         // fetch API를 사용하여 데이터 가져오기
         fetch(url, {
-            credentials: "include",
             method: "GET",
             headers: {
                 'Authorization': storageToken
@@ -70,4 +69,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
     // 페이지가 로드될 때 데이터 가져오기 함수 호출
     sendGetRequest(serverUrl + uri);
+
+    document.getElementById('btn_logout').addEventListener('click', function() {
+        // 쿠키 제거
+        document.cookie = "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        // 로컬 스토리지 클리어
+        localStorage.clear();
+        alert('로그아웃되었습니다.');
+        window.location.href = serverUrl + 'signin';
+    });
 });

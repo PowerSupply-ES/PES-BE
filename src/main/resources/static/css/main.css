@@ -122,20 +122,25 @@
 .ranking_main{
     height: 520px;
     width: 400px;
-    background-color: var(--LightGray);
+    background-color: var(--White);
     color: var(--Black);
+    border-style: solid;
+    border-radius: 12px;
+    border-color: var(--LightGray);
     font-size: var(--font-big);
     font-weight: bold;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     align-items: center;
     margin: 40px;
+    padding-top: 28px;
 }
 
 
 .user{
     display: flex;
+    align-items: center;
 }
 .user > .memberName{
     margin-right: 12px;
