@@ -64,7 +64,7 @@
 
 .question_list > .question{
     height: 48px;
-    width: 912px;
+    /* width: 912px; */
     display: flex;
     align-items: center;
     margin: 0px auto 2px;

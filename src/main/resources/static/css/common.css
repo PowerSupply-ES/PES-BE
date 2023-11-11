@@ -55,7 +55,39 @@
 button:hover {
     background-color: #87c1ff;
     cursor: pointer;
+}
 
+.top_bar{
+    width: 100%;
+    display: flex;
+    text-align: center;
+    justify-content: right;
+    margin-top: 20px;
+}
+.top_bar > *{
+    margin-right: 20px;
+}
+
+.btn_mypage{
+    width: 100px;
+    height: 36px;
+    background-color: var(--White);
+    font-size: var(--font-small);
+    color: var(--AlmostBlack);
+    border-style: solid;
+    border-color: var(--White);
+}
+
+.btn_logout{
+    width: 100px;
+    height: 36px;
+    background-color: var(--White);
+    font-size: var(--font-small);
+    color: var(--AlmostBlack);
+    border-radius: 5px;
+    border-style: solid;
+    border-color: var(--White);
+    
 }
 
 .top_user_info>.memberName,
@@ -73,7 +105,7 @@ button:hover {
     color: var(--Black);
 }
 
-.navbar {
+#navbar {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
@@ -85,14 +117,19 @@ button:hover {
     gap: 20px;
 }
 
-.navbar_left,
 .navbar_right,
 .navbar_right_mypage,
 .navbar_right_mycomment,
 .navbar_right_questionBank{
     display: flex;
+    align-items: end;
+    gap: 10px;
+}
+.navbar_left{
+    display: flex;
     align-items: center;
     gap: 10px;
+
 }
 
 .btn_level,.btn_gaze,.navbar_logo{
@@ -100,32 +137,49 @@ button:hover {
     text-align: center;
     justify-content: center;
     align-items: center;
-    font-size: var(--font-normal);
+    /* font-size: var(--font-normal); */
     border-radius: 5px;
     border-style: solid;
 }
 
 
 .btn_level{
-    width: 100px;
-    height: 42px;
-    background-color: var(--Orange);
-    color: var(--text-color);
-    border-color: var(--Orange);
+    width: 60px;
+    height: 36px;
+    background-color: var(--White);
+    color: var(--Blue);
+    border-color: var(--Blue);
 }
 
 .btn_gaze{
-    width: 332px;
-    height: 40px;
-    background-color: var(--Gray);
-    color: var(--Black);
+    width: 330px;
+    height: 32px;
+    display: flex;
+    justify-content: left;
+    background-color: var(--White);
     border-color: var(--Gray);
+    padding: 4px;
 }
+
+.btn_gaze > .exp{
+    font-size: var(--font-small);
+    color: var(--Black);
+    margin-right: 6px;
+}
+.btn_gaze > .gaze{
+    background-color: var(--SecondOrange);
+    color: var(--SecondOrange);
+    width: 8px;
+    height: fit-content;
+    padding: 2px;
+    border-radius: 4px;
+    
+}
+
 
 .navbar_logo{
     width: 448px;
     height: 100px;
-    background-image: url(logo_main.jpg);
     background-size: cover;
     border-color: var(--White);
 }
@@ -147,7 +201,7 @@ button:hover {
     justify-content: center;
     align-items: center;
     color: var(--White);
-    font-size: var(--font-normal);
+    font-size: var(--font-small);
     font-weight: bold;
     border: solid var(--SecondBlue);
     border-radius: 5px;
@@ -198,28 +252,6 @@ button:hover {
 
 
 /* 버튼 */
-.btn_mypage{
-    width: 216px;
-    height: 42px;
-    background-color: var(--Blue);
-    font-size: var(--font-small);
-    color: var(--text-color);
-    border-radius: 5px;
-    border-style: solid;
-    border-color: var(--Blue);
-}
-
-.btn_logout{
-    width: 216px;
-    height: 42px;
-    background-color: var(--Gray);
-    font-size: var(--font-small);
-    color: var(--text-color);
-    border-radius: 5px;
-    border-style: solid;
-    border-color: var(--Gray);
-}
-
 .btn_clear,
 .btn_fail,
 .btn_solving,
