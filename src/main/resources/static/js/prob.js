@@ -195,7 +195,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             const name = document.createElement('h2'); // 질문 제목
             name.classList.add('title_prob_name');
             const complete = document.createElement('span'); // 완료 상태
-            complete.classList.add('title_is_complete');
+            complete.classList.add('title_is_complete'); 
             const content = document.createElement('div'); // 질문 내용
             content.classList.add('content_prob');
     

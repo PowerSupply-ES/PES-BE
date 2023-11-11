@@ -9,64 +9,52 @@
 <body>
     <!-- 네비게이션바 -->
     <div class="top_bar">
-        <button type="submit" class="btn_mypage">마이페이지</button>
         <button type="submit" id="btn_logout">로그아웃</button>
     </div>
 
-
     <div id ="navbar">
         <div class="navbar_left">
+
             <div class="btn_level">Level.1</div>
+
+            <div class="exp">EXP 0</div>
+
             <div class="btn_gaze">
-                <div class="exp">EXP 0</div>
                 <div class="gaze">. </div>
             </div>
+
         </div>
 
         <a href="#" class="navbar_logo">
-            <img src="/img/logo_main.jpg" id="logo">
+            <img src="/img/logo_main.png" id="logo">
         </a>
 
-        <div class="navbar_right">
-            
-            <!-- 사용자정보 -->
-            <div class="top_user_info">
-                <!-- 이름 -->
-                <div class="memberName"></div> 
-                <!-- 획득한 점수 -->
-                <div class="memberScore"></div>
-                <!-- 상태(신입생/재학생/관리자) -->
-                <div class="memberStatus"></div>
-            </div>
-            <button type="submit" class="btn_back" onclick="history.back()">돌아가기</button>
-
-        </div>
+        <div class="navbar_right"></div>
     </div>
 
     <!-- 문제 헤더 -->
-    <ul class="container_problem">
-    </ul>
-<!--
-    <div class="header_prob">
-        <div class="title_prob">
-            <span class="title_prob_id">문제1</span>  
-            <h2 class="title_prob_name">Analysis를 인당 2개씩 채워오세요!</h2>
-            <span class="title_is_complete">미완료</span>
+    <ul class="container_problem"></ul>
+    <!--
+        <div class="header_prob">
+            <div class="title_prob">
+                <span class="title_prob_id">문제1</span>  
+                <h2 class="title_prob_name">Analysis를 인당 2개씩 채워오세요!</h2>
+                <span class="title_is_complete">미완료</span>
+            </div>
         </div>
-    </div>
 
-    <div class="content_prob">
-        문제 내용
-    </div>
--->
+        <div class="content_prob">
+            문제 내용
+        </div>
+    -->
 
     <div class="test"></div>
-<!-- 
+    <!-- 
     <ul class="git_addr_container">
         <input type="text" id="git_addr" name="git_addr" required>
         <button type="submit" class="btn_git_submit">제출</button>
     </ul>
--->
+    -->
 
     <button type="submit" class="btn_open_questions">질문 열어보기</button>
 

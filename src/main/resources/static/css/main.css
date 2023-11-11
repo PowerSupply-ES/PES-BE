@@ -76,9 +76,6 @@
     display: flex;
     align-items: center;
     background-color: var(--White);
-    border-style: solid;
-    border-color: var(--LightGray);
-    border-radius: 4px;
 }
 
 .question > .problemTitle,
