@@ -52,8 +52,12 @@ document.getElementById('signin-form').addEventListener('submit', function(event
                 displayResult('로그인 성공: 메시지 없음');
             }
            
-            // 서버에서 설정한 쿠키 값 가져오기
-            const cookieValue = document.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            // 서버에서 설정한 토큰 값 가져오기
+            const actualToken = document.cookie.replace(/(?:(?:^|.*;\s*)Authorization\s*=\s*([^;]*).*$)|^.*$/, "$1");
+            
+            // 토큰정보 localStorage에 저장
+            localStorage.setItem("storageToken", actualToken);
+            const storageToken = actualToken;
 
             // 페이지 이동
             window.location.href = serverUrl + 'main';

@@ -15,6 +15,12 @@
     --Red: #CA0000;
     --DarkBlue: #3C5882;
     --Black:#000000;
+    --PinkRed: #FF6363;
+    --LightPink: #ff8c8c;
+    --DarkWhite:#FDFEFE;
+    --Chachoal: #525252;
+
+
 
     --background-color: #CFCFCF;
     --text-color: #FFFFFF;
@@ -53,7 +59,6 @@
     border-color: var(--SecondBlue);
 }
 button:hover {
-    background-color: #87c1ff;
     cursor: pointer;
 }
 
@@ -72,22 +77,22 @@ button:hover {
 .btn_mypage{
     width: 100px;
     height: 36px;
-    background-color: var(--White);
+    background-color: var(--DarkWhite);
     font-size: var(--font-small);
     color: var(--AlmostBlack);
     border-style: solid;
-    border-color: var(--White);
+    border-color: var(--DarkWhite);
 }
 
 #btn_logout{
     width: 100px;
     height: 36px;
-    background-color: var(--White);
+    background-color: var(--DarkWhite);
     font-size: var(--font-small);
     color: var(--AlmostBlack);
     border-radius: 5px;
     border-style: solid;
-    border-color: var(--White);
+    border-color: var(--DarkWhite);
 }
 
 .top_user_info>.memberName,
@@ -145,9 +150,9 @@ button:hover {
 .btn_level{
     width: 72px;
     height: 40px;
-    background-color: var(--White);
+    background-color: var(--DarkWhite);
     background-color: var(--SecondBlue);
-    color: var(--White);
+    color: var(--DarkWhite);
     border-color: var(--SecondBlue);
     margin-right: 12px;
     border-radius: 40px;
@@ -158,7 +163,7 @@ button:hover {
     height: 32px;
     display: flex;
     justify-content: left;
-    background-color: var(--White);
+    background-color: var(--DarkWhite);
     border-color: var(--SecondBlue);
     padding: 4px;
 }
@@ -184,7 +189,7 @@ button:hover {
     width: 448px;
     height: 100px;
     background-size: cover;
-    border-color: var(--White);
+    border-color: var(--DarkWhite);
 }
 #logo{
     width: 100%;
@@ -204,14 +209,17 @@ button:hover {
     justify-content: center;
     align-items: center;
 
-    color: var(--White);
+    color: var(--DarkWhite);
     font-size: var(--font-normal);
     font-weight: bold;
     border: solid var(--SecondBlue);
     border-radius: 5px;
     background: var(--SecondBlue);
 }
-
+.btn_back:hover{
+    background-color: #87c1ff;
+    border-color: #87c1ff;
+}
 
 .problem_num,
 .stu > .process_clear,
@@ -243,7 +251,7 @@ button:hover {
     border-radius: 5px;
     background: var(--Blue);
     border-color: var(--Blue);
-    color: var(--White);
+    color: var(--DarkWhite);
 }
 
 
@@ -265,51 +273,91 @@ button:hover {
 .btn_solution_waiting
 {
     height: 42px;
-    width: 128px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-right: 3px;
     border-style: solid;
     font-size: var(--font-small);
-    border-radius: 5px;
+    border-radius: 8px;
+    margin-right: 20px;
+    
 }
 
 .btn_clear{
-    background-color: var(--white);
-    color: var(--Orange);
-    border-color: var(--Orange);
+    width: 112px;
+    background-color: var(--Gray);
+    color: var(--SecondBlue);
+    border-color: var(--Gray);
+    font-size: 18px;
+    font-weight: bold;
+}
+.btn_clear:hover,
+.btn_fail:hover{
+    background-color: rgb(135, 135, 135);
+    border-color: rgb(135, 135, 135);
+    color: var(--DarkWhite);
+
 }
 
 .btn_fail{
+    width: 112px;
     background-color: var(--Gray);
-    color: var(--AlmostGray);
-    border-color: var(--Gray)
-}
-
-.btn_solving{
-    background-color: var(--LightOrange);
-    color: var(--White);
-    border-color: var(--White);
-}
-
-.btn_goto_question{
-    background-color: rgb(255, 182, 47);
-    color: var(--text-color);
-    border-color: var(--White);
-}
-.btn_goto_question:hover {
-    background-color: rgb(255, 209, 123); /* 커서를 얹었을 때의 배경색 */
-}
-
-.btn_goto_solution{
-    background-color: var(--Blue);
-    color: var(--text-color);
-    border-color: var(--White);
+    color: var(--PinkRed);
+    border-color: var(--Gray);
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .btn_solution_waiting{
-    background-color: var(--Gray);
-    color: var(--AlmostGray);
-    border-color: var(--Gray);
+    width: 112px;
+    /* background-color: var(--DarkWhite); */
+    background-color: rgba(254, 175, 29, 0.454);
+
+    color: var(--DarkWhite);
+    border-color: var(--DarkWhite);
+    font-size: 18px;
+    font-weight: bold;
 }
+.btn_goto_question{
+    width: 112px;
+    background-color: rgb(254, 175, 29);
+
+    /* background-color: var(--Blue); */
+    color: var(--text-color);
+    border-color: var(--DarkWhite);
+    font-size: 18px;
+    font-weight: bold;
+
+}
+
+
+.btn_goto_question:hover {
+    background-color: rgb(255, 199, 96);
+
+}
+
+.btn_goto_solution{
+    width: 80px;
+    padding: 8px;
+    background-color: var(--SecondBlue);
+    color: var(--text-color);
+    border-color: var(--DarkWhite);
+    font-size: 16px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+.btn_goto_solution:hover{
+background-color: #87c1ff;
+}
+
+.btn_solving{
+    width: 100px;
+    background-color: var(--LightOrange);
+    color: var(--DarkWhite);
+    border-color: var(--DarkWhite);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+

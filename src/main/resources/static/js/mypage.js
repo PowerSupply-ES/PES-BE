@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function sendGetRequest(url) {
 
         // localStorage에서 토큰 가져오기
-        const storageToken = localStorage.getItem('Authorization');
+        const storageToken = localStorage.getItem('storageToken');
                 
         // fetch API를 사용하여 데이터 가져오기
         fetch(url, {

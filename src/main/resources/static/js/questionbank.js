@@ -1,7 +1,7 @@
 import serverConfig from './config.js';
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    const storageToken = localStorage.getItem('Authorization');
+    const storageToken = localStorage.getItem('storageToken');
     
     const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
 

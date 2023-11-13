@@ -2,7 +2,7 @@ import serverConfig from './config.js';
 
 document.addEventListener("DOMContentLoaded", function(event) {
 
-    const storageToken = localStorage.getItem('Authorization');
+    const storageToken = localStorage.getItem('storageToken');
     const seniorNum = localStorage.getItem('stuNum');
     console.log(`재학생 학번: ${seniorNum}`);
     console.log(`storageToken: ${storageToken}`);
@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
             id.innerHTML = "질문" + problemId;
             name.innerHTML = data.problemTitle;
-            content.innerHTML = data.problemContent;
+            content.innerHTML = data.problemContent.replace(/\n/g, '<br>'); // \n을 <br>태그로 치횐
     
             document.querySelector('.container_problem').appendChild(header);
             document.querySelector('.container_problem').appendChild(content);
@@ -247,12 +247,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         const inputElement = document.createElement('input');
         inputElement.setAttribute('type', 'text');
         inputElement.setAttribute('id', 'git_addr');
+        inputElement.setAttribute('placeholder', "git 주소 입력 칸");
+
     
         const submitElement = document.createElement('button');
         submitElement.classList.add('btn_git_submit');
         submitElement.setAttribute('type', 'submit');
         submitElement.innerHTML = "제출";
         submitElement.addEventListener('click', () => {
+            console.log('제출했습니다');
             const trimVal = String(inputElement.value).trim();
             const value = {answerUrl: trimVal};
             fetchSubmit(value);
@@ -309,9 +312,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                     alert("해당 주소에 권한이 없습니다.");
                 }
                 else {
-                    alert("채점 요청을 보냈습니다.");
+                    // alert("채점 요청을 보냈습니다.");
+                    window.alert("제출했습니다");
+                    window.location.href = serverUrl + '/main';
                 }
-                location.reload(true);
+                // location.reload(true);
             })
             
             .catch(error => {
@@ -626,6 +631,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
     
     getState(problemId, memberStuNum); // 처음에 answerState 값 가져옴
+
     
     document.getElementById('btn_logout').addEventListener('click', function() {
         // 쿠키 제거

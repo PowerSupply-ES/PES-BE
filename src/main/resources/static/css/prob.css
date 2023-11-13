@@ -28,8 +28,8 @@
 }
 
 .title_prob_id {
-    width: 100px;
-    height: 52px;
+    width: 80px;
+    height: 48px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -37,13 +37,13 @@
     border-radius: 5px;
     border: 2px solid #325cc7;
     color: #325cc7;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .title_is_complete {
-    width: 100px;
-    height: 52px;
+    width: 92px;
+    height: 48px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -51,27 +51,26 @@
     border-radius: 5px;
     border: 2px solid #DEDEDE;
     color: #6A6B6F;
-    font-size: 28px;
+    font-size: 24px;
     font-weight: bold;
 }
 
 .content_prob {
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: start;
-    padding: 20px;
+    padding: 30px;
     font-size: var(--font-normal);
     background-color:var(--white);
 
     width: 1376px;
-    height: 300px;
+    height: fit-content;
     border-style: solid;
     border-radius: 20px;
     border-width: 4px;
     border-color:#DEDEDE;
     margin: 0 auto;
     margin-top: 40px;
-    font-weight: bold;
 }
 
 /*-------------- 풀이중 -------------- */
@@ -97,7 +96,8 @@
 #git_addr {
     width: 1028px;
     height: 52px;
-    padding: 0px;
+    padding-left: 8px;
+
     border-radius: 10px;
     border-style: solid;
     border-color: #DEDEDE;
@@ -105,8 +105,8 @@
 }
 
 .btn_git_submit {
-    width: 100px;
-    height: 52px;
+    width: 80px;
+    height: 48px;
     text-align: center;
     justify-content: center;
     align-items: center;
@@ -115,7 +115,12 @@
     border: 0px solid #DEDEDE;
     background-color: rgb(255, 182, 47);
     color: #FFFFFF;
-    font-size: 28px;
+    font-size: var(--font-normal);
+    font-weight: bold;
+}
+.btn_git_submit:hover{
+    border-color: rgb(255, 199, 96);
+    background-color: rgb(255, 199, 96);
 }
 
 .btn_open_questions {
