@@ -49,7 +49,11 @@
 .content {
     display: flex;
     justify-content: space-between; /* content_main과 ranking 사이의 공간을 균등하게 분배 */
-    margin: 40px auto;
+    margin: 40px 40px;
+    border-style: solid;
+    border-color: rgba(158, 158, 158, 0.422);
+    border-width: 5px;
+    border-radius: 20px;
 }
 
 

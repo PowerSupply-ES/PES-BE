@@ -34,11 +34,18 @@
     --margin-middle:48px
 }
 
+@font-face {
+    font-family: 'GmarketSansMedium';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /* 공통설정 */
 *{
     margin: 0px;
     padding: 0px;
-    font-family: Arial, sans-serif;
+    font-family: 'GmarketSansMedium', cursive;
     list-style-type: none; /* 리스트 앞에 붙은 점 제거 */
     text-decoration: none; /* 밑줄 제거 */
 }
@@ -169,7 +176,7 @@ button:hover {
 }
 
 .exp{
-    width: 48px;
+    width: 56px;
     font-size: var(--font-small);
     color: var(--Black);
 }
@@ -327,7 +334,6 @@ button:hover {
     color: var(--text-color);
     border-color: var(--DarkWhite);
     font-size: 18px;
-    font-weight: bold;
 
 }
 
@@ -345,7 +351,6 @@ button:hover {
     border-color: var(--DarkWhite);
     font-size: 16px;
     border-radius: 10px;
-    font-weight: bold;
 }
 .btn_goto_solution:hover{
 background-color: #87c1ff;
@@ -361,3 +366,20 @@ background-color: #87c1ff;
 }
 
 
+.footer{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    margin: 80px auto 0px;
+
+    height: 112px;
+    position: relative;
+    transform: translateY(0%);
+    color: white;
+    font-size: 13px;
+    background-color: #323232e0;
+    padding-top: 20px;
+    padding-left: 50px;
+
+
+}
