@@ -111,14 +111,14 @@ public class AnswerService {
             sendCode(answerId, gitUrl);
             log.info("채점 서버로 전송");
 
+            // 성공 응답 반환
+            return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
         } catch (Exception e) {
             // 예외 발생 시 에러 응답 반환
             log.error("문제 정보를 찾을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("채점 요청 중 오류가 발생했습니다: " + e.getMessage());
         }
-        // 성공 응답 반환
-        return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
     }
 
     // 채점 서버로 요청 전송 하기
