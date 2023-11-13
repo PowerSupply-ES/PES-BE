@@ -73,18 +73,6 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         alert(message);
     }
 
-    // // 쿠키에 JWT 토큰 저장
-    // function getJwtTokenFromCookie() {
-    //     const cookies = document.cookie.split(';');
-    //     for (const cookie of cookies) {
-    //         const [name, value] = cookie.trim().split('=');
-    //         if (name === 'Authorization') {
-    //             // 'Authorization' 쿠키에서 토큰 값을 반환
-    //             return decodeURIComponent(value);
-    //         }
-    //     }
-    //     return null; // JWT 토큰을 찾지 못한 경우
-    // }
 
     // POST 요청
     sendPostRequest(serverUrl + uri, formData);
