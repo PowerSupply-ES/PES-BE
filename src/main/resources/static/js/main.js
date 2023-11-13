@@ -1,8 +1,9 @@
 import serverConfig from './config.js';
 
 document.addEventListener("DOMContentLoaded", async function(event) {
+    
     // localStorage에서 토큰 가져오기
-    const storageToken = localStorage.getItem('Authorization');
+    const storageToken = localStorage.getItem('storageToken');
     const memStuNum = localStorage.getItem('stuNum');
 
     const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
@@ -25,6 +26,7 @@ document.addEventListener("DOMContentLoaded", async function(event) {
             if (!response.ok) {
                 throw new Error('사용자 정보 가져오기 실패');
             }
+            
 
             const data = await response.json();
             // 사용자 정보를 화면에 표시
@@ -34,6 +36,7 @@ document.addEventListener("DOMContentLoaded", async function(event) {
             
             // memberStatus 값을 memstate에 저장
             memstate = data.memberStatus;
+
         } catch (error) {
             console.error('사용자 정보 가져오기 오류:', error);
         }
@@ -128,7 +131,7 @@ document.addEventListener("DOMContentLoaded", async function(event) {
                 // 풀이 보기 버튼 만들기
                 const btn_goto_solution = document.createElement("button");
                 btn_goto_solution.classList.add("btn_goto_solution");
-                btn_goto_solution.textContent = "풀이 보기";
+                btn_goto_solution.textContent = "풀이";
                 btn_goto_solution.addEventListener("click", () => {
                     // 클릭 시 페이지 이동
                     localStorage.setItem('problemId', response.problemId); //로컬스토리지에 저장
@@ -136,10 +139,24 @@ document.addEventListener("DOMContentLoaded", async function(event) {
                 });
 
                 if (memstate === '신입생'){
-                    // ------------------ 문제풀러가기 null값일때
                     const btn_goto_question = document.createElement("button");
-                    btn_goto_question.classList.add("btn_goto_question");
-                    btn_goto_question.textContent = `문제풀러가기`;  
+
+                    // answerState에 따라 다른 버튼 생성
+                    if(response.answerState === '완료'){
+                        btn_goto_question.classList.add("btn_clear");
+                        btn_goto_question.textContent = `${response.answerState}`;  
+                    }else if(response.answerState === '실패'){
+                        btn_goto_question.classList.add("btn_fail");
+                        btn_goto_question.textContent = `${response.answerState}`;
+                    }else if(response.answerState === '대기'){
+                        btn_goto_question.classList.add("btn_solution_waiting");
+                        btn_goto_question.textContent = `${response.answerState}`; 
+                    }else{
+                    // null값일때_문제풀러가기
+                        btn_goto_question.classList.add("btn_goto_question");
+                        btn_goto_question.textContent = `문제풀기`;  
+                    }
+                    
 
                     btn_goto_question.addEventListener("click", () => {
                         // ------------------클릭 시 페이지 이동(url수정하기)
