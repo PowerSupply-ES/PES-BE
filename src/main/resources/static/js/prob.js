@@ -100,12 +100,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
                         document.querySelector('#content_answer_2').style.display = 'none';
                         document.querySelector('.container_questions').style.display = 'block';
                         
-                        const fstElement = document.createElement('div');
+                        const fstElement = document.createElement('input');
                         fstElement.classList.add('content_answer');
                         fstElement.innerHTML = data.answerFst;
                         document.querySelector('.container_question_1').appendChild(fstElement);
         
-                        const secElement = document.createElement('div');
+                        const secElement = document.createElement('input');
                         secElement.classList.add('content_answer');
                         secElement.innerHTML = data.answerSec;
                         document.querySelector('.container_question_2').appendChild(secElement);
@@ -188,11 +188,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
             header.classList.add('header_prob');
             const title = document.createElement('div'); // title
             title.classList.add('title_prob');
-            const id = document.createElement('span'); // 질문1 표시
+            const id = document.createElement('div'); // 질문1 표시
             id.classList.add('title_prob_id');
             const name = document.createElement('h2'); // 질문 제목
             name.classList.add('title_prob_name');
-            const complete = document.createElement('span'); // 완료 상태
+            const complete = document.createElement('div'); // 완료 상태
             complete.classList.add('title_is_complete'); 
             const content = document.createElement('div'); // 질문 내용
             content.classList.add('content_prob');
@@ -411,17 +411,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 const commentPassFail = item.commentPassFail;
                 const commentContent = item.commentContent;
     
-                const liElement = document.createElement('li');
+                const liElement = document.createElement('div');
                 liElement.classList.add('container_feedback');
     
                 const divElement = document.createElement('div');
                 divElement.classList.add('header_feedback');
     
-                const idElement = document.createElement('h2');
+                const idElement = document.createElement('div');
                 idElement.classList.add('header_feedback_id');
                 idElement.innerHTML = `Feedback ${feedbackId}) `;
     
-                const nameElement = document.createElement('h2');
+                const nameElement = document.createElement('div');
                 nameElement.classList.add('header_feedback_name');
                 nameElement.innerHTML = memberName;
     
@@ -453,7 +453,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 console.log(`댓글 갯수: ${data.length}`);
             }
             else if (data.length >= 3 && passCount > 1) {
-                const passBnt = document.createElement('li');
+                const passBnt = document.createElement('div');
                 passBnt.classList.add('pass_comment');
                 passBnt.innerHTML = `축하합니다! 성공적으로 통과했습니다! (${passCount}/3)`; // passCount 넘어오는 거
     
@@ -586,11 +586,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 const divElement = document.createElement('div');
                 divElement.classList.add('header_question');
     
-                const spanElement = document.createElement('span');
+                const spanElement = document.createElement('div');
                 spanElement.classList.add('question_id');
                 spanElement.innerHTML = `질문 ${i+1}`;
     
-                const h2Element = document.createElement('h2');
+                const h2Element = document.createElement('div');
                 h2Element.innerHTML = (i == 0) ? data.questionContentFst : data.questionContentSec;
             
                 divElement.appendChild(spanElement);
@@ -612,7 +612,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 ulElement.appendChild(liElement);
             }
     
-            const btnLiElement = document.createElement('li');
+            const btnLiElement = document.createElement('div');
             btnLiElement.classList.add('container_btn');
     
             const btnElement = document.createElement('button');

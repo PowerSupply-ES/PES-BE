@@ -27,7 +27,9 @@
     gap: 20px;
 }
 
-.title_prob_id {
+.title_prob_id,
+.question_id_1,
+.question_id_2 {
     width: 80px;
     height: 48px;
     text-align: center;
@@ -55,7 +57,9 @@
     font-weight: bold;
 }
 
-.content_prob {
+.content_prob,
+#content_answer_1,
+#content_answer_2 {
     display: flex;
     align-items: center;
     justify-content: start;
@@ -118,13 +122,15 @@
     font-size: var(--font-normal);
     font-weight: bold;
 }
-.btn_git_submit:hover{
+.btn_git_submit:hover,
+.btn_open_questions:hover
+.btn_answer:hover{
     border-color: rgb(255, 199, 96);
     background-color: rgb(255, 199, 96);
 }
 
 .btn_open_questions {
-    width: 216px;
+    width: 180px;
     height: 60px;
     margin: 0 auto;
     margin-top: 40px;
@@ -136,7 +142,7 @@
     border: 0px solid #DEDEDE;
     background-color: #FF8412;
     color: #FFFFFF;
-    font-size: 28px;
+    font-size: 22px;
     display: none;
 }
 
@@ -156,7 +162,7 @@
 .container_question_2 {
     width: 1376px;
     height:350px;
-    margin: 0 auto;
+    margin: 0 auto 40px;
 }
 
 .header_question {
@@ -165,9 +171,10 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-top: 40px;
 }
 
-.question_id_1 {
+/* .question_id_1 {
     width: 100px;
     height: 60px;
     text-align: center;
@@ -179,7 +186,7 @@
     color: #325cc7;
     font-size: 28px;
     font-weight: bold;
-}
+} 
 
 .question_id_2 {
     width: 100px;
@@ -194,33 +201,42 @@
     font-size: 28px;
     font-weight: bold;
 }
+*/
 
-#content_answer_1 {
+/* #content_answer_1 {
     width: 1376px;
     height: 250px;
     background-color: #CFCFCF;
-}
+    
+} 
 
 #content_answer_2 {
     width: 1376px;
     height: 250px;
     background-color: #CFCFCF;
 }
-
+*/
 .content_answer {
     width: 1376px;
     height: 250px;
     background-color: #CFCFCF;
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid #CFCFCF;
+    display: flex;
+    align-items: start;
+    justify-content : start;
+    
 }
 
 .container_btn {
-    width: auto;
+    width: 100%;
     height: 60px;
     margin-bottom: 20px;
 }
 
 .btn_answer {
-    width: 216px;
+    width: 200px;
     height: 60px;
     text-align: center;
     justify-content: center;
@@ -230,7 +246,7 @@
     border: 0px solid #DEDEDE;
     background-color: #FF8412;
     color: #FFFFFF;
-    font-size: 28px;
+    font-size: 22px;
     float: right;
 }
 
