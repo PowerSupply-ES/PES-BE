@@ -317,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 else {
                     // alert("채점 요청을 보냈습니다.");
                     window.alert("제출했습니다");
-                    window.location.href = serverUrl + '/main';
+                    window.location.href = serverUrl + 'main';
                 }
                 // location.reload(true);
             })
