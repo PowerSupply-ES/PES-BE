@@ -14,6 +14,7 @@ import com.powersupply.PES.repository.QuestionRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
@@ -44,6 +46,7 @@ public class AnswerService {
     @Transactional
     public ResponseEntity<?> submit(Long problemId, String memberStuNum, AnswerDTO.gitUrl dto) {
         if(!JwtUtil.getMemberStuNumFromToken().equals(memberStuNum)) {
+            log.error("채점할 권한이 없는 유저 입니다.");
             throw new AppException(ErrorCode.INVALID_INPUT,"채점할 권한이 없는 유저 입니다.");
         }
 
@@ -54,6 +57,7 @@ public class AnswerService {
         // 깃 주소가 해당 url로 시작 하지 않으면 AppException 실행
         String gitUrl = dto.getAnswerUrl();
         if(!gitUrl.startsWith(memberEntity.getMemberGitUrl())) {
+            log.error("제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
             throw new AppException(ErrorCode.INVALID_INPUT,"제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
         }
 
@@ -78,11 +82,13 @@ public class AnswerService {
             List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
 
             if (questions.size() < 2) {
+                log.error("문제에 대한 충분한 질문이 없습니다.");
                 throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
             }
 
             Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
             if (problemEntityOptional.isEmpty()) {
+                log.error("문제 정보를 찾을 수 없습니다.");
                 throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
             }
             ProblemEntity problemEntity = problemEntityOptional.get();
@@ -103,14 +109,16 @@ public class AnswerService {
 
             // 채점 서버로 요청 전송
             sendCode(answerId, gitUrl);
+            log.info("채점 서버로 전송");
 
-            // 성공 응답 반환
-            return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
         } catch (Exception e) {
             // 예외 발생 시 에러 응답 반환
+            log.error("문제 정보를 찾을 수 없습니다.");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("채점 요청 중 오류가 발생했습니다: " + e.getMessage());
         }
+        // 성공 응답 반환
+        return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
     }
 
     // 채점 서버로 요청 전송 하기
