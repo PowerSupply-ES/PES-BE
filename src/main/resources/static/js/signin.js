@@ -14,7 +14,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
     };
 
     // 서버 URL 및 URI
-    const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
+    const serverUrl = serverConfig.serverUrl;
 
     const uri = 'api/signin';
 
@@ -32,13 +32,14 @@ document.getElementById('signin-form').addEventListener('submit', function(event
         // 네트워크 오류가 발생한 경우
         .then((response) => {
             console.log(response.status);
-            if (!response.ok) { // HTTP 응답의 상태 코드가 성공적인(200-299 범위) 경우 true를 반환
-                if (response.status === 404) {
-                    alert("일치하지 않습니다");
-                }
-                throw new Error('네트워크 응답이 실패했습니다.'); // 에러 강제적으로 발생시키고 catch에서 처리되도록 함
+            if (!response.ok) { 
+                throw new Error('네트워크 응답이 실패했습니다.'); // 에러 발생
             }
-            return response.json(); // JSON 응답 데이터를 파싱하여 .then 블록으로 전달
+            if (response.status === 401) {
+                alert("일치하지 않습니다");
+            }else{
+                return response.json(); // JSON 응답 데이터를 파싱하여 .then 블록으로 전달
+            }
         })
 
         .then((responseData) => {
@@ -46,10 +47,6 @@ document.getElementById('signin-form').addEventListener('submit', function(event
             if (responseData.message) {
                 localStorage.setItem('stuNum', memberStuNum);
                 const resultMessage = responseData.message;
-                displayResult(resultMessage);
-            } else {
-                // 메시지 속성이 없는 경우 예외 처리
-                displayResult('로그인 성공: 메시지 없음');
             }
            
             // 서버에서 설정한 토큰 값 가져오기
@@ -71,13 +68,7 @@ document.getElementById('signin-form').addEventListener('submit', function(event
             displayResult(errorMessage);
         });
     }
-
-    // 결과 표시 함수
-    function displayResult(message) {
-        alert(message);
-    }
-
-
+    
     // POST 요청
     sendPostRequest(serverUrl + uri, formData);
 });

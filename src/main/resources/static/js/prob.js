@@ -4,8 +4,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     const storageToken = localStorage.getItem('storageToken');
     const seniorNum = localStorage.getItem('stuNum');
-    console.log(`재학생 학번: ${seniorNum}`);
-    console.log(`storageToken: ${storageToken}`);
+    console.log(`학번: ${seniorNum}`);
     
     const serverUrl = serverConfig.serverUrl; // serverUrl을 정의
 
@@ -14,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var memberStuNum = url.pathname.split('/')[3];
     let memstate;
 
-    console.log(`url : ${url}`);
     console.log(`problemId : ${problemId}`);
     console.log(`memberStuNum : ${memberStuNum}`);
     
@@ -282,18 +280,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 body: JSON.stringify(value)
             })
             .then(response => {
+                console.log("value = ", value);
+                console.log("response : ", response.message);
                 if (!response.ok) {
                     throw new Error('fetch 실패');
                 }
                 if (response.status == 403) {
-                    alert("접근 권한이 없습니다.");
+                    window.alert("접근 권한이 없습니다.");
                 }
                 return response.text();
             })
             .then(data => {
                 if (data.message) {
                     const resultMessage = '채점 요청: ' + data.message;
-                    alert(resultMessage);
+                    window.alert(resultMessage);
                 }
                 else if (data.status == 200) {
                     console.log("id가 동일함");
@@ -302,14 +302,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 }
                 else if (data.status == 204) {
                     console.log("이미 채점 중입니다.");
-                    alert("이미 채점 중입니다.");
+                    window.alert("이미 채점 중입니다.");
+                }
+                else if (data.status == 401) {
+                    window.alert(data.message);
                 }
                 else if (data.status == 404) {
                     console.log("id가 존재하지 않음");
                 }
                 else if (data.status == 403) {
                     console.log("해당 주소에 권한이 없습니다.");
-                    alert("해당 주소에 권한이 없습니다.");
+                    window.alert("해당 주소에 권한이 없습니다.");
                 }
                 else {
                     // alert("채점 요청을 보냈습니다.");
