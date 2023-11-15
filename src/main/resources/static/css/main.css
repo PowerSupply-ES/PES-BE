@@ -42,20 +42,22 @@
     padding-inline: 4px;
 }
 .content_main{
-    /* width: 912px; */
-    margin:0px auto;
-}
-
-.content {
     display: flex;
-    justify-content: space-between; /* content_main과 ranking 사이의 공간을 균등하게 분배 */
-    margin: 40px 40px;
+    /* justify-content: space-between; content_main과 ranking 사이의 공간을 균등하게 분배 */
+    margin: 60px auto;
     border-style: solid;
     border-color: rgba(158, 158, 158, 0.422);
     border-width: 5px;
     border-radius: 20px;
+    width: 85%;
 }
 
+.left{
+    flex:2;
+}
+.right{
+    flex:1;
+}
 
 /* 문제 목록 */
 .question_list{
@@ -108,6 +110,7 @@
     flex-direction: column;
     justify-content: center;
     padding: 40px;
+
 }
 .title_rank{
     display: flex;

@@ -142,19 +142,23 @@ document.addEventListener("DOMContentLoaded", async function(event) {
                     const btn_goto_question = document.createElement("button");
 
                     // answerState에 따라 다른 버튼 생성
-                    if(response.answerState === '완료'){
+                    if(response.answerState === 'Success'){
                         btn_goto_question.classList.add("btn_clear");
-                        btn_goto_question.textContent = `${response.answerState}`;  
-                    }else if(response.answerState === '실패'){
+                        btn_goto_question.textContent = `완료`;  
+                    }else if(response.answerState === 'Failure'){
                         btn_goto_question.classList.add("btn_fail");
-                        btn_goto_question.textContent = `${response.answerState}`;
-                    }else if(response.answerState === '대기'){
+                        btn_goto_question.textContent = `실패`;
+                    }else if(response.answerState === 'UnderReview'){
                         btn_goto_question.classList.add("btn_solution_waiting");
-                        btn_goto_question.textContent = `${response.answerState}`; 
-                    }else{
-                    // null값일때_문제풀러가기
+                        btn_goto_question.textContent = `평가중`; 
+                    }else if(response.answerState === null){
+                        // null값일때_문제풀러가기
                         btn_goto_question.classList.add("btn_goto_question");
                         btn_goto_question.textContent = `문제풀기`;  
+                    }
+                    else{
+                        btn_goto_question.classList.add("btn_goto_question");
+                        btn_goto_question.textContent = `풀이중 `;  
                     }
                     
 

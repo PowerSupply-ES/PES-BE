@@ -112,7 +112,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
             //문제상태 표시 요소 만들기
             const process_clear = document.createElement("div");
             process_clear.classList.add("process_clear");
-            process_clear.textContent = `${response.answerState}`;
+
+            // answerState에 따라 다른 상태표시
+            if(response.answerState === 'Success'){
+                process_clear.classList.add("btn_clear");
+                process_clear.textContent = `완료`;  
+            }else if(response.answerState === 'Failure'){
+                process_clear.classList.add("btn_fail");
+                process_clear.textContent = `실패`;
+            }else if(response.answerState === 'UnderReview'){
+                process_clear.classList.add("btn_solution_waiting");
+                process_clear.textContent = `평가중`; 
+            }else if(response.answerState === null){
+                // null값일때_문제풀러가기
+                process_clear.classList.add("process_clear");
+                process_clear.textContent = `문제풀기`;  
+            }
+            else{
+                process_clear.classList.add("process_clear");
+                process_clear.textContent = `풀이중 `;  
+            }
 
                     
             // 보러가기 버튼 만들기
