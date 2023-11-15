@@ -228,8 +228,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
             name.innerHTML = data.problemTitle;
             content.innerHTML = data.problemContent.replace(/\n/g, '<br>'); // \n을 <br>태그로 치횐
     
+
+            // 이미지 컨테이너 요소 생성
+            const image_prob = document.createElement('div');
+            image_prob.classList.add('image_prob');
+
+            //예시
+            const example_prob = document.createElement('div');
+            example_prob.classList.add('example_prob');
+            example_prob.textContent = `example )`;  
+
+
+            // 이미지 엘리먼트 생성
+            const image = document.createElement('img');
+            image.src = `/img/${problemId}.jpg`; // 실제 이미지 경로로 변경
+
+            // 이미지를 contentImage에 추가
+            image_prob.appendChild(example_prob);
+            image_prob.appendChild(image);
+
+
+
             document.querySelector('.container_problem').appendChild(header);
             document.querySelector('.container_problem').appendChild(content);
+            document.querySelector('.container_problem').appendChild(image_prob);
+
+            
+            
         } catch (error) {
             console.error("데이터를 가져오는 중 오류 발생:", error);
         }

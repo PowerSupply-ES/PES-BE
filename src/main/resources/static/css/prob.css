@@ -2,6 +2,7 @@
 
 /*-------------- 문제 풀기 -------------- */
 .container_problem {
+    width: 80%;
     margin: 0 auto;
 }
 
@@ -14,17 +15,23 @@
     padding: 10px;
     gap: 540px;
 }
-.back_container{
-    width: 100%;
-    height: 50px;
-}
-
 .title_prob {
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
     gap: 20px;
+}
+.example_prob{
+    font-size: var(--font-big);
+    font-weight: bold;
+    margin-bottom: 40px;
+    color: var(--DarkBlue);
+}
+.image_prob{
+    margin-top: 20px;
+    padding: 20px;
+    margin: 40px 0px;
 }
 
 .title_prob_id,
@@ -57,9 +64,9 @@
     font-weight: bold;
 }
 
-.content_prob,
-#content_answer_1,
-#content_answer_2 {
+.content_prob
+/* #content_answer_1,
+#content_answer_2*/ { 
     display: flex;
     align-items: center;
     justify-content: start;
@@ -216,7 +223,9 @@
     background-color: #CFCFCF;
 }
 */
-.content_answer {
+.content_answer,
+#content_answer_1,
+#content_answer_2 {
     width: 1376px;
     height: 250px;
     background-color: #CFCFCF;
