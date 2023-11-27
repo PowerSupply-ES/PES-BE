@@ -1,0 +1,158 @@
+@import url("common.css");
+
+/* 타이틀 */
+
+.title_question_list{
+    width: fit-content;
+    height: 52px;
+    /* margin: 0 auto; */
+
+    font-size: var(--font-medium);
+    font-weight: bold;
+    display: flex;
+    text-align: center;
+    margin: var(--margin-top) auto;
+}
+
+/* 필터 */
+.filter_main{
+    /* width: 1376px; */
+    height: 52px;
+    display: flex;
+    justify-content: center;
+}
+
+.filter_main > .h2{
+    font-size: var(--font-small);
+    font-weight: bold;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    margin-right: 8px;
+}
+
+.btn_filter1, .btn_filter2,.btn_filter3,.btn_filter4{
+    background-color: var(--Gray);
+    height: 34px;
+    font-size: var(--font-small);
+    color: var(--AlmostGray);
+    border-style: solid;
+    border-color: var(--Gray);
+    border-radius: 5px;
+    padding-inline: 4px;
+}
+.content_main{
+    display: flex;
+    /* justify-content: space-between; content_main과 ranking 사이의 공간을 균등하게 분배 */
+    margin: 60px auto;
+    border-style: solid;
+    border-color: rgba(158, 158, 158, 0.422);
+    border-width: 5px;
+    border-radius: 20px;
+    width: 85%;
+}
+
+.left{
+    flex:2;
+}
+.right{
+    flex:1;
+}
+
+/* 문제 목록 */
+.question_list{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: var(--font-small);
+    margin: var(--margin-middle) auto;
+}
+
+.question_list > .question{
+    height: 48px;
+    /* width: 912px; */
+    display: flex;
+    align-items: center;
+    margin: 0px auto 2px;
+}
+
+.question > .problemTitle,
+.question > .problemScore,
+.question > .problemState{
+    display: flex;
+    align-items: center;
+    background-color: var(--White);
+}
+
+.question > .problemTitle,
+.question > .problemState
+{
+    height: 42px;
+    width: 395px;
+}
+
+.question > .problemScore{
+    height: 42px;
+    width: 120px;
+    justify-content: center;
+    margin-right: 12px;
+}
+.question > .problemState{
+    height: 42px;
+    width: 216px;
+    justify-content: center;
+}
+
+
+/* 랭킹 */
+.ranking{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+
+}
+.title_rank{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    width: 332px;
+    height: 52px;
+    font-size: var(--font-medium);
+    font-weight: bold;
+    color: var(--Black);
+    margin: 0px auto;
+}
+.ranking_main{
+    height: 520px;
+    width: 400px;
+    background-color: var(--White);
+    color: var(--Black);
+    border-style: solid;
+    border-radius: 12px;
+    border-color: var(--LightGray);
+    font-size: var(--font-big);
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    margin: 40px;
+    padding-top: 28px;
+}
+
+
+.user{
+    display: flex;
+    align-items: center;
+}
+.user > .memberName{
+    margin-right: 12px;
+}
+.user > .memberName,
+.user> .memberScore{
+    height: fit-content;
+    width: 80px;
+    color: var(--Black);
+    font-size: var(--font-normal);
+}

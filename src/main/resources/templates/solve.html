@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/solve.css">
+    <title>풀이 보기</title>
+</head>
+<body>
+    <!-- 네비게이션바 -->
+    <div class="top_bar">
+        <button type="submit" class="btn_mypage">마이페이지</button>
+        <button type="submit" id="btn_logout">로그아웃</button>
+    </div>
+
+    <div id ="navbar">
+        <div class="navbar_left">
+
+            <div class="btn_level">Level.1</div>
+
+            <div class="exp">EXP 0</div>
+
+            <div class="btn_gaze">
+                <div class="gaze">. </div>
+            </div>
+
+        </div>
+
+        <a href="/main" class="navbar_logo">
+            <img src="/img/logo_main.png" id="logo">
+        </a>
+
+        <div class="navbar_right">
+            
+            <!-- 사용자정보 -->
+            <div class="top_user_info">
+                <!-- 이름 -->
+                <div class="memberName"></div> 
+                <!-- 획득한 점수 -->
+                <div class="memberScore"></div>
+                <!-- 상태(신입생/재학생/관리자) -->
+                <div class="memberStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="back_container">
+        <button type="submit" class="btn_back" onclick="history.back()">돌아가기</button>
+    </div>
+
+    <div class="solving_main">
+        <!-- 문제 설명 -->
+        <div class="problem_bar">
+            <!-- 문제 -->
+            <div class="problem">
+                <div class="problem_num"></div>
+                <div class="problem_title"></div>
+            </div>
+
+            <!-- 성공인원 -->
+            <div class="stu">
+                <div class="stu_success">성공한 인원수</div>
+                <div class="stu_num">8/20</div>
+            </div>
+        </div>
+
+
+        <!-- 풀이 목록 -->
+        <!-- 주석처리예정(동적) -->
+        <div class="solving_list">
+            <!-- <div class="stu_list">
+                    <div class="stu_num">신입생 학번</div>     신입생 학번(저장)
+                    <div class="stu_name">신입생 이름</div>    신입생 이름
+                    <div class="stu">
+                        <div class="process_num">2/3</div>      코멘트카운트
+                        <div class="process_clear">완료</div>      문제상태
+                        <div class="btn_goto_solving">보러가기</div>
+                    </div>
+            </div>
+            </div> -->
+
+
+
+
+        </div>
+
+    </div>
+    
+
+    <script type="module" src="/js/solve.js"></script>
+
+
+</body>
+</html>

@@ -1,15 +1,18 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.MemberDTO;
+import com.powersupply.PES.domain.entity.DetailMemberEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
+import com.powersupply.PES.repository.DetailMemberRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +22,12 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final DetailMemberRepository detailMemberRepository;
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.secret}")
     private String secretKey;
 
+    @Transactional
     public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
         String stuNum = dto.getMemberStuNum();
@@ -40,25 +45,31 @@ public class MemberService {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
-        // 저장
+        // MemberEntity 먼저 생성
         MemberEntity memberEntity = MemberEntity.builder()
                 .memberStuNum(stuNum)
-                .memberPw(encoder.encode(pw))
-                .memberName(dto.getMemberName())
+                .memberName(name)
                 .memberGen(dto.getMemberGen())
-                .memberMajor(dto.getMemberMajor())
-                .memberPhone(dto.getMemberPhone())
                 .memberStatus("신입생")
                 .memberScore(0)
-                .memberEmail(dto.getMemberEmail())
                 .memberGitUrl(dto.getMemberGitUrl())
                 .build();
         memberRepository.save(memberEntity);
 
+        // DetailMemberEntity 생성
+        DetailMemberEntity detailMemberEntity = DetailMemberEntity.builder()
+                .memberEmail(dto.getMemberEmail())
+                .memberPw(encoder.encode(pw))
+                .memberMajor(dto.getMemberMajor())
+                .memberPhone(dto.getMemberPhone())
+                .memberEntity(memberEntity)
+                .build();
+        detailMemberRepository.save(detailMemberEntity);
+
         return name;
     }
 
-    // 로그인
+    //로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
         String stuNum = dto.getMemberStuNum();
         String pw = dto.getMemberPw();
@@ -74,17 +85,18 @@ public class MemberService {
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
 
         // password 틀린 경우
-        if(!encoder.matches(pw, selectedMember.getMemberPw())){
+        if(!encoder.matches(pw, selectedMember.getDetailMemberEntity().getMemberPw())){
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberStuNum(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberStuNum(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
     public MemberEntity findByMemberStuNum(String memberStuNum) {
         return memberRepository.findByMemberStuNum(memberStuNum)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
     }
+
 
     public MemberDTO.MemberMyPageResponse getMyPage() {
         MemberEntity memberEntity = memberRepository.findByMemberStuNum(JwtUtil.getMemberStuNumFromToken())
@@ -94,12 +106,11 @@ public class MemberService {
                 .memberStuNum(memberEntity.getMemberStuNum())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
-                .memberMajor(memberEntity.getMemberMajor())
-                .memberPhone(memberEntity.getMemberPhone())
-                .memberStatus(memberEntity.getMemberStatus())
-                .memberScore(memberEntity.getMemberScore())
-                .memberEmail(memberEntity.getMemberEmail())
                 .memberGitUrl(memberEntity.getMemberGitUrl())
+                .memberStatus(memberEntity.getMemberStatus())
+                .memberMajor(memberEntity.getDetailMemberEntity().getMemberMajor())
+                .memberEmail(memberEntity.getDetailMemberEntity().getMemberEmail())
+                .memberPhone(memberEntity.getDetailMemberEntity().getMemberPhone())
                 .build();
         return myPageResponse;
     }
@@ -124,21 +135,22 @@ public class MemberService {
     }
 
     // 상단 사용자 정보 불러오기
-    public MemberDTO.NameScoreResponse myUser() {
+    public MemberDTO.NameScoreStatusResponse myUser() {
         String stuNum = JwtUtil.getMemberStuNumFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        return MemberDTO.NameScoreResponse.builder()
+        return MemberDTO.NameScoreStatusResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberScore(selectedMember.getMemberScore())
+                .memberStatus(selectedMember.getMemberStatus())
                 .build();
     }
 
     public List<MemberDTO.NameScoreResponse> memberRank() {
 
-        List<MemberEntity> memberEntityList = memberRepository.findAll();
+        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("신입생");
         List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
 
         // 리스트 체크
@@ -154,6 +166,10 @@ public class MemberService {
                     .build();
             nameScoreResponseList.add(dto);
         }
+
+        // memberScore를 기준으로 정렬 (내림차순)
+        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
+
         return nameScoreResponseList;
     }
 }

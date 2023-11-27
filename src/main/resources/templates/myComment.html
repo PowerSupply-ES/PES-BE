@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/commentAndbank.css">
+    <title>내가 쓴 댓글</title>
+</head>
+<body>
+    <!-- 네비게이션바 -->
+    <div class="top_bar">
+        <button type="submit" class="btn_mypage">마이페이지</button>
+        <button type="submit" id="btn_logout">로그아웃</button>
+    </div>
+
+    <div id ="navbar">
+        <div class="navbar_left">
+
+            <div class="btn_level">Level.1</div>
+
+            <div class="exp">EXP 0</div>
+
+            <div class="btn_gaze">
+                <div class="gaze">. </div>
+            </div>
+
+        </div>
+
+        <a href="/main" class="navbar_logo">
+            <img src="/img/logo_main.png" id="logo">
+        </a>
+
+        <div class="navbar_right">
+            
+            <!-- 사용자정보 -->
+            <div class="top_user_info">
+                <!-- 이름 -->
+                <div class="memberName"></div> 
+                <!-- 획득한 점수 -->
+                <div class="memberScore"></div>
+                <!-- 상태(신입생/재학생/관리자) -->
+                <div class="memberStatus"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="comment_main">
+        <!-- 타이틀 -->
+        <div class="header_main">
+            <div class="title_mycomment">내가 쓴 댓글</div>
+        </div>
+
+        <!-- 문제 목록 -->
+        <div class="comment_list">
+            <!-------- 주석처리예정 -------->
+            <!-- <div class="commentDiv">
+                <div class="comment_left">
+                    <div class="problem_num">문제1</div>
+                    <div class="stu_name">학생이름</div>    
+                    <div class="comment">그건 왜 그렇게 쓴거죠?</div>    
+                </div>
+                <button type="submit" class="btn_goto_comment">보러가기</button>
+            </div> -->
+            
+        </div>
+    </div>
+    <div class="footer"> 
+        <div>(주)PES<br></div>
+        <div>PM : 박경민</div>
+        <div>Front : 최성임, 변민정</div>
+        <div>Back: 곽준현</div>
+        <div>주소 : 경북 경산시 대학로 280 생산기술연구원 G15 213호</div>
+    </div>
+    
+    <script type="module" src="/js/mycomment.js"></script>
+</body>
+</html>

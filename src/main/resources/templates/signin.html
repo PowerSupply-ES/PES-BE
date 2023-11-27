@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/intro.css">
     <title>로그인</title>
+    <meta property="og:image" content="/static/img/img_meta.jpg"/>
 </head>
 
 <body class="intro">
     <div class="login-container">
 
         <h1>로그인</h1>
-        <form action="#">
-            <div class="input-container">
-                <label for="id">ID</label>
-                <input type="text" id="id" name="id" required>
-            </div>
 
+        <form id="signin-form">
             <div class="input-container">
-                <label for="password">PW</label>
+                <label for="studnt_id">학번</label>
+                <input type="text" id="student_id" name="student_id" required>
+            </div>
+            <div class="input-container">
+                <label for="password">비밀번호</label>
                 <input type="password" id="password" name="password" required>
             </div>
 
-            <button type="submit" class="btn-intro">로그인</button>
-            <!-- 회원가입하기 -->
-            <!-- <div class="goto-join">회원가입하기</div> -->
+            <button type="submit" class="btn_intro">로그인</button>
 
             <div class="move">
-                 <!-- 회원가입하기 링크 -->
-                 <a href="#">회원가입하기</a>
+                <!-- 회원가입하기 링크 -->
+                <a href="signup">회원가입하기</a>
 
                 <!-- 계정찾기 링크 -->
-                <a href="#">계정찾기</a>
+                <a href="#">비밀번호찾기</a>
             </div>
+            
         </form>
     </div>
+    
 
+    <script type="module" src="/js/signin.js"></script>
 </body>
 </html>

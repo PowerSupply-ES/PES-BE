@@ -1,28 +1,47 @@
 package com.powersupply.PES.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
 @Getter
 @Table(name = "member_table")
-public class MemberEntity extends BaseEntity{
+public class MemberEntity {
 
+    @Id
+    @Column(name = "memberStuNum")
     private String memberStuNum; // 학번
-    private String memberPw; // 멤버 비밀번호
+
+    @Column(name = "memberName")
     private String memberName; // 이름
+
+    @Column(name = "memberGitUrl")
+    private String memberGitUrl; // 깃 주소
+
+    @Column(name = "memberGen")
     private int memberGen; // 기수
-    private String memberMajor; // 학과
-    private String memberPhone; // 전화번호
-    private String memberStatus; // 상태
-    private String memberEmail; // 이메일
+
+    @Column(name = "memberScore")
     private int memberScore; // 점수
-    private String memberGitUrl; // 깃주소
+
+    @Column(name = "memberStatus")
+    private String memberStatus; // 상태(신입생/재학생/관리자)
+
+    @OneToOne(mappedBy = "memberEntity")
+    private DetailMemberEntity detailMemberEntity;
+
+    @Builder.Default
+    @OneToMany(mappedBy = "memberEntity")
+    private List<AnswerEntity> answerEntities = new ArrayList<>();
+
+    @Builder.Default
+    @OneToMany(mappedBy = "memberEntity")
+    private List<CommentEntity> commentEntities = new ArrayList<>();
 }

@@ -1,91 +1,101 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/css/mypage.css">
     <title>마이페이지</title>
 
 </head>
 
 <body>
     <!-- 네비게이션바 -->
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#">Level</a></li>
-                <li><a href="#">경험치 바</a></li>
-                <li><a href="#">로고</a></li>
-                <li><a href="#">마이페이지</a></li>
-                <li><a href="#">로그아웃</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <main class="main">
-        <div class = "btn-mypage">
-            <button type="submit">내가 푼 문제 보기</button>
-            <button type="submit">내가 답한 문제 보기</button>
+    <div class="top_bar">
+        <button type="submit" id="btn_logout">로그아웃</button>
+    </div>
+
+    <div id ="navbar">
+        <div class="navbar_left">
+
+            <div class="btn_level">Level.1</div>
+
+            <div class="exp">EXP 0</div>
+
+            <div class="btn_gaze">
+                <div class="gaze">. </div>
+            </div>
+
         </div>
 
+        <a href="/main" class="navbar_logo">
+            <img src="/img/logo_main.png" id="logo">
+        </a>
+
+        <div class="navbar_right"></div>
+    </div>
+
+    <!-- 메인 -->
+    <div class="main">
+        
+        <div class = "btn_goto_questions">
+            <!-- <button type="submit" class="btn_goto1">내가 푼 문제 보기</button>
+            <button type="submit" class="btn_goto2">내가 답한 문제 보기</button>
+            <button type="submit" class="btn_mycomment">내가 푼 댓글 보기</button>
+            <button type="submit" class="btn_question_bank">문제은행</button>-->
+        </div>
+       
+
+        <h1 class="h1">개인 정보</h1>
+
         <div class="user-info">
-            <h1>개인 정보</h1>
 
             <div class="info">
-                <p><strong>이름</strong></p>
-                <p th:text="${member.memberName}"></p>
-            </div>
-            <div class="info">
-                <p><strong>이메일</strong></p>
-                <p>user@gmail.com</p>
-            </div>        
-            <div class="info">
-                <p><strong>전화번호</strong></p>
-                <p>01012345678</p>
-            </div>
-            <div class="info">
                 <p><strong>학번</strong></p>
-                <p>21919191</p>
+                <div class="memberStuNum"> </div>
+            </div>
+            <div class="info">
+                <p><strong>이름</strong></p>
+                <div class="memberName"> </div>
+            </div>
+            <div class="info">
+                <p><strong>기수</strong></p>
+                <div class="memberGen"> </div>
             </div>
             <div class="info">
                 <p><strong>학과</strong></p>
-                <p>로봇공학과</p>
+                <div class="memberMajor"> </div>
             </div>
             <div class="info">
-                <p><strong>회원 등급</strong></p>
-                <p>신입생</p>
+                <p><strong>전화번호</strong></p>
+                <div class="memberPhone"> </div>
             </div>
-
-
-            <!-- <div class="info">
-                <p><strong>이름</strong></p>
-                <label for="username">홍길동</label>
+            <div class="info">
+                <p><strong>상태</strong></p>
+                <div class="memberStatus"> </div>
             </div>
             <div class="info">
                 <p><strong>이메일</strong></p>
-                <label for="email">user@gmail.com</label>
+                <div class="memberEmail"> </div>
             </div>        
             <div class="info">
-                <p><strong>전화번호</strong></p>
-                <label for="phone-number">01012345678</label>
+                <p><strong>점수</strong></p>
+                <div class="memberScore"> </div>
             </div>
             <div class="info">
-                <p><strong>학번</strong></p>
-                <label for="student-number">21919191</label>
-            </div>
-            <div class="info">
-                <p><strong>학과</strong></p>
-                <label for="major">로봇공학과</label>
-
-                <p></p>
-            </div>
-            <div class="info">
-                <p><strong>회원 등급</strong></p>
-                <label for="level">신입생</label>
-            </div> -->
-
+                <p><strong>깃주소</strong></p>
+                <div class="memberGitUrl"> </div>
+            </div>     
         </div>
      
     </main>
+    <div class="footer"> 
+        <div>(주)PES<br></div>
+        <div>PM : 박경민</div>
+        <div>Front : 최성임, 변민정</div>
+        <div>Back: 곽준현</div>
+        <div>주소 : 경북 경산시 대학로 280 생산기술연구원 G15 213호</div>
+    </div>
+    <script type="module" src="/js/mypage.js"></script>
+
 </body>
 </html>

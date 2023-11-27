@@ -31,9 +31,15 @@ public class JwtUtil {
                 .getBody().get("memberStuNum", String.class);
     }
 
-    public static String createToken(String memberStuNum, String secretKey, Long expireTimeMs) {
+    public static String getMemberStatus(String token, String secretKey) {
+        return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
+                .getBody().get("memberStatus", String.class);
+    }
+
+    public static String createToken(String memberStuNum, String memberStatus, String secretKey, Long expireTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("memberStuNum", memberStuNum);
+        claims.put("memberStatus", memberStatus);
 
         return Jwts.builder()
                 .setClaims(claims)
