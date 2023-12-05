@@ -7,6 +7,7 @@ build/
 application.properties
 keystore.jks
 resources/static/js/config.js
+resources/ssl/**
 
 ### STS ###
 .apt_generated
