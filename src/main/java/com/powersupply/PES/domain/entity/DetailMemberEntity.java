@@ -29,6 +29,6 @@ public class DetailMemberEntity extends BaseEntity{
     private String memberPhone; // 전화번호
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "memberStuNum")
+    @JoinColumn(name = "memberId", referencedColumnName = "memberId")
     private MemberEntity memberEntity;
 }

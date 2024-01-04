@@ -19,12 +19,12 @@ public class AnswerEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
     private String answerState;
-    private String answerUrl;
     private String answerFst;
     private String answerSec;
+    private int finalScore;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberStuNum")
+    @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.EAGER)

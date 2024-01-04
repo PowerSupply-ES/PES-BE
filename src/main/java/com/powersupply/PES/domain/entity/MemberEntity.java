@@ -16,25 +16,23 @@ import java.util.List;
 public class MemberEntity {
 
     @Id
-    @Column(name = "memberStuNum")
-    private String memberStuNum; // 학번
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "memberId")
+    private Long memberId; // 멤버 id
 
     @Column(name = "memberName")
     private String memberName; // 이름
 
-    @Column(name = "memberGitUrl")
-    private String memberGitUrl; // 깃 주소
-
     @Column(name = "memberGen")
     private int memberGen; // 기수
 
-    @Column(name = "memberScore")
-    private int memberScore; // 점수
+    @Column(name = "memberBeakId")
+    private String memberBaekId; // 백준 아이디
 
     @Column(name = "memberStatus")
-    private String memberStatus; // 상태(신입생/재학생/관리자)
+    private String memberStatus; // 상태(학생/관리자)
 
-    @OneToOne(mappedBy = "memberEntity")
+    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private DetailMemberEntity detailMemberEntity;
 
     @Builder.Default
