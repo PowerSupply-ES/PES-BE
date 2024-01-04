@@ -30,35 +30,33 @@ public class MemberService {
     @Transactional
     public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
-        String stuNum = dto.getMemberStuNum();
+        String email = dto.getMemberEmail();
         String pw = dto.getMemberPw();
         String name = dto.getMemberName();
 
         // Email 및 password 빈칸 체크
-        if (stuNum.isBlank() || pw.isBlank()) {
+        if (email.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
 
         // memberEmail 중복 체크
-        memberRepository.findByMemberStuNum(stuNum)
+        detailMemberRepository.findByMemberEmail(email)
                 .ifPresent(member -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
                 });
 
         // MemberEntity 먼저 생성
         MemberEntity memberEntity = MemberEntity.builder()
-                .memberStuNum(stuNum)
                 .memberName(name)
                 .memberGen(dto.getMemberGen())
-                .memberStatus("신입생")
-                .memberScore(0)
-                .memberGitUrl(dto.getMemberGitUrl())
+                .memberBaekId(dto.getMemberBaekId())
+                .memberStatus("student")
                 .build();
         memberRepository.save(memberEntity);
 
         // DetailMemberEntity 생성
         DetailMemberEntity detailMemberEntity = DetailMemberEntity.builder()
-                .memberEmail(dto.getMemberEmail())
+                .memberEmail(email)
                 .memberPw(encoder.encode(pw))
                 .memberMajor(dto.getMemberMajor())
                 .memberPhone(dto.getMemberPhone())
@@ -71,105 +69,104 @@ public class MemberService {
 
     //로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
-        String stuNum = dto.getMemberStuNum();
+        String email = dto.getMemberEmail();
         String pw = dto.getMemberPw();
         Long expireTimeMs = 1000 * 60 * 60l;
 
         // Email 및 password 빈칸 체크
-        if (stuNum.isBlank() || pw.isBlank()) {
+        if (email.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
 
         // Email 없는 경우
-        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
+        DetailMemberEntity selectedMember = detailMemberRepository.findByMemberEmail(email)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
 
         // password 틀린 경우
-        if(!encoder.matches(pw, selectedMember.getDetailMemberEntity().getMemberPw())){
+        if(!encoder.matches(pw, selectedMember.getMemberPw())){
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberStuNum(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberEntity().getMemberStatus(), secretKey, expireTimeMs);
     }
 
-    public MemberEntity findByMemberStuNum(String memberStuNum) {
-        return memberRepository.findByMemberStuNum(memberStuNum)
-                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
-    }
+//    public MemberEntity findByMemberEmail(String memberEmail) {
+//        return memberRepository.findByMemberEmail(memberEmail)
+//                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
+//    }
 
 
     public MemberDTO.MemberMyPageResponse getMyPage() {
-        MemberEntity memberEntity = memberRepository.findByMemberStuNum(JwtUtil.getMemberStuNumFromToken())
+        DetailMemberEntity detailMemberEntity = detailMemberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
 
         MemberDTO.MemberMyPageResponse myPageResponse = MemberDTO.MemberMyPageResponse.builder()
-                .memberStuNum(memberEntity.getMemberStuNum())
-                .memberName(memberEntity.getMemberName())
-                .memberGen(memberEntity.getMemberGen())
-                .memberGitUrl(memberEntity.getMemberGitUrl())
-                .memberStatus(memberEntity.getMemberStatus())
-                .memberMajor(memberEntity.getDetailMemberEntity().getMemberMajor())
-                .memberEmail(memberEntity.getDetailMemberEntity().getMemberEmail())
-                .memberPhone(memberEntity.getDetailMemberEntity().getMemberPhone())
+                .memberName(detailMemberEntity.getMemberEntity().getMemberName())
+                .memberGen(detailMemberEntity.getMemberEntity().getMemberGen())
+                .memberStatus(detailMemberEntity.getMemberEntity().getMemberStatus())
+                .memberBaekId(detailMemberEntity.getMemberEntity().getMemberBaekId())
+                .memberMajor(detailMemberEntity.getMemberMajor())
+                .memberEmail(detailMemberEntity.getMemberEmail())
+                .memberPhone(detailMemberEntity.getMemberPhone())
                 .build();
         return myPageResponse;
     }
 
-    public void findUser(MemberDTO.MemberFindPwRequest dto) {
-        String stuNum = dto.getMemberStuNum();
-        String name = dto.getMemberName();
-
-        // 학번 및 password 빈칸 체크
-        if (stuNum.isBlank() || name.isBlank()) {
-            throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
-        }
-
-        // 학번과 이름이 DB에 없는 경우
-        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum).orElse(null);
-
-        if(selectedMember == null || !selectedMember.getMemberName().equals(name)){
-            throw new AppException(ErrorCode.INVALID_INPUT, "계정 찾기를 실패했습니다.");
-        }
-
-        // 추후 이메일로 임의 수정된 비밀번호 전송 로직 추가
-    }
+//    public void findUser(MemberDTO.MemberFindPwRequest dto) {
+//        String email = dto.getMemberEmail();
+//        String name = dto.getMemberName();
+//
+//        // 학번 및 password 빈칸 체크
+//        if (email.isBlank() || name.isBlank()) {
+//            throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
+//        }
+//
+//        // 학번과 이름이 DB에 없는 경우
+//        MemberEntity selectedMember = memberRepository.findByMemberEmail(email).orElse(null);
+//
+//        if(selectedMember == null || !selectedMember.getMemberName().equals(name)){
+//            throw new AppException(ErrorCode.INVALID_INPUT, "계정 찾기를 실패했습니다.");
+//        }
+//
+//        // 추후 이메일로 임의 수정된 비밀번호 전송 로직 추가
+//    }
 
     // 상단 사용자 정보 불러오기
-    public MemberDTO.NameScoreStatusResponse myUser() {
-        String stuNum = JwtUtil.getMemberStuNumFromToken();
+//    public MemberDTO.NameScoreStatusResponse myUser() {
+//        String email = JwtUtil.getMemberEmailFromToken();
+//
+//        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
+//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
+//
+//        return MemberDTO.NameScoreStatusResponse.builder()
+//                .memberName(selectedMember.getMemberName())
+//                .memberScore(selectedMember.getMemberScore())
+//                .memberStatus(selectedMember.getMemberStatus())
+//                .build();
+//    }
 
-        MemberEntity selectedMember = memberRepository.findByMemberStuNum(stuNum)
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
-
-        return MemberDTO.NameScoreStatusResponse.builder()
-                .memberName(selectedMember.getMemberName())
-                .memberScore(selectedMember.getMemberScore())
-                .memberStatus(selectedMember.getMemberStatus())
-                .build();
-    }
-
-    public List<MemberDTO.NameScoreResponse> memberRank() {
-
-        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("신입생");
-        List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
-
-        // 리스트 체크
-        if(memberEntityList.isEmpty()) {
-            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
-        }
-
-        // 저장
-        for(MemberEntity memberEntity: memberEntityList) {
-            MemberDTO.NameScoreResponse dto = MemberDTO.NameScoreResponse.builder()
-                    .memberName(memberEntity.getMemberName())
-                    .memberScore(memberEntity.getMemberScore())
-                    .build();
-            nameScoreResponseList.add(dto);
-        }
-
-        // memberScore를 기준으로 정렬 (내림차순)
-        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
-
-        return nameScoreResponseList;
-    }
+//    public List<MemberDTO.NameScoreResponse> memberRank() {
+//
+//        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("신입생");
+//        List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
+//
+//        // 리스트 체크
+//        if(memberEntityList.isEmpty()) {
+//            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
+//        }
+//
+//        // 저장
+//        for(MemberEntity memberEntity: memberEntityList) {
+//            MemberDTO.NameScoreResponse dto = MemberDTO.NameScoreResponse.builder()
+//                    .memberName(memberEntity.getMemberName())
+//                    .memberScore(memberEntity.getMemberScore())
+//                    .build();
+//            nameScoreResponseList.add(dto);
+//        }
+//
+//        // memberScore를 기준으로 정렬 (내림차순)
+//        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
+//
+//        return nameScoreResponseList;
+//    }
 }
