@@ -20,7 +20,7 @@ public class CommentEntity extends BaseEntity {
     private String commentContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberId")
+    @JoinColumn(name = "memberEmail")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
