@@ -70,7 +70,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 멤버 학번 추출
-        String memberStuNum = JwtUtil.getMemberStuNum(actualToken, secretKey);
+        String memberStuNum = JwtUtil.getMemberEmail(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
         String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);

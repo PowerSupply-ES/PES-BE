@@ -42,7 +42,7 @@ public class MemberService {
         // memberEmail 중복 체크
         detailMemberRepository.findByMemberEmail(email)
                 .ifPresent(member -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 학번입니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 이메일 입니다.");
                 });
 
         // MemberEntity 먼저 생성
@@ -68,6 +68,7 @@ public class MemberService {
     }
 
     //로그인
+    @Transactional
     public String signIn(MemberDTO.MemberSignInRequest dto) {
         String email = dto.getMemberEmail();
         String pw = dto.getMemberPw();
@@ -96,6 +97,7 @@ public class MemberService {
 //    }
 
 
+    @Transactional
     public MemberDTO.MemberMyPageResponse getMyPage() {
         DetailMemberEntity detailMemberEntity = detailMemberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));

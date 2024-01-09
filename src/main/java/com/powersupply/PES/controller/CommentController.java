@@ -11,16 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class CommentController {
-
+/*
     private final CommentService commentService;
-
-    @GetMapping("/mycomment")
-    public String getComment() {
-        return "mycomment";
-    }
 
     @GetMapping("/api/comment/{problemId}/{memberStuNum}")
     public ResponseEntity<List<CommentDTO.ViewComment>> viewComment(@PathVariable Long problemId, @PathVariable String memberStuNum) {
@@ -52,4 +47,6 @@ public class CommentController {
 
         return ResponseEntity.ok().body(myCommentList);
     }
+
+ */
 }

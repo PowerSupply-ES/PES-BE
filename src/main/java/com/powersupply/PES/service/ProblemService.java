@@ -23,7 +23,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class ProblemService {
-
+/*
     private final ProblemRepository problemRepository;
     private final AnswerRepository answerRepository;
 
@@ -122,4 +122,7 @@ public class ProblemService {
                 .problemScore(problemEntity.getProblemScore())
                 .build();
     }
+
+
+ */
 }

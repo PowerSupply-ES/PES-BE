@@ -36,7 +36,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
-
+/*
     private final AnswerRepository answerRepository;
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
@@ -253,4 +253,7 @@ public class AnswerService {
         }
         return solveLists;
     }
+
+
+ */
 }

@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
-    Optional<AnswerEntity> findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(String stuNum, Long problemId);
+//    Optional<AnswerEntity> findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(String stuNum, Long problemId);
 
     List<AnswerEntity> findAllByProblemEntity_ProblemId(Long problemId);
 }

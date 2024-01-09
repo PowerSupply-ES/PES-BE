@@ -8,30 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ProblemController {
-
+/*
     private final ProblemService problemService;
 
-    @GetMapping("/problem/{problemId}/{memberStuNum}")
-    public String getProb() {
-        return "prob";
-    }
-
-    @GetMapping("/problembank")
-    public String getProblemBank() {
-        return "problembank";
-    }
-
-    @GetMapping("/problembank/{problemId}")
-    public String getQuestionBank() {
-        return "questionbank";
-    }
-
+    // 문제 리스트 가져오기
     @GetMapping("/api/problemlist")
     public ResponseEntity<List<ProblemDTO.ProblemResponse>> getProblemList() {
         return ResponseEntity.ok().body(problemService.getProblemList());
@@ -59,4 +46,6 @@ public class ProblemController {
 
         return ResponseEntity.ok().body(solveForm);
     }
+
+ */
 }

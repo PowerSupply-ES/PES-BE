@@ -11,16 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AnswerController {
-
+/*
     private final AnswerService answerService;
-
-    @GetMapping("/solve/{problemId}")
-    public String getSolve() {
-        return "solve";
-    }
 
     // 채점 하기
     @PostMapping("/api/submit/{problemId}/{memberStuNum}")
@@ -54,4 +49,5 @@ public class AnswerController {
         answerService.patchAnswer(problemId, memberStuNum, dto);
         return ResponseUtil.successResponse("성공");
     }
+    */
 }
