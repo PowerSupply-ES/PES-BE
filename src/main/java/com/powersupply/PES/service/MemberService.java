@@ -1,11 +1,9 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.MemberDTO;
-import com.powersupply.PES.domain.entity.DetailMemberEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
-import com.powersupply.PES.repository.DetailMemberRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,20 +12,16 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {
 
     private final MemberRepository memberRepository;
-    private final DetailMemberRepository detailMemberRepository;
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.secret}")
     private String secretKey;
 
-    @Transactional
+    // 회원가입
     public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
         String email = dto.getMemberEmail();
@@ -40,35 +34,28 @@ public class MemberService {
         }
 
         // memberEmail 중복 체크
-        detailMemberRepository.findByMemberEmail(email)
+        memberRepository.findByMemberEmail(email)
                 .ifPresent(member -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 이메일 입니다.");
                 });
 
         // MemberEntity 먼저 생성
         MemberEntity memberEntity = MemberEntity.builder()
+                .memberEmail(email)
                 .memberName(name)
-                .memberGen(dto.getMemberGen())
+                .memberPw(encoder.encode(pw))
                 .memberBaekId(dto.getMemberBaekId())
+                .memberGen(dto.getMemberGen())
+                .memberMajor(dto.getMemberMajor())
+                .memberPhone(dto.getMemberPhone())
                 .memberStatus("student")
                 .build();
         memberRepository.save(memberEntity);
 
-        // DetailMemberEntity 생성
-        DetailMemberEntity detailMemberEntity = DetailMemberEntity.builder()
-                .memberEmail(email)
-                .memberPw(encoder.encode(pw))
-                .memberMajor(dto.getMemberMajor())
-                .memberPhone(dto.getMemberPhone())
-                .memberEntity(memberEntity)
-                .build();
-        detailMemberRepository.save(detailMemberEntity);
-
         return name;
     }
 
-    //로그인
-    @Transactional
+    // 로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
         String email = dto.getMemberEmail();
         String pw = dto.getMemberPw();
@@ -80,7 +67,7 @@ public class MemberService {
         }
 
         // Email 없는 경우
-        DetailMemberEntity selectedMember = detailMemberRepository.findByMemberEmail(email)
+        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
 
         // password 틀린 경우
@@ -88,7 +75,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberEntity().getMemberStatus(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
 //    public MemberEntity findByMemberEmail(String memberEmail) {
@@ -97,21 +84,20 @@ public class MemberService {
 //    }
 
 
-    @Transactional
+    // 마이페이지 가져오기
     public MemberDTO.MemberMyPageResponse getMyPage() {
-        DetailMemberEntity detailMemberEntity = detailMemberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
 
-        MemberDTO.MemberMyPageResponse myPageResponse = MemberDTO.MemberMyPageResponse.builder()
-                .memberName(detailMemberEntity.getMemberEntity().getMemberName())
-                .memberGen(detailMemberEntity.getMemberEntity().getMemberGen())
-                .memberStatus(detailMemberEntity.getMemberEntity().getMemberStatus())
-                .memberBaekId(detailMemberEntity.getMemberEntity().getMemberBaekId())
-                .memberMajor(detailMemberEntity.getMemberMajor())
-                .memberEmail(detailMemberEntity.getMemberEmail())
-                .memberPhone(detailMemberEntity.getMemberPhone())
+        return MemberDTO.MemberMyPageResponse.builder()
+                .memberEmail(memberEntity.getMemberEmail())
+                .memberBaekId(memberEntity.getMemberBaekId())
+                .memberName(memberEntity.getMemberName())
+                .memberGen(memberEntity.getMemberGen())
+                .memberStatus(memberEntity.getMemberStatus())
+                .memberMajor(memberEntity.getMemberMajor())
+                .memberPhone(memberEntity.getMemberPhone())
                 .build();
-        return myPageResponse;
     }
 
 //    public void findUser(MemberDTO.MemberFindPwRequest dto) {
