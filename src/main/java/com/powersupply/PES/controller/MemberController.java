@@ -64,10 +64,10 @@ public class MemberController {
 //    }
 
     // 상단 사용자 정보
-//    @GetMapping("/api/myuser")
-//    public ResponseEntity<MemberDTO.NameScoreStatusResponse> myUser() {
-//        return ResponseEntity.ok().body(memberService.myUser());
-//    }
+    @GetMapping("/api/exp")
+    public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
+        return ResponseEntity.ok().body(memberService.expVar());
+    }
 
     // 랭킹 확인하기
 //    @GetMapping("/api/rank")

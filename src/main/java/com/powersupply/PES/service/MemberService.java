@@ -4,6 +4,7 @@ import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
+import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final AnswerRepository answerRepository;
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.secret}")
     private String secretKey;
@@ -97,6 +99,20 @@ public class MemberService {
                 .memberStatus(memberEntity.getMemberStatus())
                 .memberMajor(memberEntity.getMemberMajor())
                 .memberPhone(memberEntity.getMemberPhone())
+                .build();
+    }
+
+    public MemberDTO.NameScoreResponse expVar() {
+        String email = JwtUtil.getMemberEmailFromToken();
+
+        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
+
+        Integer totalScore = answerRepository.sumFinalScoreByMemberEmail(email);
+
+        return MemberDTO.NameScoreResponse.builder()
+                .memberName(selectedMember.getMemberName())
+                .memberScore(totalScore != null ? totalScore : 0)
                 .build();
     }
 
