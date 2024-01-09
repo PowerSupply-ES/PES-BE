@@ -13,12 +13,11 @@ import java.util.List;
 @Setter
 @Getter
 @Table(name = "member_table")
-public class MemberEntity {
+public class MemberEntity extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "memberId")
-    private Long memberId; // 멤버 id
+    @Column(name = "memberEmail")
+    private String memberEmail; // 이메일
 
     @Column(name = "memberName")
     private String memberName; // 이름
@@ -32,8 +31,14 @@ public class MemberEntity {
     @Column(name = "memberStatus")
     private String memberStatus; // 상태(학생/관리자)
 
-    @OneToOne(mappedBy = "memberEntity", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private DetailMemberEntity detailMemberEntity;
+    @Column(name = "memberPw")
+    private String memberPw; // 암호화된 비밀번호
+
+    @Column(name = "memberMajor")
+    private String memberMajor; // 학과
+
+    @Column(name = "memberPhone", unique = true)
+    private String memberPhone; // 전화번호
 
     @Builder.Default
     @OneToMany(mappedBy = "memberEntity")
