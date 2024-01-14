@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,15 +16,21 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class ProblemController {
-/*
+
     private final ProblemService problemService;
 
     // 문제 리스트 가져오기
     @GetMapping("/api/problemlist")
-    public ResponseEntity<List<ProblemDTO.ProblemResponse>> getProblemList() {
-        return ResponseEntity.ok().body(problemService.getProblemList());
+    public ResponseEntity<List<ProblemDTO.ProblemResponse>> getProblemList(@RequestParam(value = "memberEmail", required = false) String email) {
+        return ResponseEntity.ok().body(problemService.getProblemList(email));
     }
 
+    // 질문, 답변 가져오기
+//    @GetMapping("/api/{problemId}")
+//    public ResponseEntity<List<ProblemDTO.ProblemResponse>> getAnswer(@RequestParam("memberEmail") String email, @PathVariable String problemId) {
+//        return ResponseEntity.ok().body(problemService.getAnswer(problemId, email));
+//    }
+/*
     // 특정 문제의 요약 칼럼
     @GetMapping("/api/problem/{problemId}/simple")
     public ResponseEntity<ProblemDTO.ShowProblemSimple> getProblemSimple(@PathVariable Long problemId) {
