@@ -37,4 +37,13 @@ public class AnswerDTO {
     public static class GetAnswerId {
         private Long answerId;
     }
+
+    @Builder
+    @Getter
+    public static class GetAnswer {
+        private String questionContentFst;
+        private String questionContentSec;
+        private String answerFst;
+        private String answerSec;
+    }
 }

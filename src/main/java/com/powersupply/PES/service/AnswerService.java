@@ -88,91 +88,20 @@ public class AnswerService {
                 .answerId(answerId)
                 .build();
     }
-/*
-    private final AnswerRepository answerRepository;
-    private final MemberRepository memberRepository;
-    private final ProblemRepository problemRepository;
-    private final QuestionRepository questionRepository;
 
-    // 채점 하기
-    @Transactional
-    public ResponseEntity<?> submit(Long problemId, String memberStuNum, AnswerDTO.gitUrl dto) {
-        if(!JwtUtil.getMemberStuNumFromToken().equals(memberStuNum)) {
-            log.error("채점할 권한이 없는 유저 입니다.");
-            throw new AppException(ErrorCode.INVALID_INPUT,"채점할 권한이 없는 유저 입니다.");
-        }
+    // 질문 답변 가져오기
+    public AnswerDTO.GetAnswer getAnswer(Long answerId) {
+        AnswerEntity answerEntity = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
 
-        // 깃 주소 비교 로직
-        MemberEntity memberEntity = memberRepository.findByMemberStuNum(memberStuNum)
-                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
-
-        // 깃 주소가 해당 url로 시작 하지 않으면 AppException 실행
-        String gitUrl = dto.getAnswerUrl();
-        if(!gitUrl.startsWith(memberEntity.getMemberGitUrl())) {
-            log.error("제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
-            throw new AppException(ErrorCode.INVALID_INPUT,"제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
-        }
-
-        Optional<AnswerEntity> optionalAnswerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum,problemId);
-        AnswerEntity answerEntity;
-
-        // answer table에 저장되어 있는지 판단
-        if (optionalAnswerEntity.isPresent()) {
-            // DB에 있을 경우
-            answerEntity = optionalAnswerEntity.get();
-
-            // 문제가 이미 채점 중일 경우 오류 전송
-            if(answerEntity.getAnswerState().equals("Grading")) {
-                return ResponseUtil.noContentResponse("이미 채점 중입니다.");
-            }
-
-            answerEntity.setAnswerUrl(gitUrl);
-            answerEntity.setAnswerState("Grading");
-        } else {
-            // 무작위 2개의 질문 선택
-            Pageable pageable = PageRequest.of(0, 2, Sort.unsorted());
-            List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
-
-            if (questions.size() < 2) {
-                log.error("문제에 대한 충분한 질문이 없습니다.");
-                throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
-            }
-
-            Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
-            if (problemEntityOptional.isEmpty()) {
-                log.error("문제 정보를 찾을 수 없습니다.");
-                throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
-            }
-            ProblemEntity problemEntity = problemEntityOptional.get();
-
-            // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
-            answerEntity = AnswerEntity.builder()
-                    .memberEntity(memberEntity)
-                    .problemEntity(problemEntity)
-                    .answerState("Grading")
-                    .answerUrl(gitUrl)
-                    .questionFst(questions.get(0))
-                    .questionSec(questions.get(1))
-                    .build();
-        }
-
-        try {
-            Long answerId = answerRepository.save(answerEntity).getAnswerId();
-
-            // 채점 서버로 요청 전송
-            sendCode(answerId, gitUrl);
-            log.info("채점 서버로 전송");
-
-            // 성공 응답 반환
-            return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
-        } catch (Exception e) {
-            // 예외 발생 시 에러 응답 반환
-            log.error("문제 정보를 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("채점 요청 중 오류가 발생했습니다: " + e.getMessage());
-        }
+        return AnswerDTO.GetAnswer.builder()
+                .questionContentFst(answerEntity.getQuestionFst().getQuestionContent())
+                .questionContentSec(answerEntity.getQuestionSec().getQuestionContent())
+                .answerFst(answerEntity.getAnswerFst())
+                .answerSec(answerEntity.getAnswerSec())
+                .build();
     }
-
+/*
     // 채점 서버로 요청 전송 하기
     private void sendCode(Long answerId, String gitUrl) throws IOException {
         String requestURL = "http://www.pes23.com:5000/api/v2/submit";

@@ -18,6 +18,13 @@ public class AnswerController {
     public ResponseEntity<AnswerDTO.GetAnswerId> postAnswer(@RequestParam("memberEmail") String email, @RequestParam("problemId") Long problemId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(answerService.createAnswer(email, problemId));
     }
+
+    // 질문, 답변 가져오기
+    @GetMapping("/api/answer/{answerId}")
+    public ResponseEntity<AnswerDTO.GetAnswer> getAnswer(@PathVariable Long answerId) {
+        return ResponseEntity.ok().body(answerService.getAnswer(answerId));
+    }
+
 /*
     // 채점 하기
     @PostMapping("/api/submit/{problemId}/{memberStuNum}")
