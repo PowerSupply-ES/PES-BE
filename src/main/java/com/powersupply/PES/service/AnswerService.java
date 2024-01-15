@@ -101,6 +101,26 @@ public class AnswerService {
                 .answerSec(answerEntity.getAnswerSec())
                 .build();
     }
+
+    // 답변 하기
+    public void postAnswer(Long answerId, String email, AnswerDTO.AnswerContent dto) {
+        AnswerEntity answerEntity = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
+
+        if(!email.equals(answerEntity.getMemberEntity().getMemberEmail())) {
+            throw new AppException(ErrorCode.FORBIDDEN,"email이 다름");
+        }
+
+        if (dto.getAnswerFst() == null || dto.getAnswerFst().isEmpty() ||
+                dto.getAnswerSec() == null || dto.getAnswerSec().isEmpty()) {
+            throw new AppException(ErrorCode.BAD_REQUEST, "답변 내용 중 하나 또는 둘 다 비어 있음");
+        }
+
+        answerEntity.setAnswerFst(dto.getAnswerFst());
+        answerEntity.setAnswerSec(dto.getAnswerSec());
+
+        answerRepository.save(answerEntity);
+    }
 /*
     // 채점 서버로 요청 전송 하기
     private void sendCode(Long answerId, String gitUrl) throws IOException {

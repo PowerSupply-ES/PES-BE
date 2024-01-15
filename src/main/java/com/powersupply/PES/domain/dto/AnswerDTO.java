@@ -7,7 +7,7 @@ public class AnswerDTO {
 
     @Getter
     @Builder
-    public static class answerRequest {
+    public static class AnswerContent {
         private String answerFst;
         private String answerSec;
     }

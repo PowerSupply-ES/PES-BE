@@ -2,6 +2,7 @@ package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.AnswerDTO;
 import com.powersupply.PES.service.AnswerService;
+import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ public class AnswerController {
 
     // answerEntity 만들기
     @PostMapping("/api/answer")
-    public ResponseEntity<AnswerDTO.GetAnswerId> postAnswer(@RequestParam("memberEmail") String email, @RequestParam("problemId") Long problemId) {
+    public ResponseEntity<AnswerDTO.GetAnswerId> createAnswer(@RequestParam("memberEmail") String email, @RequestParam("problemId") Long problemId) {
         return ResponseEntity.status(HttpStatus.CREATED).body(answerService.createAnswer(email, problemId));
     }
 
@@ -23,6 +24,15 @@ public class AnswerController {
     @GetMapping("/api/answer/{answerId}")
     public ResponseEntity<AnswerDTO.GetAnswer> getAnswer(@PathVariable Long answerId) {
         return ResponseEntity.ok().body(answerService.getAnswer(answerId));
+    }
+
+    // 답변하기
+    @PostMapping("/api/answer/{answerId}")
+    public ResponseEntity<?> postAnswer(@PathVariable Long answerId,
+                                                          @RequestParam("memberEmail") String email,
+                                                          @RequestBody AnswerDTO.AnswerContent dto) {
+        answerService.postAnswer(answerId, email, dto);
+        return ResponseUtil.successResponse("");
     }
 
 /*
