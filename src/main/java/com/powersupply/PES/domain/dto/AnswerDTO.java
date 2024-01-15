@@ -31,4 +31,10 @@ public class AnswerDTO {
         private Long answerId;
         private int answerState;
     }
+
+    @Builder
+    @Getter
+    public static class GetAnswerId {
+        private Long answerId;
+    }
 }

@@ -2,21 +2,23 @@ package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.AnswerDTO;
 import com.powersupply.PES.service.AnswerService;
-import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 public class AnswerController {
-/*
+
     private final AnswerService answerService;
 
+    // answerEntity 만들기
+    @PostMapping("/api/answer")
+    public ResponseEntity<AnswerDTO.GetAnswerId> postAnswer(@RequestParam("memberEmail") String email, @RequestParam("problemId") Long problemId) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(answerService.createAnswer(email, problemId));
+    }
+/*
     // 채점 하기
     @PostMapping("/api/submit/{problemId}/{memberStuNum}")
     public ResponseEntity<?> submit(@PathVariable Long problemId, @PathVariable String memberStuNum, @RequestBody AnswerDTO.gitUrl dto) {

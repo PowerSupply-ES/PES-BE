@@ -16,4 +16,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     // 이메일을 기반으로 finalScore의 합계를 계산
     @Query("SELECT SUM(a.finalScore) FROM AnswerEntity a WHERE a.memberEntity.memberEmail = :email")
     Integer sumFinalScoreByMemberEmail(@Param("email") String email);
+
+    Optional<AnswerEntity> findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(String email, Long problemId);
 }

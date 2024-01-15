@@ -29,6 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,6 +37,57 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class AnswerService {
+
+    private final AnswerRepository answerRepository;
+    private final MemberRepository memberRepository;
+    private final ProblemRepository problemRepository;
+    private final QuestionRepository questionRepository;
+
+    // answer 만들기
+    @Transactional
+    public AnswerDTO.GetAnswerId createAnswer(String email, Long problemId) {
+
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
+
+        // DB에 해당 email의 problemId의 answer이 있는지 확인
+        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(email, problemId).isPresent()) {
+            throw new AppException(ErrorCode.BAD_REQUEST,"해당 내용은 이미 있습니다.");
+        }
+
+        // 무작위 2개의 질문 선택
+        List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId);
+
+        // 질문이 2개보다 적은 경우
+        if (questions.size() < 2) {
+            log.error("문제에 대한 충분한 질문이 없습니다.");
+            throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
+        }
+        Collections.shuffle(questions);
+        List<QuestionEntity> selectedQuestions = questions.subList(0, 2);
+
+        // 문제 연결을 위한 Entity 찾기
+        Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
+        if (problemEntityOptional.isEmpty()) {
+            log.error("문제 정보를 찾을 수 없습니다.");
+            throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
+        }
+        ProblemEntity problemEntity = problemEntityOptional.get();
+
+        // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
+        AnswerEntity answerEntity = AnswerEntity.builder()
+                .memberEntity(memberEntity)
+                .problemEntity(problemEntity)
+                .answerState("test")
+                .questionFst(selectedQuestions.get(0))
+                .questionSec(selectedQuestions.get(1))
+                .build();
+        Long answerId = answerRepository.save(answerEntity).getAnswerId();
+
+        return AnswerDTO.GetAnswerId.builder()
+                .answerId(answerId)
+                .build();
+    }
 /*
     private final AnswerRepository answerRepository;
     private final MemberRepository memberRepository;
