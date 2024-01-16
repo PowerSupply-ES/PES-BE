@@ -14,9 +14,15 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
-/*
+
     private final CommentService commentService;
 
+    @GetMapping("/api/comment/{answerId}")
+    public ResponseEntity<?> getComment(@PathVariable Long answerId) {
+        return commentService.getComment(answerId);
+    }
+
+/*
     @GetMapping("/api/comment/{problemId}/{memberStuNum}")
     public ResponseEntity<List<CommentDTO.ViewComment>> viewComment(@PathVariable Long problemId, @PathVariable String memberStuNum) {
         return ResponseEntity.ok().body(commentService.getViewComment(problemId, memberStuNum));

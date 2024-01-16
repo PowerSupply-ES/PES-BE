@@ -10,20 +10,45 @@ import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
-/*
+
     private final CommentRepository commentRepository;
-    private final AnswerRepository answerRepository;
-    private final MemberRepository memberRepository;
+
+    // 댓글 가져오기
+    public ResponseEntity<?> getComment(Long answerId) {
+
+        Optional<List<CommentEntity>> commentEntitiesOptional = commentRepository.findByAnswerEntity_AnswerId(answerId);
+
+        // 댓글 리스트가 비어있는 경우 204 No Content 반환
+        if (!commentEntitiesOptional.isPresent() || commentEntitiesOptional.get().isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<CommentEntity> commentEntities = commentEntitiesOptional.get();
+        List<CommentDTO.GetComment> getCommentList = new ArrayList<>();
+
+        for(CommentEntity commentEntity: commentEntities) {
+            CommentDTO.GetComment getComment = CommentDTO.GetComment.builder()
+                    .writerName(commentEntity.getMemberEntity().getMemberName())
+                    .writerEmail(commentEntity.getMemberEntity().getMemberEmail())
+                    .commentContent(commentEntity.getCommentContent())
+                    .build();
+            getCommentList.add(getComment);
+        }
+        return ResponseEntity.ok(getCommentList);
+    }
+/*
 
     // 댓글 보기
     @Transactional
