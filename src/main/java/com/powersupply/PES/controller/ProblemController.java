@@ -21,8 +21,8 @@ public class ProblemController {
 
     // 문제 리스트 가져오기
     @GetMapping("/api/problemlist")
-    public ResponseEntity<List<ProblemDTO.ProblemResponse>> getProblemList(@RequestParam(value = "memberEmail", required = false) String email) {
-        return ResponseEntity.ok().body(problemService.getProblemList(email));
+    public ResponseEntity<?> getProblemList(@RequestParam(value = "memberEmail", required = false) String email) {
+        return problemService.getProblemList(email);
     }
 
     // 질문, 답변 가져오기

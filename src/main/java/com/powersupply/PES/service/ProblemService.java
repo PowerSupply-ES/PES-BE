@@ -8,6 +8,7 @@ import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.ProblemRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,36 +22,16 @@ public class ProblemService {
     private final AnswerRepository answerRepository;
 
     // 문제 가져오기
-    public List<ProblemDTO.ProblemResponse> getProblemList(String email) {
+    public ResponseEntity<?> getProblemList(String email) {
 
 //        String email = JwtUtil.getMemberEmailFromToken();
-
-//        List<ProblemEntity> problemEntityList = problemRepository.findAll();
-//        List<ProblemDTO.ProblemResponse> problemResponseList = new ArrayList<>();
-//
-//        // 문제 리스트 비어있는지 체크
-//        if(problemEntityList.isEmpty()) {
-//            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
-//        }
-//
-//        // 저장
-//        for(ProblemEntity problemEntity : problemEntityList) {
-//            ProblemDTO.ProblemResponse problemResponse = ProblemDTO.ProblemResponse.builder()
-//                    .problemId(problemEntity.getProblemId())
-//                    .problemTitle(problemEntity.getProblemTitle())
-//                    .problemScore(problemEntity.getProblemScore())
-//                    .answerId(answerId)
-//                    .build();
-//            problemResponseList.add(problemResponse);
-//        }
-//        return problemResponseList;
 
         List<Object[]> results = problemRepository.findAllProblemsWithAnswers(email);
         List<ProblemDTO.ProblemResponse> problemResponseList = new ArrayList<>();
 
         // 문제 리스트 비어있는지 체크
         if(results.isEmpty()) {
-            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
+            return ResponseEntity.noContent().build();
         }
 
         for (Object[] result : results) {
@@ -67,7 +48,7 @@ public class ProblemService {
                     .build();
             problemResponseList.add(problemResponse);
         }
-        return problemResponseList;
+        return ResponseEntity.ok(problemResponseList);
     }
 
 //    public List<ProblemDTO.ProblemResponse> getAnswer(String problemId, String email) {
