@@ -6,7 +6,6 @@ import lombok.Getter;
 public class AnswerDTO {
 
     @Getter
-    @Builder
     public static class AnswerContent {
         private String answerFst;
         private String answerSec;
