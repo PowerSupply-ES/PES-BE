@@ -30,6 +30,13 @@ public class CommentService {
     @Transactional
     public ResponseEntity<?> getComment(Long answerId) {
 
+        // answerId로 AnswerEntity 존재 여부 확인
+        boolean isAnswerPresent = answerRepository.existsById(answerId);
+        if (!isAnswerPresent) {
+            // answerId가 존재하지 않는 경우
+            throw new AppException(ErrorCode.NOT_FOUND,"");
+        }
+
         Optional<List<CommentEntity>> commentEntitiesOptional = commentRepository.findByAnswerEntity_AnswerId(answerId);
 
         // 댓글 리스트가 비어있는 경우 204 No Content 반환
@@ -53,6 +60,11 @@ public class CommentService {
 
     // 댓글 달기
     public ResponseEntity<?> createComment(Long answerId, String email, CommentDTO.CreateComment dto) {
+
+        // member 조회
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.FORBIDDEN,"해당 email가 없다."));
+
         // answerEntity 불러오기 불러오기 실패 시 에러
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없습니다."));
@@ -68,10 +80,6 @@ public class CommentService {
         if (commentEntities.size() >= 2) {
             throw new AppException(ErrorCode.FORBIDDEN, "이미 최대 댓글 수에 도달했습니다.");
         }
-
-        // member 조회
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.FORBIDDEN,"해당 email가 없다."));
 
         // Comment 생성
         CommentEntity newComment = CommentEntity.builder()
