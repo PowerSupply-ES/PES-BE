@@ -47,4 +47,9 @@ public class CommentDTO {
         private String writerName;
         private String commentContent;
     }
+
+    @Getter
+    public static class CreateComment {
+        private String comment;
+    }
 }

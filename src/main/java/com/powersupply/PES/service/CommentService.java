@@ -3,18 +3,17 @@ package com.powersupply.PES.service;
 import com.powersupply.PES.domain.dto.CommentDTO;
 import com.powersupply.PES.domain.entity.AnswerEntity;
 import com.powersupply.PES.domain.entity.CommentEntity;
+import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
-import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,8 +23,11 @@ import java.util.Optional;
 public class CommentService {
 
     private final CommentRepository commentRepository;
+    private final AnswerRepository answerRepository;
+    private final MemberRepository memberRepository;
 
     // 댓글 가져오기
+    @Transactional
     public ResponseEntity<?> getComment(Long answerId) {
 
         Optional<List<CommentEntity>> commentEntitiesOptional = commentRepository.findByAnswerEntity_AnswerId(answerId);
@@ -47,6 +49,40 @@ public class CommentService {
             getCommentList.add(getComment);
         }
         return ResponseEntity.ok(getCommentList);
+    }
+
+    // 댓글 달기
+    public ResponseEntity<?> createComment(Long answerId, String email, CommentDTO.CreateComment dto) {
+        // answerEntity 불러오기 불러오기 실패 시 에러
+        AnswerEntity answerEntity = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없습니다."));
+
+        // answer의 email과 email 비교해서 같은 경우 에러
+        if(answerEntity.getMemberEntity().getMemberEmail().equals(email)) {
+            throw new AppException(ErrorCode.FORBIDDEN,"자신의 답변에는 댓글을 달 수 없습니다.");
+        }
+
+        // 댓글 리스트가 2개 이상인 경우 에러
+        List<CommentEntity> commentEntities = commentRepository.findByAnswerEntity_AnswerId(answerId)
+                .orElse(new ArrayList<>());
+        if (commentEntities.size() >= 2) {
+            throw new AppException(ErrorCode.FORBIDDEN, "이미 최대 댓글 수에 도달했습니다.");
+        }
+
+        // member 조회
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.FORBIDDEN,"해당 email가 없다."));
+
+        // Comment 생성
+        CommentEntity newComment = CommentEntity.builder()
+            .commentContent(dto.getComment())
+            .commentPassFail(1)
+            .memberEntity(memberEntity) // 또는 다른 멤버 엔티티를 참조해야 할 수도 있습니다
+            .answerEntity(answerEntity)
+            .build();
+        commentRepository.save(newComment);
+
+        return ResponseEntity.ok().build();
     }
 /*
 
