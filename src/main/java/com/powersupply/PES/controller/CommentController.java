@@ -11,17 +11,27 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class CommentController {
 
     private final CommentService commentService;
 
-    @GetMapping("/mycomment")
-    public String getComment() {
-        return "mycomment";
+    // 댓글 가져오기
+    @GetMapping("/api/comment/{answerId}")
+    public ResponseEntity<?> getComment(@PathVariable Long answerId) {
+        return commentService.getComment(answerId);
     }
 
+    // 댓글 달기
+    @PostMapping("/api/comment/{answerId}")
+    public ResponseEntity<?> createComment(@PathVariable Long answerId,
+                                           @RequestParam("memberEmail") String email,
+                                           @RequestBody CommentDTO.CreateComment dto) {
+        return commentService.createComment(answerId, email, dto);
+    }
+
+/*
     @GetMapping("/api/comment/{problemId}/{memberStuNum}")
     public ResponseEntity<List<CommentDTO.ViewComment>> viewComment(@PathVariable Long problemId, @PathVariable String memberStuNum) {
         return ResponseEntity.ok().body(commentService.getViewComment(problemId, memberStuNum));
@@ -52,4 +62,6 @@ public class CommentController {
 
         return ResponseEntity.ok().body(myCommentList);
     }
+
+ */
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class ManageService {
-
+/*
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
     private final MemberRepository memberRepository;
@@ -74,4 +74,7 @@ public class ManageService {
 
         memberRepository.save(memberEntity);
     }
+
+
+ */
 }

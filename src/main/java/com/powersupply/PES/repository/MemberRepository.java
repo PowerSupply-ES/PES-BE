@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<MemberEntity, String> {
-    Optional<MemberEntity> findByMemberStuNum(String stuNum);
 
-    List<MemberEntity> findByMemberStatus(String state);
+    Optional<MemberEntity> findByMemberEmail(String email);
 }

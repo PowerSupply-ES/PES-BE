@@ -15,13 +15,11 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Table(name = "problem_table")
-public class ProblemEntity extends BaseEntity{
+public class ProblemEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long problemId;
     private String problemTitle;
-    private String problemContent;
     private int problemScore;
 
     @Builder.Default
