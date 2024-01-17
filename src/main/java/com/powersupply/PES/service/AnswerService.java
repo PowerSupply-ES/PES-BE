@@ -1,10 +1,8 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.AnswerDTO;
-import com.powersupply.PES.domain.entity.AnswerEntity;
-import com.powersupply.PES.domain.entity.MemberEntity;
-import com.powersupply.PES.domain.entity.ProblemEntity;
-import com.powersupply.PES.domain.entity.QuestionEntity;
+import com.powersupply.PES.domain.dto.CommentDTO;
+import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
@@ -29,6 +27,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,85 +41,112 @@ public class AnswerService {
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
 
-    // 채점 하기
+    // answer 만들기
     @Transactional
-    public ResponseEntity<?> submit(Long problemId, String memberStuNum, AnswerDTO.gitUrl dto) {
-        if(!JwtUtil.getMemberStuNumFromToken().equals(memberStuNum)) {
-            log.error("채점할 권한이 없는 유저 입니다.");
-            throw new AppException(ErrorCode.INVALID_INPUT,"채점할 권한이 없는 유저 입니다.");
-        }
+    public AnswerDTO.GetAnswerId createAnswer(String email, Long problemId) {
 
-        // 깃 주소 비교 로직
-        MemberEntity memberEntity = memberRepository.findByMemberStuNum(memberStuNum)
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
 
-        // 깃 주소가 해당 url로 시작 하지 않으면 AppException 실행
-        String gitUrl = dto.getAnswerUrl();
-        if(!gitUrl.startsWith(memberEntity.getMemberGitUrl())) {
-            log.error("제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
-            throw new AppException(ErrorCode.INVALID_INPUT,"제출된 깃 주소가 유저의 깃 주소와 일치하지 않습니다.");
+        // DB에 해당 email의 problemId의 answer이 있는지 확인
+        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(email, problemId).isPresent()) {
+            throw new AppException(ErrorCode.BAD_REQUEST,"해당 내용은 이미 있습니다.");
         }
 
-        Optional<AnswerEntity> optionalAnswerEntity = answerRepository.findByMemberEntity_MemberStuNumAndProblemEntity_ProblemId(memberStuNum,problemId);
-        AnswerEntity answerEntity;
+        // 무작위 2개의 질문 선택
+        List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId);
 
-        // answer table에 저장되어 있는지 판단
-        if (optionalAnswerEntity.isPresent()) {
-            // DB에 있을 경우
-            answerEntity = optionalAnswerEntity.get();
-
-            // 문제가 이미 채점 중일 경우 오류 전송
-            if(answerEntity.getAnswerState().equals("Grading")) {
-                return ResponseUtil.noContentResponse("이미 채점 중입니다.");
-            }
-
-            answerEntity.setAnswerUrl(gitUrl);
-            answerEntity.setAnswerState("Grading");
-        } else {
-            // 무작위 2개의 질문 선택
-            Pageable pageable = PageRequest.of(0, 2, Sort.unsorted());
-            List<QuestionEntity> questions = questionRepository.findByProblemEntity_ProblemId(problemId, pageable);
-
-            if (questions.size() < 2) {
-                log.error("문제에 대한 충분한 질문이 없습니다.");
-                throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
-            }
-
-            Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
-            if (problemEntityOptional.isEmpty()) {
-                log.error("문제 정보를 찾을 수 없습니다.");
-                throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
-            }
-            ProblemEntity problemEntity = problemEntityOptional.get();
-
-            // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
-            answerEntity = AnswerEntity.builder()
-                    .memberEntity(memberEntity)
-                    .problemEntity(problemEntity)
-                    .answerState("Grading")
-                    .answerUrl(gitUrl)
-                    .questionFst(questions.get(0))
-                    .questionSec(questions.get(1))
-                    .build();
+        // 질문이 2개보다 적은 경우
+        if (questions.size() < 2) {
+            log.error("문제에 대한 충분한 질문이 없습니다.");
+            throw new AppException(ErrorCode.INVALID_INPUT,"문제에 대한 충분한 질문이 없습니다.");
         }
+        Collections.shuffle(questions);
+        List<QuestionEntity> selectedQuestions = questions.subList(0, 2);
 
-        try {
-            Long answerId = answerRepository.save(answerEntity).getAnswerId();
-
-            // 채점 서버로 요청 전송
-            sendCode(answerId, gitUrl);
-            log.info("채점 서버로 전송");
-
-            // 성공 응답 반환
-            return ResponseEntity.ok().body("채점 요청을 성공적으로 보냈습니다.");
-        } catch (Exception e) {
-            // 예외 발생 시 에러 응답 반환
+        // 문제 연결을 위한 Entity 찾기
+        Optional<ProblemEntity> problemEntityOptional = problemRepository.findById(problemId);
+        if (problemEntityOptional.isEmpty()) {
             log.error("문제 정보를 찾을 수 없습니다.");
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("채점 요청 중 오류가 발생했습니다: " + e.getMessage());
+            throw new AppException(ErrorCode.NOT_FOUND, "문제 정보를 찾을 수 없습니다.");
         }
+        ProblemEntity problemEntity = problemEntityOptional.get();
+
+        // DB에 없을 경우 answer 생성 후 뮨제 상태 Grading으로 수정
+        AnswerEntity answerEntity = AnswerEntity.builder()
+                .memberEntity(memberEntity)
+                .problemEntity(problemEntity)
+                .answerState("test")
+                .questionFst(selectedQuestions.get(0))
+                .questionSec(selectedQuestions.get(1))
+                .build();
+        Long answerId = answerRepository.save(answerEntity).getAnswerId();
+
+        return AnswerDTO.GetAnswerId.builder()
+                .answerId(answerId)
+                .build();
     }
 
+    // 질문 답변 가져오기
+    public AnswerDTO.GetAnswer getAnswer(Long answerId) {
+        AnswerEntity answerEntity = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
+
+        return AnswerDTO.GetAnswer.builder()
+                .questionContentFst(answerEntity.getQuestionFst().getQuestionContent())
+                .questionContentSec(answerEntity.getQuestionSec().getQuestionContent())
+                .answerFst(answerEntity.getAnswerFst())
+                .answerSec(answerEntity.getAnswerSec())
+                .build();
+    }
+
+    // 답변 하기
+    public void postAnswer(Long answerId, String email, AnswerDTO.AnswerContent dto) {
+        AnswerEntity answerEntity = answerRepository.findById(answerId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
+
+        if(!email.equals(answerEntity.getMemberEntity().getMemberEmail())) {
+            throw new AppException(ErrorCode.FORBIDDEN,"email이 다름");
+        }
+
+        if (dto.getAnswerFst() == null || dto.getAnswerFst().isEmpty() ||
+                dto.getAnswerSec() == null || dto.getAnswerSec().isEmpty()) {
+            throw new AppException(ErrorCode.BAD_REQUEST, "답변 내용 중 하나 또는 둘 다 비어 있음");
+        }
+
+        answerEntity.setAnswerFst(dto.getAnswerFst());
+        answerEntity.setAnswerSec(dto.getAnswerSec());
+
+        answerRepository.save(answerEntity);
+    }
+
+    // answerList 가져오기
+    @Transactional
+    public ResponseEntity<?> getAnswerList(Long problemId) {
+        // problemId 조회
+        ProblemEntity problemEntity = problemRepository.findById(problemId)
+                .orElseThrow(()-> new AppException(ErrorCode.NOT_FOUND,"problemId가 잘못 됨"));
+
+        // answerEntity 가져오기
+        List<AnswerEntity> answerEntityList= answerRepository.findAllByProblemEntity_ProblemId(problemId);
+
+        if(answerEntityList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<AnswerDTO.GetAnswerList> answerLists = new ArrayList<>();
+
+        for(AnswerEntity answerEntity: answerEntityList) {
+            AnswerDTO.GetAnswerList answerList = AnswerDTO.GetAnswerList.builder()
+                    .answerId(answerEntity.getAnswerId())
+                    .memberEmail(answerEntity.getMemberEntity().getMemberEmail())
+                    .commentCount(answerEntity.getCommentEntities().size())
+                    .build();
+            answerLists.add(answerList);
+        }
+        return ResponseEntity.ok(answerLists);
+    }
+/*
     // 채점 서버로 요청 전송 하기
     private void sendCode(Long answerId, String gitUrl) throws IOException {
         String requestURL = "http://www.pes23.com:5000/api/v2/submit";
@@ -253,4 +279,7 @@ public class AnswerService {
         }
         return solveLists;
     }
+
+
+ */
 }

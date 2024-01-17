@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
-    List<CommentEntity> findByAnswerEntity(AnswerEntity answerEntity);
+    Optional<List<CommentEntity>> findByAnswerEntity_AnswerId(Long answerId);
 
-    Optional<CommentEntity> findByAnswerEntityAndMemberEntity_MemberStuNum(AnswerEntity answerEntity, String stuNum);
+//    Optional<CommentEntity> findByAnswerEntityAndMemberEntity_MemberStuNum(AnswerEntity answerEntity, String stuNum);
 
-    List<CommentEntity> findByMemberEntity_MemberStuNum(String memberStuNum);
+//    List<CommentEntity> findByMemberEntity_MemberStuNum(String memberStuNum);
 }

@@ -10,16 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class ManageController {
-
+/*
     private final ManageService manageService;
-
-    @GetMapping("/management")
-    public String getManagePage() {
-        return "management";
-    }
 
     // 질문 만들기
     @PostMapping("/api/manage/questions/{problemId}")
@@ -40,4 +35,6 @@ public class ManageController {
         manageService.patchMember(memberStuNum, dto);
         return ResponseUtil.successResponse("성공적으로 수정하였습니다.");
     }
+
+ */
 }

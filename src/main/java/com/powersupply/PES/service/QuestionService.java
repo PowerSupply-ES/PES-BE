@@ -29,7 +29,6 @@ public class QuestionService {
             QuestionDTO.QuestionList questionList = QuestionDTO.QuestionList.builder()
                     .questionId(questionEntity.getQuestionId())
                     .questionContent(questionEntity.getQuestionContent())
-                    .questionDifficulty(questionEntity.getQuestionDifficulty())
                     .updateTime(updateTime)
                     .build();
             questionLists.add(questionList);

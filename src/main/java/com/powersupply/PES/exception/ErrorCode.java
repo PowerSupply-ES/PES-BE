@@ -10,7 +10,9 @@ public enum ErrorCode {
     USERNAME_DUPLICATED(HttpStatus.BAD_REQUEST, ""),
     INVALID_INPUT(HttpStatus.UNAUTHORIZED,""),
     USER_NOT_FOUND(HttpStatus.NOT_FOUND,""),
-    NOT_FOUND(HttpStatus.NOT_FOUND,"");
+    NOT_FOUND(HttpStatus.NOT_FOUND,""),
+    FORBIDDEN(HttpStatus.FORBIDDEN,""),
+    BAD_REQUEST(HttpStatus.BAD_REQUEST,"");
 
     private HttpStatus httpStatus;
     private String message;

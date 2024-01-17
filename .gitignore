@@ -6,7 +6,6 @@ build/
 !**/src/test/**/build/
 application.properties
 keystore.jks
-resources/static/js/config.js
 
 ### STS ###
 .apt_generated
@@ -40,3 +39,4 @@ out/
 .vscode/
 
 src/main/resources/static/js/config.js
+/src/main/resources/ssl/**

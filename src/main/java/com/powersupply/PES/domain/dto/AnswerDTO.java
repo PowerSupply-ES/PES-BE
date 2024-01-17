@@ -6,8 +6,7 @@ import lombok.Getter;
 public class AnswerDTO {
 
     @Getter
-    @Builder
-    public static class answerRequest {
+    public static class AnswerContent {
         private String answerFst;
         private String answerSec;
     }
@@ -30,5 +29,28 @@ public class AnswerDTO {
     public static class returnSubmit {
         private Long answerId;
         private int answerState;
+    }
+
+    @Builder
+    @Getter
+    public static class GetAnswerId {
+        private Long answerId;
+    }
+
+    @Builder
+    @Getter
+    public static class GetAnswer {
+        private String questionContentFst;
+        private String questionContentSec;
+        private String answerFst;
+        private String answerSec;
+    }
+
+    @Builder
+    @Getter
+    public static class GetAnswerList {
+        private Long answerId;
+        private String memberEmail;
+        private int commentCount;
     }
 }
