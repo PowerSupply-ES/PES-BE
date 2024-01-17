@@ -45,4 +45,12 @@ public class AnswerDTO {
         private String answerFst;
         private String answerSec;
     }
+
+    @Builder
+    @Getter
+    public static class GetAnswerList {
+        private Long answerId;
+        private String memberEmail;
+        private int commentCount;
+    }
 }

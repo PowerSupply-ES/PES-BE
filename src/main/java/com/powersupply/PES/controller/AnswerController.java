@@ -35,6 +35,12 @@ public class AnswerController {
         return ResponseUtil.successResponse("");
     }
 
+    // 풀이 보기
+    @GetMapping("/api/answerlist/{problemId}")
+    public ResponseEntity<?> getAnswerList(@PathVariable Long problemId) {
+        return answerService.getAnswerList(problemId);
+    }
+
 /*
     // 채점 하기
     @PostMapping("/api/submit/{problemId}/{memberStuNum}")

@@ -1,10 +1,8 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.AnswerDTO;
-import com.powersupply.PES.domain.entity.AnswerEntity;
-import com.powersupply.PES.domain.entity.MemberEntity;
-import com.powersupply.PES.domain.entity.ProblemEntity;
-import com.powersupply.PES.domain.entity.QuestionEntity;
+import com.powersupply.PES.domain.dto.CommentDTO;
+import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
@@ -120,6 +118,33 @@ public class AnswerService {
         answerEntity.setAnswerSec(dto.getAnswerSec());
 
         answerRepository.save(answerEntity);
+    }
+
+    // answerList 가져오기
+    @Transactional
+    public ResponseEntity<?> getAnswerList(Long problemId) {
+        // problemId 조회
+        ProblemEntity problemEntity = problemRepository.findById(problemId)
+                .orElseThrow(()-> new AppException(ErrorCode.NOT_FOUND,"problemId가 잘못 됨"));
+
+        // answerEntity 가져오기
+        List<AnswerEntity> answerEntityList= answerRepository.findAllByProblemEntity_ProblemId(problemId);
+
+        if(answerEntityList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<AnswerDTO.GetAnswerList> answerLists = new ArrayList<>();
+
+        for(AnswerEntity answerEntity: answerEntityList) {
+            AnswerDTO.GetAnswerList answerList = AnswerDTO.GetAnswerList.builder()
+                    .answerId(answerEntity.getAnswerId())
+                    .memberEmail(answerEntity.getMemberEntity().getMemberEmail())
+                    .commentCount(answerEntity.getCommentEntities().size())
+                    .build();
+            answerLists.add(answerList);
+        }
+        return ResponseEntity.ok(answerLists);
     }
 /*
     // 채점 서버로 요청 전송 하기
