@@ -86,11 +86,9 @@ public class MemberService {
 
 
     // 마이페이지 가져오기
-    public MemberDTO.MemberMyPageResponse getMyPage(String email) {
-//        MemberEntity memberEntity = memberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
-            .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
+    public MemberDTO.MemberMyPageResponse getMyPage() {
+        MemberEntity memberEntity = memberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
 
         return MemberDTO.MemberMyPageResponse.builder()
                 .memberEmail(memberEntity.getMemberEmail())
@@ -103,8 +101,8 @@ public class MemberService {
                 .build();
     }
 
-    public MemberDTO.NameScoreResponse expVar(String email) {
-//        String email = JwtUtil.getMemberEmailFromToken();
+    public MemberDTO.NameScoreResponse expVar() {
+        String email = JwtUtil.getMemberEmailFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));

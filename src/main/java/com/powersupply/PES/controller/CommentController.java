@@ -26,9 +26,8 @@ public class CommentController {
     // 댓글 달기
     @PostMapping("/api/comment/{answerId}")
     public ResponseEntity<?> createComment(@PathVariable Long answerId,
-                                           @RequestParam("memberEmail") String email,
                                            @RequestBody CommentDTO.CreateComment dto) {
-        return commentService.createComment(answerId, email, dto);
+        return commentService.createComment(answerId, dto);
     }
 
 /*

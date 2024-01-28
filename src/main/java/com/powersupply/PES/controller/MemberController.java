@@ -47,9 +47,9 @@ public class MemberController {
 
     // 마이페이지
     @GetMapping("/api/mypage")
-    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo(@RequestParam("memberEmail") String email) {
+    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
-        return ResponseEntity.ok().body(memberService.getMyPage(email));
+        return ResponseEntity.ok().body(memberService.getMyPage());
     }
 
     // 비밀번호 찾기
@@ -62,8 +62,8 @@ public class MemberController {
 
     // 상단 사용자 정보
     @GetMapping("/api/exp")
-    public ResponseEntity<MemberDTO.NameScoreResponse> myUser(@RequestParam("memberEmail") String email) {
-        return ResponseEntity.ok().body(memberService.expVar(email));
+    public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
+        return ResponseEntity.ok().body(memberService.expVar());
     }
 
     // 랭킹 확인하기

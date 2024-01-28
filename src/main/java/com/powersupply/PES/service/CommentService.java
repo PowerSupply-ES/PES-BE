@@ -9,6 +9,7 @@ import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,8 @@ public class CommentService {
     }
 
     // 댓글 달기
-    public ResponseEntity<?> createComment(Long answerId, String email, CommentDTO.CreateComment dto) {
+    public ResponseEntity<?> createComment(Long answerId, CommentDTO.CreateComment dto) {
+        String email = JwtUtil.getMemberEmailFromToken();
 
         // member 조회
         MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
