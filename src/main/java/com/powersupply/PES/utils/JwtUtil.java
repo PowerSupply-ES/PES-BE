@@ -36,10 +36,9 @@ public class JwtUtil {
                 .getBody().get("memberStatus", String.class);
     }
 
-    public static String createToken(String memberEmail, String memberStatus, String secretKey, Long expireTimeMs) {
+    public static String createToken(String memberEmail, String secretKey, Long expireTimeMs) {
         Claims claims = Jwts.claims();
         claims.put("memberEmail", memberEmail);
-        claims.put("memberStatus", memberStatus);
 
         return Jwts.builder()
                 .setClaims(claims)

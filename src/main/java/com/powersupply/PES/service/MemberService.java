@@ -76,7 +76,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberEmail(), secretKey, expireTimeMs);
     }
 
 //    public MemberEntity findByMemberEmail(String memberEmail) {
