@@ -7,6 +7,7 @@ import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.ProblemRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,9 @@ public class ProblemService {
     private final AnswerRepository answerRepository;
 
     // 문제 가져오기
-    public ResponseEntity<?> getProblemList(String email) {
+    public ResponseEntity<?> getProblemList() {
 
-//        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberEmailFromToken();
 
         List<Object[]> results = problemRepository.findAllProblemsWithAnswers(email);
         List<ProblemDTO.ProblemResponse> problemResponseList = new ArrayList<>();
