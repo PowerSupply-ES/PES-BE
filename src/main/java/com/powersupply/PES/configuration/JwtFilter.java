@@ -86,28 +86,28 @@ public class JwtFilter extends OncePerRequestFilter {
         // 멤버 학번 추출
         String memberEmail = JwtUtil.getMemberEmail(actualToken, secretKey);
 
-//        // 상태에 따른 권한 부여
-//        String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
-//        log.info("멤버 상태 : {}", memberStatus);
-//        SimpleGrantedAuthority authority;
-//
-//        switch (memberStatus) {
-//            case "신입생":
-//                authority = new SimpleGrantedAuthority("ROLE_NEW_STUDENT");
-//                break;
-//            case "재학생":
-//                authority = new SimpleGrantedAuthority("ROLE_REGULAR_STUDENT");
-//                break;
-//            case "관리자":
-//                authority = new SimpleGrantedAuthority("ROLE_MANAGER");
-//                break;
-//            default:
-//                authority = new SimpleGrantedAuthority("ROLE_USER");
-//                break;
-//        }
+        // 상태에 따른 권한 부여
+        String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
+        log.info("멤버 상태 : {}", memberStatus);
+        SimpleGrantedAuthority authority;
+
+        switch (memberStatus) {
+            case "신입생":
+                authority = new SimpleGrantedAuthority("ROLE_NEW_STUDENT");
+                break;
+            case "재학생":
+                authority = new SimpleGrantedAuthority("ROLE_REGULAR_STUDENT");
+                break;
+            case "관리자":
+                authority = new SimpleGrantedAuthority("ROLE_MANAGER");
+                break;
+            default:
+                authority = new SimpleGrantedAuthority("ROLE_USER");
+                break;
+        }
 
         // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail, null, List.of(new SimpleGrantedAuthority("memberEmail")));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail, null, List.of(authority));
 
         // 여기에 로깅 추가
         log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());
