@@ -45,6 +45,7 @@ public class MemberDTO {
     @Builder
     public static class NameScoreResponse {
         private String memberName;
+        private String memberStatus;
         private int memberScore;
     }
 

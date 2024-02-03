@@ -45,7 +45,6 @@ public class MemberService {
                 .memberEmail(email)
                 .memberName(name)
                 .memberPw(encoder.encode(pw))
-                .memberBaekId(dto.getMemberBaekId())
                 .memberGen(dto.getMemberGen())
                 .memberMajor(dto.getMemberMajor())
                 .memberPhone(dto.getMemberPhone())
@@ -92,7 +91,6 @@ public class MemberService {
 
         return MemberDTO.MemberMyPageResponse.builder()
                 .memberEmail(memberEntity.getMemberEmail())
-                .memberBaekId(memberEntity.getMemberBaekId())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
                 .memberStatus(memberEntity.getMemberStatus())
@@ -111,6 +109,7 @@ public class MemberService {
 
         return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
+                .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
                 .build();
     }
