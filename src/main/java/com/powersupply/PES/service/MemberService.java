@@ -45,11 +45,10 @@ public class MemberService {
                 .memberEmail(email)
                 .memberName(name)
                 .memberPw(encoder.encode(pw))
-                .memberBaekId(dto.getMemberBaekId())
                 .memberGen(dto.getMemberGen())
                 .memberMajor(dto.getMemberMajor())
                 .memberPhone(dto.getMemberPhone())
-                .memberStatus("student")
+                .memberStatus("신입생")
                 .build();
         memberRepository.save(memberEntity);
 
@@ -76,7 +75,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberEmail(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
 //    public MemberEntity findByMemberEmail(String memberEmail) {
@@ -92,7 +91,6 @@ public class MemberService {
 
         return MemberDTO.MemberMyPageResponse.builder()
                 .memberEmail(memberEntity.getMemberEmail())
-                .memberBaekId(memberEntity.getMemberBaekId())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
                 .memberStatus(memberEntity.getMemberStatus())
@@ -111,6 +109,7 @@ public class MemberService {
 
         return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
+                .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
                 .build();
     }
