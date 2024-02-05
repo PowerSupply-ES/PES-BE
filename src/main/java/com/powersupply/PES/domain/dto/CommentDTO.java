@@ -51,5 +51,6 @@ public class CommentDTO {
     @Getter
     public static class CreateComment {
         private String comment;
+        private int commentPassFail;
     }
 }
