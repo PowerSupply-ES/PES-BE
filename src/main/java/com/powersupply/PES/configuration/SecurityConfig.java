@@ -44,8 +44,8 @@ public class SecurityConfig {
 //                .antMatchers("/api/comment/**","/api/commentlist/**").hasRole("REGULAR_STUDENT")
 //                .antMatchers(HttpMethod.GET, "/api/questions/**").hasRole("REGULAR_STUDENT")
 //                .antMatchers("/api/manage/**","/api/questions/**").hasRole("MANAGER")
-//                .anyRequest().hasRole("USER")
-                .anyRequest().authenticated()
+                .antMatchers(HttpMethod.POST,"/api/comment/**").hasRole("REGULAR_STUDENT")
+                .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -69,20 +69,20 @@ public class SecurityConfig {
         return source;
     }
 
-//    @Bean
-//    public SecurityExpressionHandler customWebSecurityExpressionHandler() {
-//        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
-//        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
-//        return defaultWebSecurityExpressionHandler;
-//    }
+    @Bean
+    public SecurityExpressionHandler customWebSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler defaultWebSecurityExpressionHandler = new DefaultWebSecurityExpressionHandler();
+        defaultWebSecurityExpressionHandler.setRoleHierarchy(roleHierarchy());
+        return defaultWebSecurityExpressionHandler;
+    }
 
-//    @Bean
-//    public RoleHierarchy roleHierarchy() {
-//        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-//        //roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
-//        String hierarchy =  "ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER\n" +
-//                "ROLE_NEW_STUDENT > ROLE_USER";
-//        roleHierarchy.setHierarchy(hierarchy);
-//        return roleHierarchy;
-//    }
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        //roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
+        String hierarchy =  "ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER\n" +
+                "ROLE_NEW_STUDENT > ROLE_USER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
 }
