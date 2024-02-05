@@ -86,7 +86,7 @@ public class CommentService {
         // Comment 생성
         CommentEntity newComment = CommentEntity.builder()
             .commentContent(dto.getComment())
-            .commentPassFail(1)
+            .commentPassFail(dto.getCommentPassFail())
             .memberEntity(memberEntity) // 또는 다른 멤버 엔티티를 참조해야 할 수도 있습니다
             .answerEntity(answerEntity)
             .build();
