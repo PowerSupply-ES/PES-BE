@@ -11,6 +11,7 @@ import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,7 +93,7 @@ public class CommentService {
             .build();
         commentRepository.save(newComment);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 /*
 
