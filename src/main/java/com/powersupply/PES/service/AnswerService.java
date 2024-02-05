@@ -5,10 +5,7 @@ import com.powersupply.PES.domain.dto.CommentDTO;
 import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
-import com.powersupply.PES.repository.AnswerRepository;
-import com.powersupply.PES.repository.MemberRepository;
-import com.powersupply.PES.repository.ProblemRepository;
-import com.powersupply.PES.repository.QuestionRepository;
+import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +37,7 @@ public class AnswerService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
+    private final CommentRepository commentRepository;
 
     // answer 만들기
     @Transactional
@@ -114,6 +112,13 @@ public class AnswerService {
         if (dto.getAnswerFst() == null || dto.getAnswerFst().isEmpty() ||
                 dto.getAnswerSec() == null || dto.getAnswerSec().isEmpty()) {
             throw new AppException(ErrorCode.BAD_REQUEST, "답변 내용 중 하나 또는 둘 다 비어 있음");
+        }
+
+        Optional<List<CommentEntity>> commentEntitiesOptional = commentRepository.findByAnswerEntity_AnswerId(answerId);
+
+        // 댓글이 있는 경우
+        if (commentEntitiesOptional.isPresent() && !commentEntitiesOptional.get().isEmpty()) {
+            throw new AppException(ErrorCode.BAD_REQUEST, "이미 댓글이 있어 수정 불가능");
         }
 
         answerEntity.setAnswerFst(dto.getAnswerFst());
