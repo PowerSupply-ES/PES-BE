@@ -118,6 +118,7 @@ public class AnswerService {
 
         answerEntity.setAnswerFst(dto.getAnswerFst());
         answerEntity.setAnswerSec(dto.getAnswerSec());
+        answerEntity.setAnswerState("comment");
 
         answerRepository.save(answerEntity);
     }
