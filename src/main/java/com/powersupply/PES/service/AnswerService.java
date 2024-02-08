@@ -95,6 +95,7 @@ public class AnswerService {
                 .questionContentSec(answerEntity.getQuestionSec().getQuestionContent())
                 .answerFst(answerEntity.getAnswerFst())
                 .answerSec(answerEntity.getAnswerSec())
+                .answerState(answerEntity.getAnswerState())
                 .build();
     }
 

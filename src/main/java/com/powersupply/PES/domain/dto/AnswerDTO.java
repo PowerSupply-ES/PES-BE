@@ -44,6 +44,7 @@ public class AnswerDTO {
         private String questionContentSec;
         private String answerFst;
         private String answerSec;
+        private String answerState;
     }
 
     @Builder
