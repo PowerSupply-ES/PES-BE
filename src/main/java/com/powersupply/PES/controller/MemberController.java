@@ -59,6 +59,13 @@ public class MemberController {
         return memberService.getMySolve();
     }
 
+    // 마이페이지(나의 피드백)
+    @GetMapping("/api/mypage/myfeedback")
+    public ResponseEntity<?> getMyFeedbackInfo() {
+
+        return memberService.getMyFeedback();
+    }
+
     // 비밀번호 찾기
 //    @PostMapping("/api/finduser")
 //    public ResponseEntity<?> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {

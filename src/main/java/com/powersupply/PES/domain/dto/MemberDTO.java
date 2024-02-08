@@ -67,4 +67,14 @@ public class MemberDTO {
         private String answerState;
         private int finalScore;
     }
+
+    @Getter
+    @Builder
+    public static class MemberMyFeedbackResponse {
+        private Long answerId;
+        private int memberGen;
+        private String memberName;
+        private int commentPassFail;
+        private String commentContent;
+    }
 }
