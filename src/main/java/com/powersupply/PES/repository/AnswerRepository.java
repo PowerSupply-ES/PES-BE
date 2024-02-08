@@ -18,4 +18,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     Integer sumFinalScoreByMemberEmail(@Param("email") String email);
 
     Optional<AnswerEntity> findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(String email, Long problemId);
+
+    List<AnswerEntity> findAllByMemberEntity_MemberEmail(String email);
 }

@@ -52,6 +52,13 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.getMyPage());
     }
 
+    // 마이페이지(내가 푼 문제)
+    @GetMapping("/api/mypage/mysolve")
+    public ResponseEntity<?> getMySolveInfo() {
+
+        return memberService.getMySolve();
+    }
+
     // 비밀번호 찾기
 //    @PostMapping("/api/finduser")
 //    public ResponseEntity<?> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {

@@ -56,4 +56,15 @@ public class MemberDTO {
         private int memberScore;
         private String memberStatus;
     }
+
+    @Getter
+    @Builder
+    public static class MemberMySolveResponse {
+        private Long problemId;
+        private String problemTitle;
+        private int problemScore;
+        private Long answerId;
+        private String answerState;
+        private int finalScore;
+    }
 }
