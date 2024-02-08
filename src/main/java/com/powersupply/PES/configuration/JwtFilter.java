@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -24,12 +25,25 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final String secretKey;
 
+    // 인증이 필요없는 경로 URL 목록
+    private final List<String> skipUrls = Arrays.asList("/api/signin", "/api/signup", "/api/finduser");
+
+    // 인증이 필요 없는 GET 요청의 URL 목록
+    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**");
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
+        String method = request.getMethod();
 
-        List<String> skipUrls = Arrays.asList("/signin", "/signup", "/finduser", "/api/signin", "/api/signup", "/api/finduser");
+        // 특정 GET 요청을 확인하고 건너뛰기
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+        if ("GET".equals(method) && skipGetUrls.stream().anyMatch(uri -> pathMatcher.match(uri, requestURI))) {
+            log.info("인증 필요 없음 : {}", requestURI);
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         // 인증이 필요없는 경로는 바로 통과
         if (skipUrls.contains(requestURI)) {
@@ -70,7 +84,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 멤버 학번 추출
-        String memberStuNum = JwtUtil.getMemberEmail(actualToken, secretKey);
+        String memberEmail = JwtUtil.getMemberEmail(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
         String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
@@ -93,7 +107,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberStuNum, null, List.of(authority));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail, null, List.of(authority));
 
         // 여기에 로깅 추가
         log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());

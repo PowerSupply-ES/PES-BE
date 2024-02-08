@@ -9,7 +9,9 @@ import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,7 +61,9 @@ public class CommentService {
     }
 
     // 댓글 달기
-    public ResponseEntity<?> createComment(Long answerId, String email, CommentDTO.CreateComment dto) {
+    @Transactional
+    public ResponseEntity<?> createComment(Long answerId, CommentDTO.CreateComment dto) {
+        String email = JwtUtil.getMemberEmailFromToken();
 
         // member 조회
         MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
@@ -74,23 +78,45 @@ public class CommentService {
             throw new AppException(ErrorCode.FORBIDDEN,"자신의 답변에는 댓글을 달 수 없습니다.");
         }
 
-        // 댓글 리스트가 2개 이상인 경우 에러
+        // 댓글 리스트 조회
         List<CommentEntity> commentEntities = commentRepository.findByAnswerEntity_AnswerId(answerId)
                 .orElse(new ArrayList<>());
+
+        // 댓글 리스트가 2개 이상인 경우 에러 처리
         if (commentEntities.size() >= 2) {
             throw new AppException(ErrorCode.FORBIDDEN, "이미 최대 댓글 수에 도달했습니다.");
         }
 
         // Comment 생성
         CommentEntity newComment = CommentEntity.builder()
-            .commentContent(dto.getComment())
-            .commentPassFail(1)
-            .memberEntity(memberEntity) // 또는 다른 멤버 엔티티를 참조해야 할 수도 있습니다
-            .answerEntity(answerEntity)
-            .build();
+                .commentContent(dto.getComment())
+                .commentPassFail(dto.getCommentPassFail())
+                .memberEntity(memberEntity) // 또는 다른 멤버 엔티티를 참조해야 할 수도 있습니다
+                .answerEntity(answerEntity)
+                .build();
+
+        // 댓글 리스트가 1개인 경우 -> pass/fail 지정
+        if (commentEntities.size() == 1) {
+            CommentEntity existingComment = commentEntities.get(0);
+
+            if (email.equals(existingComment.getMemberEntity().getMemberEmail())) {
+                throw new AppException(ErrorCode.BAD_REQUEST, "이미 해당 email의 댓글이 있습니다.");
+            }
+
+            int existingCommentPassFail = existingComment.getCommentPassFail();
+            int newCommentPassFail = newComment.getCommentPassFail();
+
+            if (existingCommentPassFail == 0 || newCommentPassFail == 0) {
+                answerEntity.setAnswerState("fail");
+            } else {
+                // 둘 다 pass (1) 인 경우
+                answerEntity.setAnswerState("pass");
+            }
+            answerRepository.save(answerEntity);
+        }
         commentRepository.save(newComment);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 /*
 
