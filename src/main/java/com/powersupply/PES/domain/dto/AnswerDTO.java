@@ -51,7 +51,9 @@ public class AnswerDTO {
     @Getter
     public static class GetAnswerList {
         private Long answerId;
-        private String memberEmail;
+        private int memberGen;
+        private String memberName;
         private int commentCount;
+        private String answerState;
     }
 }
