@@ -46,7 +46,7 @@ public class MemberController {
     }
 
     // 마이페이지
-    @GetMapping("/api/mypage")
+    @GetMapping("/api/mypage/information")
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
