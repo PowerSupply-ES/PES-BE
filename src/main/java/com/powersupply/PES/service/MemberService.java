@@ -1,16 +1,24 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.MemberDTO;
+import com.powersupply.PES.domain.entity.AnswerEntity;
+import com.powersupply.PES.domain.entity.CommentEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
+import com.powersupply.PES.repository.CommentRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +26,7 @@ public class MemberService {
 
     private final MemberRepository memberRepository;
     private final AnswerRepository answerRepository;
+    private final CommentRepository commentRepository;
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.secret}")
     private String secretKey;
@@ -112,6 +121,59 @@ public class MemberService {
                 .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
                 .build();
+    }
+
+    // 마이페이지(내가 푼 문제)
+    @Transactional
+    public ResponseEntity<?> getMySolve() {
+        String email = JwtUtil.getMemberEmailFromToken();
+
+        List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberEmail(email);
+
+        if (answerEntityList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<MemberDTO.MemberMySolveResponse> mySolveResponseList = new ArrayList<>();
+
+        for (AnswerEntity answerEntity: answerEntityList) {
+            MemberDTO.MemberMySolveResponse mySolveResponse = MemberDTO.MemberMySolveResponse.builder()
+                    .problemId(answerEntity.getProblemEntity().getProblemId())
+                    .problemTitle(answerEntity.getProblemEntity().getProblemTitle())
+                    .problemScore(answerEntity.getProblemEntity().getProblemScore())
+                    .answerId(answerEntity.getAnswerId())
+                    .answerState(answerEntity.getAnswerState())
+                    .finalScore(answerEntity.getFinalScore())
+                    .build();
+            mySolveResponseList.add(mySolveResponse);
+        }
+        return ResponseEntity.ok().body(mySolveResponseList);
+    }
+
+    // 마이페이지(나의 피드백)
+    @Transactional
+    public ResponseEntity<?> getMyFeedback() {
+        String email = JwtUtil.getMemberEmailFromToken();
+
+        List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberEmail(email);
+
+        if (commentEntityList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
+        List<MemberDTO.MemberMyFeedbackResponse> memberMyFeedbackResponseList = new ArrayList<>();
+
+        for (CommentEntity commentEntity : commentEntityList) {
+            MemberDTO.MemberMyFeedbackResponse myFeedbackResponse = MemberDTO.MemberMyFeedbackResponse.builder()
+                    .answerId(commentEntity.getAnswerEntity().getAnswerId())
+                    .memberGen(commentEntity.getAnswerEntity().getMemberEntity().getMemberGen())
+                    .memberName(commentEntity.getAnswerEntity().getMemberEntity().getMemberName())
+                    .commentPassFail(commentEntity.getCommentPassFail())
+                    .commentContent(commentEntity.getCommentContent())
+                    .build();
+            memberMyFeedbackResponseList.add(myFeedbackResponse);
+        }
+        return ResponseEntity.ok().body(memberMyFeedbackResponseList);
     }
 
 //    public void findUser(MemberDTO.MemberFindPwRequest dto) {

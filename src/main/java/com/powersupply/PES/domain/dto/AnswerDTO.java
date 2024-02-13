@@ -44,13 +44,16 @@ public class AnswerDTO {
         private String questionContentSec;
         private String answerFst;
         private String answerSec;
+        private String answerState;
     }
 
     @Builder
     @Getter
     public static class GetAnswerList {
         private Long answerId;
-        private String memberEmail;
+        private int memberGen;
+        private String memberName;
         private int commentCount;
+        private String answerState;
     }
 }

@@ -46,10 +46,24 @@ public class MemberController {
     }
 
     // 마이페이지
-    @GetMapping("/api/mypage")
+    @GetMapping("/api/mypage/information")
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
+    }
+
+    // 마이페이지(내가 푼 문제)
+    @GetMapping("/api/mypage/mysolve")
+    public ResponseEntity<?> getMySolveInfo() {
+
+        return memberService.getMySolve();
+    }
+
+    // 마이페이지(나의 피드백)
+    @GetMapping("/api/mypage/myfeedback")
+    public ResponseEntity<?> getMyFeedbackInfo() {
+
+        return memberService.getMyFeedback();
     }
 
     // 비밀번호 찾기

@@ -41,18 +41,22 @@ public class ProblemService {
 
             Long answerId = null;
             String answerState = null;
+            Integer answerScore = null;
 
             if (answerEntity != null) {
                 answerId = answerEntity.getAnswerId();
                 answerState = answerEntity.getAnswerState();
+                answerScore = answerEntity.getFinalScore();
             }
 
             ProblemDTO.ProblemResponse problemResponse = ProblemDTO.ProblemResponse.builder()
                     .problemId(problemEntity.getProblemId())
                     .problemTitle(problemEntity.getProblemTitle())
                     .problemScore(problemEntity.getProblemScore())
+                    .answerCount(problemRepository.countStudentsWhoSolvedProblemWithStatus(problemEntity,"신입생"))
                     .answerId(answerId)
                     .answerState(answerState)
+                    .myScore(answerScore)
                     .build();
             problemResponseList.add(problemResponse);
         }

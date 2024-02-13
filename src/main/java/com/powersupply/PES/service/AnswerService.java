@@ -95,6 +95,7 @@ public class AnswerService {
                 .questionContentSec(answerEntity.getQuestionSec().getQuestionContent())
                 .answerFst(answerEntity.getAnswerFst())
                 .answerSec(answerEntity.getAnswerSec())
+                .answerState(answerEntity.getAnswerState())
                 .build();
     }
 
@@ -147,8 +148,10 @@ public class AnswerService {
         for(AnswerEntity answerEntity: answerEntityList) {
             AnswerDTO.GetAnswerList answerList = AnswerDTO.GetAnswerList.builder()
                     .answerId(answerEntity.getAnswerId())
-                    .memberEmail(answerEntity.getMemberEntity().getMemberEmail())
+                    .memberGen(answerEntity.getMemberEntity().getMemberGen())
+                    .memberName(answerEntity.getMemberEntity().getMemberName())
                     .commentCount(answerEntity.getCommentEntities().size())
+                    .answerState(answerEntity.getAnswerState())
                     .build();
             answerLists.add(answerList);
         }

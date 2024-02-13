@@ -54,6 +54,7 @@ public class CommentService {
                     .writerName(commentEntity.getMemberEntity().getMemberName())
                     .writerEmail(commentEntity.getMemberEntity().getMemberEmail())
                     .commentContent(commentEntity.getCommentContent())
+                    .commentPassFail(commentEntity.getCommentPassFail())
                     .build();
             getCommentList.add(getComment);
         }

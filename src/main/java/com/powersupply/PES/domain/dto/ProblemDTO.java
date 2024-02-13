@@ -13,8 +13,10 @@ public class ProblemDTO {
         private Long problemId;
         private String problemTitle;
         private int problemScore;
+        private int answerCount;
         private Long answerId;
         private String answerState;
+        private Integer myScore;
     }
 
     @Getter
