@@ -46,6 +46,7 @@ public class CommentDTO {
         private String writerEmail;
         private String writerName;
         private String commentContent;
+        private int commentPassFail;
     }
 
     @Getter
