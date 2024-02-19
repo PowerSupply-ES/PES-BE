@@ -106,13 +106,21 @@ public class CommentService {
 
             int existingCommentPassFail = existingComment.getCommentPassFail();
             int newCommentPassFail = newComment.getCommentPassFail();
+            int score = answerEntity.getProblemEntity().getProblemScore();
 
-            if (existingCommentPassFail == 0 || newCommentPassFail == 0) {
+            if (existingCommentPassFail == 0 && newCommentPassFail == 0) {
+                // 둘 다 fail일 경우
+                score *= 0.4;
                 answerEntity.setAnswerState("fail");
-            } else {
+            } else if (existingCommentPassFail == 1 && newCommentPassFail == 1){
                 // 둘 다 pass (1) 인 경우
                 answerEntity.setAnswerState("pass");
+            } else {
+                // 둘 중 1개가 pass (1) 인 경우
+                score *= 0.7;
+                answerEntity.setAnswerState("pass");
             }
+            answerEntity.setFinalScore(score);
             answerRepository.save(answerEntity);
         }
         commentRepository.save(newComment);
