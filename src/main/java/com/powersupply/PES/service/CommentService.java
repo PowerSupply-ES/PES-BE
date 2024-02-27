@@ -114,11 +114,11 @@ public class CommentService {
                 answerEntity.setAnswerState("fail");
             } else if (existingCommentPassFail == 1 && newCommentPassFail == 1){
                 // 둘 다 pass (1) 인 경우
-                answerEntity.setAnswerState("pass");
+                answerEntity.setAnswerState("success");
             } else {
                 // 둘 중 1개가 pass (1) 인 경우
                 score *= 0.7;
-                answerEntity.setAnswerState("pass");
+                answerEntity.setAnswerState("success");
             }
             answerEntity.setFinalScore(score);
             answerRepository.save(answerEntity);
