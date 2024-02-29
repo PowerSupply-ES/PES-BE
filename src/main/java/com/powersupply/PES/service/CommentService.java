@@ -52,7 +52,8 @@ public class CommentService {
         for(CommentEntity commentEntity: commentEntities) {
             CommentDTO.GetComment getComment = CommentDTO.GetComment.builder()
                     .writerName(commentEntity.getMemberEntity().getMemberName())
-                    .writerEmail(commentEntity.getMemberEntity().getMemberEmail())
+                    .writerId(commentEntity.getMemberEntity().getMemberId())
+                    .writerGen(commentEntity.getMemberEntity().getMemberGen())
                     .commentContent(commentEntity.getCommentContent())
                     .commentPassFail(commentEntity.getCommentPassFail())
                     .build();
@@ -100,7 +101,7 @@ public class CommentService {
         if (commentEntities.size() == 1) {
             CommentEntity existingComment = commentEntities.get(0);
 
-            if (id.equals(existingComment.getMemberEntity().getMemberEmail())) {
+            if (id.equals(existingComment.getMemberEntity().getMemberId())) {
                 throw new AppException(ErrorCode.BAD_REQUEST, "이미 해당 아이디의 댓글이 있습니다.");
             }
 

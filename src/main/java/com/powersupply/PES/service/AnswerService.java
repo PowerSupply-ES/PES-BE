@@ -47,7 +47,7 @@ public class AnswerService {
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
 
         // DB에 해당 id의 problemId의 answer이 있는지 확인
-        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(id, problemId).isPresent()) {
+        if (answerRepository.findByMemberEntity_MemberIdAndProblemEntity_ProblemId(id, problemId).isPresent()) {
             throw new AppException(ErrorCode.BAD_REQUEST,"해당 내용은 이미 있습니다.");
         }
 
@@ -106,7 +106,7 @@ public class AnswerService {
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
 
-        if(!id.equals(answerEntity.getMemberEntity().getMemberEmail())) {
+        if(!id.equals(answerEntity.getMemberEntity().getMemberId())) {
             throw new AppException(ErrorCode.FORBIDDEN,"아이디가 다름");
         }
 

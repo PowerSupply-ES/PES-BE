@@ -25,4 +25,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     Integer sumFinalScoreById(@Param("id") String id);
 
     List<AnswerEntity> findAllByMemberEntity_MemberId(String id);
+
+    Optional<AnswerEntity> findByMemberEntity_MemberIdAndProblemEntity_ProblemId(String id, Long problemId);
 }

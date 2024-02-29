@@ -43,8 +43,9 @@ public class CommentDTO {
     @Getter
     @Builder
     public static class GetComment {
-        private String writerEmail;
+        private String writerId;
         private String writerName;
+        private int writerGen;
         private String commentContent;
         private int commentPassFail;
     }
