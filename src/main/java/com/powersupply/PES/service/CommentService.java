@@ -64,18 +64,18 @@ public class CommentService {
     // 댓글 달기
     @Transactional
     public ResponseEntity<?> createComment(Long answerId, CommentDTO.CreateComment dto) {
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
         // member 조회
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.FORBIDDEN,"해당 email가 없다."));
+        MemberEntity memberEntity = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.FORBIDDEN,"해당 아이디가 없다."));
 
         // answerEntity 불러오기 불러오기 실패 시 에러
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없습니다."));
 
-        // answer의 email과 email 비교해서 같은 경우 에러
-        if(answerEntity.getMemberEntity().getMemberEmail().equals(email)) {
+        // answer의 id과 id 비교해서 같은 경우 에러
+        if(answerEntity.getMemberEntity().getMemberId().equals(id)) {
             throw new AppException(ErrorCode.FORBIDDEN,"자신의 답변에는 댓글을 달 수 없습니다.");
         }
 
@@ -100,8 +100,8 @@ public class CommentService {
         if (commentEntities.size() == 1) {
             CommentEntity existingComment = commentEntities.get(0);
 
-            if (email.equals(existingComment.getMemberEntity().getMemberEmail())) {
-                throw new AppException(ErrorCode.BAD_REQUEST, "이미 해당 email의 댓글이 있습니다.");
+            if (id.equals(existingComment.getMemberEntity().getMemberEmail())) {
+                throw new AppException(ErrorCode.BAD_REQUEST, "이미 해당 아이디의 댓글이 있습니다.");
             }
 
             int existingCommentPassFail = existingComment.getCommentPassFail();
