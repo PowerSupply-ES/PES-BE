@@ -24,7 +24,7 @@ public class AnswerEntity extends BaseEntity {
     private int finalScore;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "memberEmail")
+    @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.EAGER)

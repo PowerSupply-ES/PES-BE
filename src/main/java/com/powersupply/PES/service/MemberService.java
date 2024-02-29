@@ -34,29 +34,44 @@ public class MemberService {
     // 회원가입
     public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
+        String id = dto.getMemberId();
         String email = dto.getMemberEmail();
+        String phone = dto.getMemberPhone();
         String pw = dto.getMemberPw();
         String name = dto.getMemberName();
 
-        // Email 및 password 빈칸 체크
-        if (email.isBlank() || pw.isBlank()) {
+        // id 및 password 빈칸 체크
+        if (id.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
+
+        // memberId 중복 체크
+        memberRepository.findById(id)
+                .ifPresent(member -> {
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 가입된 아이디입니다.");
+                });
 
         // memberEmail 중복 체크
         memberRepository.findByMemberEmail(email)
                 .ifPresent(member -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 이메일 입니다.");
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
                 });
 
-        // MemberEntity 먼저 생성
+        // memberPhone 중복 체크
+        memberRepository.findByMemberPhone(phone)
+                .ifPresent(member -> {
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 사용 중인 전화번호입니다.");
+                });
+
+        // MemberEntity 생성
         MemberEntity memberEntity = MemberEntity.builder()
+                .memberId(id)
                 .memberEmail(email)
                 .memberName(name)
-                .memberPw(encoder.encode(pw))
+                .memberPw(encoder.encode(pw)) // 비밀번호는 암호화하여 저장
                 .memberGen(dto.getMemberGen())
                 .memberMajor(dto.getMemberMajor())
-                .memberPhone(dto.getMemberPhone())
+                .memberPhone(phone)
                 .memberStatus("신입생")
                 .build();
         memberRepository.save(memberEntity);
@@ -66,25 +81,25 @@ public class MemberService {
 
     // 로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
-        String email = dto.getMemberEmail();
+        String id = dto.getMemberId();
         String pw = dto.getMemberPw();
         Long expireTimeMs = 1000 * 60 * 60l;
 
-        // Email 및 password 빈칸 체크
-        if (email.isBlank() || pw.isBlank()) {
+        // id 및 password 빈칸 체크
+        if (id.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
 
-        // Email 없는 경우
-        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
-                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
+        // id 없는 경우
+        MemberEntity selectedMember = memberRepository.findById(id)
+                .orElseThrow(()-> new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다."));
 
         // password 틀린 경우
         if(!encoder.matches(pw, selectedMember.getMemberPw())){
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberId(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
 //    public MemberEntity findByMemberEmail(String memberEmail) {
@@ -95,10 +110,11 @@ public class MemberService {
 
     // 마이페이지 가져오기
     public MemberDTO.MemberMyPageResponse getMyPage() {
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
+        MemberEntity memberEntity = memberRepository.findById(JwtUtil.getMemberIdFromToken())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_INPUT, "오류가 발생했습니다."));
 
         return MemberDTO.MemberMyPageResponse.builder()
+                .memberId(memberEntity.getMemberId())
                 .memberEmail(memberEntity.getMemberEmail())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
@@ -109,26 +125,27 @@ public class MemberService {
     }
 
     public MemberDTO.NameScoreResponse expVar() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
+        MemberEntity selectedMember = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        Integer totalScore = answerRepository.sumFinalScoreByMemberEmail(email);
+        Integer totalScore = answerRepository.sumFinalScoreById(id);
 
         return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
+                .memberGen(selectedMember.getMemberGen())
                 .build();
     }
 
     // 마이페이지(내가 푼 문제)
     @Transactional
     public ResponseEntity<?> getMySolve() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberEmail(email);
+        List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberId(id);
 
         if (answerEntityList.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -153,9 +170,9 @@ public class MemberService {
     // 마이페이지(나의 피드백)
     @Transactional
     public ResponseEntity<?> getMyFeedback() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberEmail(email);
+        List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberId(id);
 
         if (commentEntityList.isEmpty()) {
             return ResponseEntity.noContent().build();

@@ -12,6 +12,8 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
 
     List<CommentEntity> findAllByMemberEntity_MemberEmail(String email);
 
+    List<CommentEntity> findAllByMemberEntity_MemberId(String id);
+
 //    Optional<CommentEntity> findByAnswerEntityAndMemberEntity_MemberStuNum(AnswerEntity answerEntity, String stuNum);
 
 //    List<CommentEntity> findByMemberEntity_MemberStuNum(String memberStuNum);

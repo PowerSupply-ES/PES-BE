@@ -84,7 +84,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 멤버 학번 추출
-        String memberEmail = JwtUtil.getMemberEmail(actualToken, secretKey);
+        String memberId = JwtUtil.getMemberId(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
         String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
@@ -107,7 +107,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail, null, List.of(authority));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, null, List.of(authority));
 
         // 여기에 로깅 추가
         log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());
