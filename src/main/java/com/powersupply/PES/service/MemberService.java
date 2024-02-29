@@ -92,7 +92,7 @@ public class MemberService {
 
         // id 없는 경우
         MemberEntity selectedMember = memberRepository.findById(id)
-                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
+                .orElseThrow(()-> new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다."));
 
         // password 틀린 경우
         if(!encoder.matches(pw, selectedMember.getMemberPw())){
