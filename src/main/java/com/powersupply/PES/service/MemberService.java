@@ -40,7 +40,7 @@ public class MemberService {
         String pw = dto.getMemberPw();
         String name = dto.getMemberName();
 
-        // Email 및 password 빈칸 체크
+        // id 및 password 빈칸 체크
         if (id.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
@@ -81,17 +81,17 @@ public class MemberService {
 
     // 로그인
     public String signIn(MemberDTO.MemberSignInRequest dto) {
-        String email = dto.getMemberEmail();
+        String id = dto.getMemberId();
         String pw = dto.getMemberPw();
         Long expireTimeMs = 1000 * 60 * 60l;
 
-        // Email 및 password 빈칸 체크
-        if (email.isBlank() || pw.isBlank()) {
+        // id 및 password 빈칸 체크
+        if (id.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
 
-        // Email 없는 경우
-        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
+        // id 없는 경우
+        MemberEntity selectedMember = memberRepository.findById(id)
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "로그인에 실패했습니다."));
 
         // password 틀린 경우
@@ -99,7 +99,7 @@ public class MemberService {
             throw new AppException(ErrorCode.INVALID_INPUT, "로그인에 실패했습니다.");
         }
 
-        return JwtUtil.createToken(selectedMember.getMemberEmail(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
+        return JwtUtil.createToken(selectedMember.getMemberId(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
 //    public MemberEntity findByMemberEmail(String memberEmail) {

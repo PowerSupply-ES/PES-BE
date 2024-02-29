@@ -18,7 +18,7 @@ public class MemberDTO {
 
     @Getter
     public static class MemberSignInRequest {
-        private String memberEmail; // 이메일
+        private String memberId; // 이메일
         private String memberPw; // 비밀번호
     }
 

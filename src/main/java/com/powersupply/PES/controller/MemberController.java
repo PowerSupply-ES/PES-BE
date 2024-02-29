@@ -24,7 +24,7 @@ public class MemberController {
         String name = memberService.signUp(dto);
 
         // 회원가입 완료시 로그인 페이지로 이동
-        return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
+        return ResponseUtil.createResponse(name + "님, 가입에 성공했습니다.");
     }
 
     // 로그인 진행
@@ -42,7 +42,7 @@ public class MemberController {
 //                 cookie.getName(), cookie.getValue(), cookie.getMaxAge()));
         response.addCookie(cookie);
 
-        return ResponseUtil.createResponse("로그인에 성공했습니다.");
+        return ResponseUtil.successResponse("로그인에 성공했습니다.");
     }
 
     // 마이페이지
