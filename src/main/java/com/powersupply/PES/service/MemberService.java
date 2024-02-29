@@ -34,29 +34,44 @@ public class MemberService {
     // 회원가입
     public String signUp(MemberDTO.MemberSignUpRequest dto) {
 
+        String id = dto.getMemberId();
         String email = dto.getMemberEmail();
+        String phone = dto.getMemberPhone();
         String pw = dto.getMemberPw();
         String name = dto.getMemberName();
 
         // Email 및 password 빈칸 체크
-        if (email.isBlank() || pw.isBlank()) {
+        if (id.isBlank() || pw.isBlank()) {
             throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
         }
+
+        // memberId 중복 체크
+        memberRepository.findById(id)
+                .ifPresent(member -> {
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 가입된 아이디입니다.");
+                });
 
         // memberEmail 중복 체크
         memberRepository.findByMemberEmail(email)
                 .ifPresent(member -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, "이미 가입된 이메일 입니다.");
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 사용 중인 이메일입니다.");
                 });
 
-        // MemberEntity 먼저 생성
+        // memberPhone 중복 체크
+        memberRepository.findByMemberPhone(phone)
+                .ifPresent(member -> {
+                    throw new AppException(ErrorCode.BAD_REQUEST, "이미 사용 중인 전화번호입니다.");
+                });
+
+        // MemberEntity 생성
         MemberEntity memberEntity = MemberEntity.builder()
+                .memberId(id)
                 .memberEmail(email)
                 .memberName(name)
-                .memberPw(encoder.encode(pw))
+                .memberPw(encoder.encode(pw)) // 비밀번호는 암호화하여 저장
                 .memberGen(dto.getMemberGen())
                 .memberMajor(dto.getMemberMajor())
-                .memberPhone(dto.getMemberPhone())
+                .memberPhone(phone)
                 .memberStatus("신입생")
                 .build();
         memberRepository.save(memberEntity);

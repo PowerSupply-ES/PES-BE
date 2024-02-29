@@ -7,13 +7,13 @@ public class MemberDTO {
 
     @Getter
     public static class MemberSignUpRequest {
+        private String memberId; // 백준 아이디
         private String memberPw; // 멤버 비밀번호
         private String memberName; // 이름
         private int memberGen; // 기수
         private String memberMajor; // 학과
         private String memberPhone; // 전화번호
         private String memberEmail; // 이메일
-        private String memberBaekId; // 백준 아이디
     }
 
     @Getter
