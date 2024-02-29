@@ -47,6 +47,7 @@ public class MemberDTO {
         private String memberName;
         private String memberStatus;
         private int memberScore;
+        private int memberGen;
     }
 
     @Getter

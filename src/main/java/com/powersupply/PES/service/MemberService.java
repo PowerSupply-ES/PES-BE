@@ -125,26 +125,27 @@ public class MemberService {
     }
 
     public MemberDTO.NameScoreResponse expVar() {
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
+        MemberEntity selectedMember = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
 
-        Integer totalScore = answerRepository.sumFinalScoreByMemberEmail(email);
+        Integer totalScore = answerRepository.sumFinalScoreById(id);
 
         return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
+                .memberGen(selectedMember.getMemberGen())
                 .build();
     }
 
     // 마이페이지(내가 푼 문제)
     @Transactional
     public ResponseEntity<?> getMySolve() {
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberEmail(email);
+        List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberId(id);
 
         if (answerEntityList.isEmpty()) {
             return ResponseEntity.noContent().build();
@@ -169,9 +170,9 @@ public class MemberService {
     // 마이페이지(나의 피드백)
     @Transactional
     public ResponseEntity<?> getMyFeedback() {
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberEmail(email);
+        List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberId(id);
 
         if (commentEntityList.isEmpty()) {
             return ResponseEntity.noContent().build();
