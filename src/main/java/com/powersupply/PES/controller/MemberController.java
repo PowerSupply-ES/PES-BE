@@ -45,7 +45,7 @@ public class MemberController {
         return ResponseUtil.successResponse("로그인에 성공했습니다.");
     }
 
-    // 마이페이지
+    // 마이페이지(정보)
     @GetMapping("/api/mypage/information")
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 

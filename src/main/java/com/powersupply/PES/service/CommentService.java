@@ -64,7 +64,7 @@ public class CommentService {
     // 댓글 달기
     @Transactional
     public ResponseEntity<?> createComment(Long answerId, CommentDTO.CreateComment dto) {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberIdFromToken();
 
         // member 조회
         MemberEntity memberEntity = memberRepository.findByMemberEmail(email)

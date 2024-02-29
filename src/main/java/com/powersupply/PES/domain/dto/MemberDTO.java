@@ -32,7 +32,7 @@ public class MemberDTO {
         private String memberStatus; // 상태
         private String memberEmail; // 이메일
         private int memberScore; // 점수
-        private String memberBaekId; // 백준 아이디
+        private String memberId; // 백준 아이디
     }
 
     @Getter

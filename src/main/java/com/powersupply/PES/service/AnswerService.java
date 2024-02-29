@@ -101,7 +101,7 @@ public class AnswerService {
 
     // 답변 하기
     public void postAnswer(Long answerId, AnswerDTO.AnswerContent dto) {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberIdFromToken();
 
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));

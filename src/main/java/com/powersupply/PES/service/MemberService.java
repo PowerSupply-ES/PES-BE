@@ -110,10 +110,11 @@ public class MemberService {
 
     // 마이페이지 가져오기
     public MemberDTO.MemberMyPageResponse getMyPage() {
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(JwtUtil.getMemberEmailFromToken())
-                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, "오류가 발생했습니다."));
+        MemberEntity memberEntity = memberRepository.findById(JwtUtil.getMemberIdFromToken())
+                .orElseThrow(() -> new AppException(ErrorCode.INVALID_INPUT, "오류가 발생했습니다."));
 
         return MemberDTO.MemberMyPageResponse.builder()
+                .memberId(memberEntity.getMemberId())
                 .memberEmail(memberEntity.getMemberEmail())
                 .memberName(memberEntity.getMemberName())
                 .memberGen(memberEntity.getMemberGen())
@@ -124,7 +125,7 @@ public class MemberService {
     }
 
     public MemberDTO.NameScoreResponse expVar() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberIdFromToken();
 
         MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
@@ -141,7 +142,7 @@ public class MemberService {
     // 마이페이지(내가 푼 문제)
     @Transactional
     public ResponseEntity<?> getMySolve() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberIdFromToken();
 
         List<AnswerEntity> answerEntityList = answerRepository.findAllByMemberEntity_MemberEmail(email);
 
@@ -168,7 +169,7 @@ public class MemberService {
     // 마이페이지(나의 피드백)
     @Transactional
     public ResponseEntity<?> getMyFeedback() {
-        String email = JwtUtil.getMemberEmailFromToken();
+        String email = JwtUtil.getMemberIdFromToken();
 
         List<CommentEntity> commentEntityList = commentRepository.findAllByMemberEntity_MemberEmail(email);
 
