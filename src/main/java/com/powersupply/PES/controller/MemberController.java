@@ -42,7 +42,7 @@ public class MemberController {
 //                 cookie.getName(), cookie.getValue(), cookie.getMaxAge()));
         response.addCookie(cookie);
 
-        return ResponseUtil.successResponse("로그인에 성공했습니다.");
+        return ResponseUtil.createResponse("로그인에 성공했습니다.");
     }
 
     // 마이페이지
