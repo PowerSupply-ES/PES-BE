@@ -41,13 +41,13 @@ public class AnswerService {
 
     // answer 만들기
     @Transactional
-    public AnswerDTO.GetAnswerId createAnswer(String email, Long problemId) {
+    public AnswerDTO.GetAnswerId createAnswer(String id, Long problemId) {
 
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
+        MemberEntity memberEntity = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
 
-        // DB에 해당 email의 problemId의 answer이 있는지 확인
-        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(email, problemId).isPresent()) {
+        // DB에 해당 id의 problemId의 answer이 있는지 확인
+        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(id, problemId).isPresent()) {
             throw new AppException(ErrorCode.BAD_REQUEST,"해당 내용은 이미 있습니다.");
         }
 
@@ -101,13 +101,13 @@ public class AnswerService {
 
     // 답변 하기
     public void postAnswer(Long answerId, AnswerDTO.AnswerContent dto) {
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
 
-        if(!email.equals(answerEntity.getMemberEntity().getMemberEmail())) {
-            throw new AppException(ErrorCode.FORBIDDEN,"email이 다름");
+        if(!id.equals(answerEntity.getMemberEntity().getMemberEmail())) {
+            throw new AppException(ErrorCode.FORBIDDEN,"아이디가 다름");
         }
 
         if (dto.getAnswerFst() == null || dto.getAnswerFst().isEmpty() ||

@@ -25,9 +25,9 @@ public class ProblemService {
     // 문제 가져오기
     public ResponseEntity<?> getProblemList() {
 
-        String email = JwtUtil.getMemberIdFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<Object[]> results = problemRepository.findAllProblemsWithAnswers(email);
+        List<Object[]> results = problemRepository.findAllProblemsWithAnswers(id);
         List<ProblemDTO.ProblemResponse> problemResponseList = new ArrayList<>();
 
         // 문제 리스트 비어있는지 체크
