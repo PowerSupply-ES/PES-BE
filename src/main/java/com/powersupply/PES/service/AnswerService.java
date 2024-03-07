@@ -5,10 +5,7 @@ import com.powersupply.PES.domain.dto.CommentDTO;
 import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
-import com.powersupply.PES.repository.AnswerRepository;
-import com.powersupply.PES.repository.MemberRepository;
-import com.powersupply.PES.repository.ProblemRepository;
-import com.powersupply.PES.repository.QuestionRepository;
+import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
@@ -40,16 +37,17 @@ public class AnswerService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
+    private final CommentRepository commentRepository;
 
     // answer 만들기
     @Transactional
-    public AnswerDTO.GetAnswerId createAnswer(String email, Long problemId) {
+    public AnswerDTO.GetAnswerId createAnswer(String id, Long problemId) {
 
-        MemberEntity memberEntity = memberRepository.findByMemberEmail(email)
+        MemberEntity memberEntity = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "멤버 정보를 찾을 수 없습니다."));
 
-        // DB에 해당 email의 problemId의 answer이 있는지 확인
-        if (answerRepository.findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(email, problemId).isPresent()) {
+        // DB에 해당 id의 problemId의 answer이 있는지 확인
+        if (answerRepository.findByMemberEntity_MemberIdAndProblemEntity_ProblemId(id, problemId).isPresent()) {
             throw new AppException(ErrorCode.BAD_REQUEST,"해당 내용은 이미 있습니다.");
         }
 
@@ -97,16 +95,19 @@ public class AnswerService {
                 .questionContentSec(answerEntity.getQuestionSec().getQuestionContent())
                 .answerFst(answerEntity.getAnswerFst())
                 .answerSec(answerEntity.getAnswerSec())
+                .answerState(answerEntity.getAnswerState())
                 .build();
     }
 
     // 답변 하기
-    public void postAnswer(Long answerId, String email, AnswerDTO.AnswerContent dto) {
+    public void postAnswer(Long answerId, AnswerDTO.AnswerContent dto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
         AnswerEntity answerEntity = answerRepository.findById(answerId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 answerId가 없음"));
 
-        if(!email.equals(answerEntity.getMemberEntity().getMemberEmail())) {
-            throw new AppException(ErrorCode.FORBIDDEN,"email이 다름");
+        if(!id.equals(answerEntity.getMemberEntity().getMemberId())) {
+            throw new AppException(ErrorCode.FORBIDDEN,"아이디가 다름");
         }
 
         if (dto.getAnswerFst() == null || dto.getAnswerFst().isEmpty() ||
@@ -114,8 +115,16 @@ public class AnswerService {
             throw new AppException(ErrorCode.BAD_REQUEST, "답변 내용 중 하나 또는 둘 다 비어 있음");
         }
 
+        Optional<List<CommentEntity>> commentEntitiesOptional = commentRepository.findByAnswerEntity_AnswerId(answerId);
+
+        // 댓글이 있는 경우
+        if (commentEntitiesOptional.isPresent() && !commentEntitiesOptional.get().isEmpty()) {
+            throw new AppException(ErrorCode.BAD_REQUEST, "이미 댓글이 있어 수정 불가능");
+        }
+
         answerEntity.setAnswerFst(dto.getAnswerFst());
         answerEntity.setAnswerSec(dto.getAnswerSec());
+        answerEntity.setAnswerState("comment");
 
         answerRepository.save(answerEntity);
     }
@@ -139,8 +148,10 @@ public class AnswerService {
         for(AnswerEntity answerEntity: answerEntityList) {
             AnswerDTO.GetAnswerList answerList = AnswerDTO.GetAnswerList.builder()
                     .answerId(answerEntity.getAnswerId())
-                    .memberEmail(answerEntity.getMemberEntity().getMemberEmail())
+                    .memberGen(answerEntity.getMemberEntity().getMemberGen())
+                    .memberName(answerEntity.getMemberEntity().getMemberName())
                     .commentCount(answerEntity.getCommentEntities().size())
+                    .answerState(answerEntity.getAnswerState())
                     .build();
             answerLists.add(answerList);
         }

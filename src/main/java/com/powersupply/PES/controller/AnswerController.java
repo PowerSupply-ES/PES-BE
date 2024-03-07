@@ -29,9 +29,8 @@ public class AnswerController {
     // 답변하기
     @PostMapping("/api/answer/{answerId}")
     public ResponseEntity<?> postAnswer(@PathVariable Long answerId,
-                                                          @RequestParam("memberEmail") String email,
                                                           @RequestBody AnswerDTO.AnswerContent dto) {
-        answerService.postAnswer(answerId, email, dto);
+        answerService.postAnswer(answerId, dto);
         return ResponseUtil.successResponse("");
     }
 

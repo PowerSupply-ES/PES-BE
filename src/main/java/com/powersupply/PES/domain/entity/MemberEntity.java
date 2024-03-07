@@ -16,7 +16,10 @@ import java.util.List;
 public class MemberEntity extends BaseEntity {
 
     @Id
-    @Column(name = "memberEmail")
+    @Column(name = "memberId")
+    private String memberId; // 학번(ID)
+
+    @Column(name = "memberEmail", unique = true)
     private String memberEmail; // 이메일
 
     @Column(name = "memberName")
@@ -24,9 +27,6 @@ public class MemberEntity extends BaseEntity {
 
     @Column(name = "memberGen")
     private int memberGen; // 기수
-
-    @Column(name = "memberBeakId")
-    private String memberBaekId; // 백준 아이디
 
     @Column(name = "memberStatus")
     private String memberStatus; // 상태(학생/관리자)

@@ -18,4 +18,13 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     Integer sumFinalScoreByMemberEmail(@Param("email") String email);
 
     Optional<AnswerEntity> findByMemberEntity_MemberEmailAndProblemEntity_ProblemId(String email, Long problemId);
+
+    List<AnswerEntity> findAllByMemberEntity_MemberEmail(String email);
+
+    @Query("SELECT SUM(a.finalScore) FROM AnswerEntity a WHERE a.memberEntity.memberId = :id")
+    Integer sumFinalScoreById(@Param("id") String id);
+
+    List<AnswerEntity> findAllByMemberEntity_MemberId(String id);
+
+    Optional<AnswerEntity> findByMemberEntity_MemberIdAndProblemEntity_ProblemId(String id, Long problemId);
 }

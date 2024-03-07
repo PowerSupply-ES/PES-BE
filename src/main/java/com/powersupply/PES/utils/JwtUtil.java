@@ -10,7 +10,7 @@ import java.util.Date;
 
 public class JwtUtil {
 
-    public static String getMemberEmailFromToken() {
+    public static String getMemberIdFromToken() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
@@ -26,9 +26,9 @@ public class JwtUtil {
                 .getBody().getExpiration().before(new Date());
     }
 
-    public static String getMemberEmail(String token, String secretKey) {
+    public static String getMemberId(String token, String secretKey) {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token)
-                .getBody().get("memberEmail", String.class);
+                .getBody().get("memberId", String.class);
     }
 
     public static String getMemberStatus(String token, String secretKey) {
@@ -36,9 +36,9 @@ public class JwtUtil {
                 .getBody().get("memberStatus", String.class);
     }
 
-    public static String createToken(String memberEmail, String memberStatus, String secretKey, Long expireTimeMs) {
+    public static String createToken(String memberId, String memberStatus, String secretKey, Long expireTimeMs) {
         Claims claims = Jwts.claims();
-        claims.put("memberEmail", memberEmail);
+        claims.put("memberId", memberId);
         claims.put("memberStatus", memberStatus);
 
         return Jwts.builder()

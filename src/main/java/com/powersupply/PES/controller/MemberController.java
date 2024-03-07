@@ -24,7 +24,7 @@ public class MemberController {
         String name = memberService.signUp(dto);
 
         // 회원가입 완료시 로그인 페이지로 이동
-        return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
+        return ResponseUtil.createResponse(name + "님, 가입에 성공했습니다.");
     }
 
     // 로그인 진행
@@ -32,24 +32,51 @@ public class MemberController {
     public ResponseEntity<?> postSignIn(HttpServletResponse response, @RequestBody MemberDTO.MemberSignInRequest dto) {
         String token = memberService.signIn(dto);
 
-//        Cookie cookie = new Cookie("Authorization", token);
-//        cookie.setMaxAge(60 * 60); // 쿠키 유효 시간 (예: 1시간)
-//        //cookie.setSecure(true); // HTTPS에서만 쿠키 사용
-//        cookie.setPath("/"); // 도메인 전체에서 사용 가능하도록 설정
-        //cookie.setHttpOnly(true); // JavaScript에서 쿠키에 접근할 수 없도록 설정
+        Cookie cookie = new Cookie("Authorization", token);
+        cookie.setMaxAge(60 * 60); // 쿠키 유효 시간 (1시간)
+        cookie.setSecure(true); // HTTPS에서만 쿠키 사용
+        cookie.setPath("/"); // 도메인 전체에서 사용 가능하도록 설정
+        cookie.setHttpOnly(true); // JavaScript에서 쿠키에 접근할 수 없도록 설정
         // SameSite=None과 Secure 플래그를 설정
-        // response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%s; Secure; SameSite=None",
-        //         cookie.getName(), cookie.getValue(), cookie.getMaxAge()));
-//        response.addCookie(cookie);
+//        response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%s; Secure; SameSite=None",
+//                 cookie.getName(), cookie.getValue(), cookie.getMaxAge()));
+        response.addCookie(cookie);
 
         return ResponseUtil.successResponse("로그인에 성공했습니다.");
     }
 
-    // 마이페이지
-    @GetMapping("/api/mypage")
-    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo(@RequestParam("memberEmail") String email) {
+    // 로그아웃 진행
+    @PostMapping("/api/logout")
+    public ResponseEntity<?> postLogout(HttpServletResponse response) {
+        Cookie logoutCookie = new Cookie("Authorization", null);
+        logoutCookie.setMaxAge(0); // 쿠키 즉시 만료
+        logoutCookie.setSecure(true);
+        logoutCookie.setPath("/");
+        logoutCookie.setHttpOnly(true);
+        response.addCookie(logoutCookie);
 
-        return ResponseEntity.ok().body(memberService.getMyPage(email));
+        return ResponseUtil.successResponse("로그아웃 되었습니다.");
+    }
+
+    // 마이페이지(정보)
+    @GetMapping("/api/mypage/information")
+    public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
+
+        return ResponseEntity.ok().body(memberService.getMyPage());
+    }
+
+    // 마이페이지(내가 푼 문제)
+    @GetMapping("/api/mypage/mysolve")
+    public ResponseEntity<?> getMySolveInfo() {
+
+        return memberService.getMySolve();
+    }
+
+    // 마이페이지(나의 피드백)
+    @GetMapping("/api/mypage/myfeedback")
+    public ResponseEntity<?> getMyFeedbackInfo() {
+
+        return memberService.getMyFeedback();
     }
 
     // 비밀번호 찾기
@@ -62,8 +89,8 @@ public class MemberController {
 
     // 상단 사용자 정보
     @GetMapping("/api/exp")
-    public ResponseEntity<MemberDTO.NameScoreResponse> myUser(@RequestParam("memberEmail") String email) {
-        return ResponseEntity.ok().body(memberService.expVar(email));
+    public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
+        return ResponseEntity.ok().body(memberService.expVar());
     }
 
     // 랭킹 확인하기

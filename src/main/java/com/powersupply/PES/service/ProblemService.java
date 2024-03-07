@@ -7,6 +7,7 @@ import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.ProblemRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,11 +23,11 @@ public class ProblemService {
     private final AnswerRepository answerRepository;
 
     // 문제 가져오기
-    public ResponseEntity<?> getProblemList(String email) {
+    public ResponseEntity<?> getProblemList() {
 
-//        String email = JwtUtil.getMemberEmailFromToken();
+        String id = JwtUtil.getMemberIdFromToken();
 
-        List<Object[]> results = problemRepository.findAllProblemsWithAnswers(email);
+        List<Object[]> results = problemRepository.findAllProblemsWithAnswers(id);
         List<ProblemDTO.ProblemResponse> problemResponseList = new ArrayList<>();
 
         // 문제 리스트 비어있는지 체크
@@ -38,13 +39,24 @@ public class ProblemService {
             ProblemEntity problemEntity = (ProblemEntity) result[0];
             AnswerEntity answerEntity = (AnswerEntity) result[1]; // 이 값이 null일 수 있음
 
-            Long answerId = (answerEntity != null) ? answerEntity.getAnswerId() : null;
+            Long answerId = null;
+            String answerState = null;
+            Integer answerScore = null;
+
+            if (answerEntity != null) {
+                answerId = answerEntity.getAnswerId();
+                answerState = answerEntity.getAnswerState();
+                answerScore = answerEntity.getFinalScore();
+            }
 
             ProblemDTO.ProblemResponse problemResponse = ProblemDTO.ProblemResponse.builder()
                     .problemId(problemEntity.getProblemId())
                     .problemTitle(problemEntity.getProblemTitle())
                     .problemScore(problemEntity.getProblemScore())
+                    .answerCount(problemRepository.countStudentsWhoSolvedProblemWithStatus(problemEntity,"신입생"))
                     .answerId(answerId)
+                    .answerState(answerState)
+                    .myScore(answerScore)
                     .build();
             problemResponseList.add(problemResponse);
         }
