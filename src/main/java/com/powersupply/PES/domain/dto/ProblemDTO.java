@@ -18,33 +18,4 @@ public class ProblemDTO {
         private String answerState;
         private Integer myScore;
     }
-
-    @Getter
-    @Builder
-    public static class ShowProblem {
-        private Long problemId;
-        private String problemTitle;
-        private String problemContent;
-        private int problemScore;
-    }
-
-    @Getter
-    @Builder
-    public static class SolveForm {
-        private String answerState;
-        private String answerUrl;
-        private String questionContentFst;
-        private String questionContentSec;
-        private String answerFst;
-        private String answerSec;
-        private LocalDateTime updateTime;
-    }
-
-    @Getter
-    @Builder
-    public static class ShowProblemSimple {
-        private Long problemId;
-        private String problemTitle;
-        private int problemScore;
-    }
 }
