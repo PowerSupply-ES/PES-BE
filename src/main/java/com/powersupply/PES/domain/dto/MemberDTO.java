@@ -36,26 +36,12 @@ public class MemberDTO {
     }
 
     @Getter
-    public static class MemberFindPwRequest {
-        private String memberStuNum;
-        private String memberName;
-    }
-
-    @Getter
     @Builder
     public static class NameScoreResponse {
         private String memberName;
         private String memberStatus;
         private int memberScore;
         private int memberGen;
-    }
-
-    @Getter
-    @Builder
-    public static class NameScoreStatusResponse {
-        private String memberName;
-        private int memberScore;
-        private String memberStatus;
     }
 
     @Getter
