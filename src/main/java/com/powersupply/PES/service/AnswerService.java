@@ -146,12 +146,16 @@ public class AnswerService {
         List<AnswerDTO.GetAnswerList> answerLists = new ArrayList<>();
 
         for(AnswerEntity answerEntity: answerEntityList) {
+            String answerState = answerEntity.getAnswerState();
+            if (answerState.equals("question")) {
+                continue;
+            }
             AnswerDTO.GetAnswerList answerList = AnswerDTO.GetAnswerList.builder()
                     .answerId(answerEntity.getAnswerId())
                     .memberGen(answerEntity.getMemberEntity().getMemberGen())
                     .memberName(answerEntity.getMemberEntity().getMemberName())
                     .commentCount(answerEntity.getCommentEntities().size())
-                    .answerState(answerEntity.getAnswerState())
+                    .answerState(answerState)
                     .build();
             answerLists.add(answerList);
         }
