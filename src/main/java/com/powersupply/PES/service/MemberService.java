@@ -102,12 +102,6 @@ public class MemberService {
         return JwtUtil.createToken(selectedMember.getMemberId(), selectedMember.getMemberStatus(), secretKey, expireTimeMs);
     }
 
-//    public MemberEntity findByMemberEmail(String memberEmail) {
-//        return memberRepository.findByMemberEmail(memberEmail)
-//                .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_FOUND, "해당 학번은 등록되지 않았습니다."));
-//    }
-
-
     // 마이페이지 가져오기
     public MemberDTO.MemberMyPageResponse getMyPage() {
         MemberEntity memberEntity = memberRepository.findById(JwtUtil.getMemberIdFromToken())
@@ -192,62 +186,4 @@ public class MemberService {
         }
         return ResponseEntity.ok().body(memberMyFeedbackResponseList);
     }
-
-//    public void findUser(MemberDTO.MemberFindPwRequest dto) {
-//        String email = dto.getMemberEmail();
-//        String name = dto.getMemberName();
-//
-//        // 학번 및 password 빈칸 체크
-//        if (email.isBlank() || name.isBlank()) {
-//            throw new AppException(ErrorCode.INVALID_INPUT, "필수 입력 사항을 입력해 주세요.");
-//        }
-//
-//        // 학번과 이름이 DB에 없는 경우
-//        MemberEntity selectedMember = memberRepository.findByMemberEmail(email).orElse(null);
-//
-//        if(selectedMember == null || !selectedMember.getMemberName().equals(name)){
-//            throw new AppException(ErrorCode.INVALID_INPUT, "계정 찾기를 실패했습니다.");
-//        }
-//
-//        // 추후 이메일로 임의 수정된 비밀번호 전송 로직 추가
-//    }
-
-    // 상단 사용자 정보 불러오기
-//    public MemberDTO.NameScoreStatusResponse myUser() {
-//        String email = JwtUtil.getMemberEmailFromToken();
-//
-//        MemberEntity selectedMember = memberRepository.findByMemberEmail(email)
-//                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND,"정보가 존재하지 않습니다."));
-//
-//        return MemberDTO.NameScoreStatusResponse.builder()
-//                .memberName(selectedMember.getMemberName())
-//                .memberScore(selectedMember.getMemberScore())
-//                .memberStatus(selectedMember.getMemberStatus())
-//                .build();
-//    }
-
-//    public List<MemberDTO.NameScoreResponse> memberRank() {
-//
-//        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("신입생");
-//        List<MemberDTO.NameScoreResponse> nameScoreResponseList = new ArrayList<>();
-//
-//        // 리스트 체크
-//        if(memberEntityList.isEmpty()) {
-//            throw new AppException(ErrorCode.NOT_FOUND,"정보가 존재하지 않습니다.");
-//        }
-//
-//        // 저장
-//        for(MemberEntity memberEntity: memberEntityList) {
-//            MemberDTO.NameScoreResponse dto = MemberDTO.NameScoreResponse.builder()
-//                    .memberName(memberEntity.getMemberName())
-//                    .memberScore(memberEntity.getMemberScore())
-//                    .build();
-//            nameScoreResponseList.add(dto);
-//        }
-//
-//        // memberScore를 기준으로 정렬 (내림차순)
-//        nameScoreResponseList.sort((o1, o2) -> Integer.compare(o2.getMemberScore(), o1.getMemberScore()));
-//
-//        return nameScoreResponseList;
-//    }
 }
