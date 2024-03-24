@@ -1,5 +1,6 @@
 package com.powersupply.PES.controller;
 
+import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.service.MemberService;
 import com.powersupply.PES.utils.ResponseUtil;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -77,5 +80,15 @@ public class MemberController {
     @GetMapping("/api/exp")
     public ResponseEntity<MemberDTO.NameScoreResponse> myUser() {
         return ResponseEntity.ok().body(memberService.expVar());
+    }
+
+    // 랭킹 가져오기
+    @GetMapping("/api/rank")
+    public ResponseEntity<List<MemberDTO.Rank>> getRank(@RequestParam(value = "memberGen", required = false) Integer memberGen) {
+        // year이 null이면 현재 현재 기수로 설정
+        if (memberGen == null) {
+            memberGen = LocalDate.now().getYear() - 1989;
+        }
+        return ResponseEntity.ok().body(memberService.getRank(memberGen));
     }
 }
