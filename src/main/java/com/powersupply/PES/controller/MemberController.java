@@ -1,6 +1,5 @@
 package com.powersupply.PES.controller;
 
-import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.service.MemberService;
 import com.powersupply.PES.utils.ResponseUtil;
@@ -89,6 +88,9 @@ public class MemberController {
         if (memberGen == null) {
             memberGen = LocalDate.now().getYear() - 1989;
         }
-        return ResponseEntity.ok().body(memberService.getRank(memberGen));
+
+        List<MemberDTO.Rank> rank = memberService.getRank(memberGen);
+        if (rank.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(rank);
     }
 }
