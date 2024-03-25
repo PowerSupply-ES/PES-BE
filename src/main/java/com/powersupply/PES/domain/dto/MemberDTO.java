@@ -64,4 +64,11 @@ public class MemberDTO {
         private int commentPassFail;
         private String commentContent;
     }
+
+    @Getter
+    @Builder
+    public static class Rank {
+        private String memberName;
+        private int score;
+    }
 }

@@ -1,5 +1,6 @@
 package com.powersupply.PES.service;
 
+import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.AnswerEntity;
 import com.powersupply.PES.domain.entity.CommentEntity;
@@ -18,7 +19,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -185,5 +188,27 @@ public class MemberService {
             memberMyFeedbackResponseList.add(myFeedbackResponse);
         }
         return ResponseEntity.ok().body(memberMyFeedbackResponseList);
+    }
+
+    // 랭킹 가져오기
+    public List<MemberDTO.Rank> getRank(Integer memberGen) {
+        List<MemberEntity> memberEntityList = memberRepository.findByMemberGen(memberGen);
+        List<MemberDTO.Rank> memberScores = new ArrayList<>();
+
+        for (MemberEntity memberEntity : memberEntityList) {
+            Integer score = answerRepository.sumFinalScoreById(memberEntity.getMemberId());
+            if (score != null) {  // 점수가 null이 아닌 경우에만 리스트에 추가
+                MemberDTO.Rank memberRank = MemberDTO.Rank.builder()
+                        .memberName(memberEntity.getMemberName())
+                        .score(score)
+                        .build();
+                memberScores.add(memberRank);
+            }
+        }
+
+        // 스트림 API를 사용하여 score 기준으로 내림차순 정렬
+        return memberScores.stream()
+                .sorted(Comparator.comparingInt(MemberDTO.Rank::getScore).reversed())
+                .collect(Collectors.toList());
     }
 }
