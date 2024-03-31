@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .antMatchers("/api/signin","/api/signup").permitAll() // 기본 요청 언제나 접근 가능
                 .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/comment/**").hasRole("REGULAR_STUDENT")
+                .antMatchers(HttpMethod.POST,"/api/notice/**").hasRole("MANAGER")
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
@@ -73,7 +74,7 @@ public class SecurityConfig {
     public RoleHierarchy roleHierarchy() {
         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
         //roleHierarchy.setHierarchy("ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER and ROLE_NEW_STUDENT > ROLE_USER");
-        String hierarchy =  "ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER\n" +
+        String hierarchy =  "ROLE_ADMIN > ROLE_MANAGER > ROLE_REGULAR_STUDENT > ROLE_USER\n" +
                 "ROLE_NEW_STUDENT > ROLE_USER";
         roleHierarchy.setHierarchy(hierarchy);
         return roleHierarchy;

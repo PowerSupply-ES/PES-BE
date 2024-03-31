@@ -101,6 +101,9 @@ public class JwtFilter extends OncePerRequestFilter {
             case "관리자":
                 authority = new SimpleGrantedAuthority("ROLE_MANAGER");
                 break;
+            case "개발자":
+                authority = new SimpleGrantedAuthority("ROLE_ADMIN");
+                break;
             default:
                 authority = new SimpleGrantedAuthority("ROLE_USER");
                 break;
