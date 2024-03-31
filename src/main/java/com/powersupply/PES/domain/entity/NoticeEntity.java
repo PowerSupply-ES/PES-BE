@@ -1,6 +1,7 @@
 package com.powersupply.PES.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ public class NoticeEntity extends BaseEntity{
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long noticeId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "writerId", referencedColumnName = "memberId")
     private MemberEntity memberEntity;
 
