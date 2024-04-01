@@ -21,6 +21,10 @@ public class NoticeDTO {
         private LocalDateTime createdTime;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime updatedTime;
+
+        public boolean isIsImportant() {
+            return isImportant;
+        }
     }
 
     @Getter
@@ -46,5 +50,12 @@ public class NoticeDTO {
         private boolean isNewNotice;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime createdTime;
+
+        public boolean isIsImportant() {
+            return isImportant;
+        }
+        public boolean isIsNewNotice() {
+            return isNewNotice;
+        }
     }
 }
