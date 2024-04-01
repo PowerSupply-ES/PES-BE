@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank", "/api/notice/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/comment/**").hasRole("REGULAR_STUDENT")
                 .antMatchers(HttpMethod.POST,"/api/notice/**").hasRole("MANAGER")
+                .antMatchers(HttpMethod.PATCH,"/api/notice/**").hasRole("MANAGER")
                 .anyRequest().hasRole("USER")
                 .and()
                 .sessionManagement()
