@@ -12,6 +12,12 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
+    // 새로운 공지사항 존재 확인(비회원 전용)
+    @GetMapping("/api/notice/new")
+    public ResponseEntity<?> checkNewNotice() {
+        return noticeService.checkNewNotice();
+    }
+
     // 공지사항 등록
     @PostMapping("/api/notice")
     public ResponseEntity<?> postNotice(@RequestBody NoticeDTO.BaseNotice dto) {

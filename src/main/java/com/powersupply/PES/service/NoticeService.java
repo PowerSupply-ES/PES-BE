@@ -17,7 +17,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -138,5 +140,17 @@ public class NoticeService {
         noticeRepository.save(noticeEntity);
 
         return ResponseEntity.ok().build();
+    }
+
+    // 새로운 공지사항 존재 확인(비회원 전용)
+    public ResponseEntity<?> checkNewNotice() {
+        List<NoticeEntity> notices = noticeRepository.findAll();
+        boolean hasNewNotices = notices.stream()
+                .anyMatch(notice -> ChronoUnit.DAYS.between(notice.getCreatedTime(), LocalDateTime.now()) <= 5);
+
+        Map<String, Boolean> response = new HashMap<>();
+        response.put("hasNewNotices", hasNewNotices);
+
+        return ResponseEntity.ok().body(response);
     }
 }
