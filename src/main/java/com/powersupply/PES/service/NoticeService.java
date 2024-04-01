@@ -130,8 +130,15 @@ public class NoticeService {
 
     // 공지사항 업데이트
     public ResponseEntity<?> updateNotice(Long noticeId, NoticeDTO.BaseNotice dto) {
+        String memberId = JwtUtil.getMemberIdFromToken();
         NoticeEntity noticeEntity =  noticeRepository.findById(noticeId)
                 .orElseThrow(()->new AppException(ErrorCode.NOT_FOUND,"해당 공지가 없습니다."));
+
+        // 공지사항의 작성자 ID와 현재 로그인한 사용자의 ID를 비교
+        if (!noticeEntity.getMemberEntity().getMemberId().equals(memberId)) {
+            // 사용자가 공지사항의 작성자가 아닐 경우, 수정을 허용하지 않음
+            throw new AppException(ErrorCode.FORBIDDEN, "이 공지사항을 수정할 권한이 없습니다.");
+        }
 
         noticeEntity.setNoticeTitle(dto.getTitle());
         noticeEntity.setNoticeContent(dto.getContent());
