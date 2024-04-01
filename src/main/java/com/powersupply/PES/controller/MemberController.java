@@ -5,11 +5,11 @@ import com.powersupply.PES.service.MemberService;
 import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,8 +23,7 @@ public class MemberController {
     public ResponseEntity<?> postSignUp(@RequestBody MemberDTO.MemberSignUpRequest dto) {
         String name = memberService.signUp(dto);
 
-        // 회원가입 완료시 로그인 페이지로 이동
-        return ResponseUtil.successResponse(name + "님, 가입에 성공했습니다.");
+        return ResponseUtil.createResponse(name + "님, 가입에 성공했습니다.");
     }
 
     // 로그인 진행
@@ -37,28 +36,44 @@ public class MemberController {
         cookie.setSecure(true); // HTTPS에서만 쿠키 사용
         cookie.setPath("/"); // 도메인 전체에서 사용 가능하도록 설정
         cookie.setHttpOnly(true); // JavaScript에서 쿠키에 접근할 수 없도록 설정
-        // SameSite=None과 Secure 플래그를 설정
-//        response.addHeader("Set-Cookie", String.format("%s=%s; Max-Age=%s; Secure; SameSite=None",
-//                 cookie.getName(), cookie.getValue(), cookie.getMaxAge()));
         response.addCookie(cookie);
 
         return ResponseUtil.successResponse("로그인에 성공했습니다.");
     }
 
-    // 마이페이지
-    @GetMapping("/api/mypage")
+    // 로그아웃 진행
+    @PostMapping("/api/logout")
+    public ResponseEntity<?> postLogout(HttpServletResponse response) {
+        Cookie logoutCookie = new Cookie("Authorization", null);
+        logoutCookie.setMaxAge(0); // 쿠키 즉시 만료
+        logoutCookie.setSecure(true);
+        logoutCookie.setPath("/");
+        logoutCookie.setHttpOnly(true);
+        response.addCookie(logoutCookie);
+
+        return ResponseUtil.successResponse("로그아웃 되었습니다.");
+    }
+
+    // 마이페이지(정보)
+    @GetMapping("/api/mypage/information")
     public ResponseEntity<MemberDTO.MemberMyPageResponse> getMyPageInfo() {
 
         return ResponseEntity.ok().body(memberService.getMyPage());
     }
 
-    // 비밀번호 찾기
-//    @PostMapping("/api/finduser")
-//    public ResponseEntity<?> findUser(@RequestBody MemberDTO.MemberFindPwRequest dto) {
-//        memberService.findUser(dto);
-//
-//        return ResponseUtil.successResponse("가입한 이메일로 임시 비밀번호를 전송했습니다.");
-//    }
+    // 마이페이지(내가 푼 문제)
+    @GetMapping("/api/mypage/mysolve")
+    public ResponseEntity<?> getMySolveInfo() {
+
+        return memberService.getMySolve();
+    }
+
+    // 마이페이지(나의 피드백)
+    @GetMapping("/api/mypage/myfeedback")
+    public ResponseEntity<?> getMyFeedbackInfo() {
+
+        return memberService.getMyFeedback();
+    }
 
     // 상단 사용자 정보
     @GetMapping("/api/exp")
@@ -66,9 +81,16 @@ public class MemberController {
         return ResponseEntity.ok().body(memberService.expVar());
     }
 
-    // 랭킹 확인하기
-//    @GetMapping("/api/rank")
-//    public ResponseEntity<List<MemberDTO.NameScoreResponse>> memberRank() {
-//        return ResponseEntity.ok().body(memberService.memberRank());
-//    }
+    // 랭킹 가져오기
+    @GetMapping("/api/rank")
+    public ResponseEntity<List<MemberDTO.Rank>> getRank(@RequestParam(value = "memberGen", required = false) Integer memberGen) {
+        // year이 null이면 현재 현재 기수로 설정
+        if (memberGen == null) {
+            memberGen = LocalDate.now().getYear() - 1989;
+        }
+
+        List<MemberDTO.Rank> rank = memberService.getRank(memberGen);
+        if (rank.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(rank);
+    }
 }

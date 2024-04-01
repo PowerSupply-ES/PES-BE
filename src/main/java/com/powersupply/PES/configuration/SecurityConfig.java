@@ -35,15 +35,8 @@ public class SecurityConfig {
                 .csrf().disable() // cross site 기능
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
-//                .antMatchers("/api/**").permitAll() // 누구나 접근 가능
-//                .antMatchers("/","/signin","/signup","/finduser","/problem/**").permitAll() // 누구나 접근 가능
                 .antMatchers("/api/signin","/api/signup").permitAll() // 기본 요청 언제나 접근 가능
-                .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**").permitAll()
-//                .antMatchers(HttpMethod.GET, "/api/comment/**").permitAll()
-//                .antMatchers("/api/submit/**","/api/answer/**").hasRole("NEW_STUDENT")
-//                .antMatchers("/api/comment/**","/api/commentlist/**").hasRole("REGULAR_STUDENT")
-//                .antMatchers(HttpMethod.GET, "/api/questions/**").hasRole("REGULAR_STUDENT")
-//                .antMatchers("/api/manage/**","/api/questions/**").hasRole("MANAGER")
+                .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/comment/**").hasRole("REGULAR_STUDENT")
                 .anyRequest().hasRole("USER")
                 .and()
@@ -58,7 +51,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("https://www.pes23.com", "https://52.79.205.96")); // 여기에 IP 추가
+        configuration.setAllowedOrigins(Arrays.asList("https://www.pes23.com", "https://pes23.com")); // 여기에 IP 추가
         configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true); // 필요한 경우, 쿠키와 함께 요청을 보내는 것을 허용

@@ -29,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final List<String> skipUrls = Arrays.asList("/api/signin", "/api/signup", "/api/finduser");
 
     // 인증이 필요 없는 GET 요청의 URL 목록
-    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**");
+    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -84,7 +84,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 멤버 학번 추출
-        String memberEmail = JwtUtil.getMemberEmail(actualToken, secretKey);
+        String memberId = JwtUtil.getMemberId(actualToken, secretKey);
 
         // 상태에 따른 권한 부여
         String memberStatus = JwtUtil.getMemberStatus(actualToken, secretKey);
@@ -107,7 +107,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 권한 부여
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberEmail, null, List.of(authority));
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(memberId, null, List.of(authority));
 
         // 여기에 로깅 추가
         log.info("Assigned Authorities: {}", authenticationToken.getAuthorities());

@@ -11,26 +11,6 @@ public class AnswerDTO {
         private String answerSec;
     }
 
-    @Getter
-    public static class gitUrl {
-        private String answerUrl;
-    }
-
-    @Getter
-    @Builder
-    public static class SolveList {
-        private String memberStuNum;
-        private String memberName;
-        private int commentCount;
-        private String answerState;
-    }
-
-    @Getter
-    public static class returnSubmit {
-        private Long answerId;
-        private int answerState;
-    }
-
     @Builder
     @Getter
     public static class GetAnswerId {
@@ -44,13 +24,16 @@ public class AnswerDTO {
         private String questionContentSec;
         private String answerFst;
         private String answerSec;
+        private String answerState;
     }
 
     @Builder
     @Getter
     public static class GetAnswerList {
         private Long answerId;
-        private String memberEmail;
+        private int memberGen;
+        private String memberName;
         private int commentCount;
+        private String answerState;
     }
 }
