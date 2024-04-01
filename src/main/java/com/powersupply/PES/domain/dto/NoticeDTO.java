@@ -43,6 +43,7 @@ public class NoticeDTO {
         private String writer;
         private boolean isImportant;
         private int noticeHit;
+        private boolean isNewNotice;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
         private LocalDateTime createdTime;
     }

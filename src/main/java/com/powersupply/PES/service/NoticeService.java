@@ -15,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +44,10 @@ public class NoticeService {
 
     // 공지사항 리스트 가져오기
     public ResponseEntity<?> getNoticeList() {
+        String memberId = JwtUtil.getMemberIdFromToken();
         List<NoticeEntity> noticeEntityList = noticeRepository.findAll();
 
+        // 공지사항이 없는 경우
         if (noticeEntityList.isEmpty()){
             return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
         }
@@ -52,6 +55,17 @@ public class NoticeService {
         List<NoticeDTO.NoticeList> noticeLists = new ArrayList<>();
 
         for (NoticeEntity noticeEntity:noticeEntityList) {
+            // 현재 시간과 공지사항의 생성 시간 차이 계산
+            boolean isNewNotice = ChronoUnit.DAYS.between(noticeEntity.getCreatedTime(), LocalDateTime.now()) <= 5;
+
+            if (isNewNotice) {
+                // 사용자가 공지사항을 조회했는지 확인
+                boolean hasRead = memberNoticeRepository.existsByMemberEntity_MemberIdAndNoticeEntity_NoticeId(memberId, noticeEntity.getNoticeId());
+                if (hasRead) {
+                    isNewNotice = false;  // 이미 읽었다면 isNewNotice를 false로 설정
+                }
+            }
+
             NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
                     .noticeId(noticeEntity.getNoticeId())
                     .writerGen(noticeEntity.getMemberEntity().getMemberGen())
@@ -59,8 +73,10 @@ public class NoticeService {
                     .title(noticeEntity.getNoticeTitle())
                     .noticeHit(noticeEntity.getNoticeHit())
                     .isImportant(noticeEntity.isImportant())
+                    .isNewNotice(isNewNotice)
                     .createdTime(noticeEntity.getCreatedTime())
                     .build();
+
             noticeLists.add(noticeList);
         }
 
