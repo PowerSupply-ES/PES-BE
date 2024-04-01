@@ -1,15 +1,12 @@
 package com.powersupply.PES.service;
 
-import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.AnswerEntity;
 import com.powersupply.PES.domain.entity.CommentEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
-import com.powersupply.PES.repository.AnswerRepository;
-import com.powersupply.PES.repository.CommentRepository;
-import com.powersupply.PES.repository.MemberRepository;
+import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -30,6 +29,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
     private final AnswerRepository answerRepository;
     private final CommentRepository commentRepository;
+    private final NoticeRepository noticeRepository;
+    private final MemberNoticeRepository memberNoticeRepository;
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.secret}")
     private String secretKey;
@@ -129,11 +130,19 @@ public class MemberService {
 
         Integer totalScore = answerRepository.sumFinalScoreById(id);
 
+        // 새 공지사항 존재 여부 확인
+        boolean hasNewNotices = noticeRepository.findAll().stream()
+                .anyMatch(notice -> {
+                    boolean isNew = ChronoUnit.DAYS.between(notice.getCreatedTime(), LocalDateTime.now()) <= 5;
+                    return isNew && !memberNoticeRepository.existsByMemberEntity_MemberIdAndNoticeEntity_NoticeId(id, notice.getNoticeId());
+                });
+
         return MemberDTO.NameScoreResponse.builder()
                 .memberName(selectedMember.getMemberName())
                 .memberStatus(selectedMember.getMemberStatus())
                 .memberScore(totalScore != null ? totalScore : 0)
                 .memberGen(selectedMember.getMemberGen())
+                .hasNewNotices(hasNewNotices)
                 .build();
     }
 
