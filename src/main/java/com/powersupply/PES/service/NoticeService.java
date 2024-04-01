@@ -54,6 +54,7 @@ public class NoticeService {
                     .writerGen(noticeEntity.getMemberEntity().getMemberGen())
                     .writer(noticeEntity.getMemberEntity().getMemberName())
                     .title(noticeEntity.getNoticeTitle())
+                    .noticeHit(noticeEntity.getNoticeHit())
                     .isImportant(noticeEntity.isImportant())
                     .build();
             noticeLists.add(noticeList);
