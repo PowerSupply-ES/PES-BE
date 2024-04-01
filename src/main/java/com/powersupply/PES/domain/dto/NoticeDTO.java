@@ -1,7 +1,10 @@
 package com.powersupply.PES.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.Getter;
+
+import java.time.LocalDateTime;
 
 public class NoticeDTO {
 
@@ -14,6 +17,10 @@ public class NoticeDTO {
         private String writer;
         private boolean isImportant;
         private int noticeHit;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        private LocalDateTime createdTime;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        private LocalDateTime updatedTime;
     }
 
     @Getter
@@ -36,5 +43,7 @@ public class NoticeDTO {
         private String writer;
         private boolean isImportant;
         private int noticeHit;
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+        private LocalDateTime createdTime;
     }
 }

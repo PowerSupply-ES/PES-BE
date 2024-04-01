@@ -58,6 +58,7 @@ public class NoticeService {
                     .title(noticeEntity.getNoticeTitle())
                     .noticeHit(noticeEntity.getNoticeHit())
                     .isImportant(noticeEntity.isImportant())
+                    .createdTime(noticeEntity.getCreatedTime())
                     .build();
             noticeLists.add(noticeList);
         }
@@ -101,6 +102,8 @@ public class NoticeService {
                 .writer(noticeEntity.getMemberEntity().getMemberName())
                 .noticeHit(noticeEntity.getNoticeHit())
                 .isImportant(noticeEntity.isImportant())
+                .createdTime(noticeEntity.getCreatedTime())
+                .updatedTime(noticeEntity.getUpdatedTime())
                 .build();
 
         return ResponseEntity.ok().body(notice);
