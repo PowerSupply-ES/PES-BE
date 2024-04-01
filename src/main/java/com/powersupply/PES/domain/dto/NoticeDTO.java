@@ -5,6 +5,17 @@ import lombok.Getter;
 
 public class NoticeDTO {
 
+    @Builder
+    @Getter
+    public static class Notice {
+        private String content;
+        private String title;
+        private int writerGen;
+        private String writer;
+        private boolean isImportant;
+        private int noticeHit;
+    }
+
     @Getter
     public static class CreateNotice {
         private String title;

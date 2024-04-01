@@ -4,10 +4,7 @@ import com.powersupply.PES.domain.dto.NoticeDTO;
 import com.powersupply.PES.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,5 +22,11 @@ public class NoticeController {
     @GetMapping("/api/notice")
     public ResponseEntity<?> getNoticeList() {
         return noticeService.getNoticeList();
+    }
+
+    // 공지사항 내용 가져오기
+    @GetMapping("/api/notice/{noticeId}")
+    public ResponseEntity<?> getNotice(@PathVariable Long noticeId) {
+        return noticeService.getNotice(noticeId);
     }
 }

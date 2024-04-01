@@ -2,6 +2,8 @@ package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.NoticeDTO;
 import com.powersupply.PES.domain.entity.NoticeEntity;
+import com.powersupply.PES.exception.AppException;
+import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.repository.NoticeRepository;
 import com.powersupply.PES.utils.JwtUtil;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +64,25 @@ public class NoticeService {
         }
 
         return ResponseEntity.ok().body(noticeLists);
+    }
+
+    // 공지사항 내용 가져오기
+    public ResponseEntity<?> getNotice(Long noticeId) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 공지가 없습니다."));
+
+        noticeEntity.setNoticeHit(noticeEntity.getNoticeHit() + 1);
+        noticeRepository.save(noticeEntity);
+
+        NoticeDTO.Notice notice = NoticeDTO.Notice.builder()
+                .title(noticeEntity.getNoticeTitle())
+                .content(noticeEntity.getNoticeContent())
+                .writerGen(noticeEntity.getMemberEntity().getMemberGen())
+                .writer(noticeEntity.getMemberEntity().getMemberName())
+                .noticeHit(noticeEntity.getNoticeHit())
+                .isImportant(noticeEntity.isImportant())
+                .build();
+
+        return ResponseEntity.ok().body(notice);
     }
 }
