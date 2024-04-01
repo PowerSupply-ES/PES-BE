@@ -17,6 +17,8 @@ public class CommentEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long commentId;
     private int commentPassFail;
+
+    @Lob
     private String commentContent;
 
     @ManyToOne(fetch = FetchType.LAZY)
