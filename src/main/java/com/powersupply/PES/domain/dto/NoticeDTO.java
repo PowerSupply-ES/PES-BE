@@ -24,7 +24,7 @@ public class NoticeDTO {
     }
 
     @Getter
-    public static class CreateNotice {
+    public static class BaseNotice {
         private String title;
         private String content;
         private boolean isImportant;

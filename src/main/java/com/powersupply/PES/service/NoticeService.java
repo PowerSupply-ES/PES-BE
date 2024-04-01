@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class NoticeService {
     private final MemberNoticeRepository memberNoticeRepository;
 
     // 공지사항 등록
-    public ResponseEntity<?> postNotice(NoticeDTO.CreateNotice dto) {
+    public ResponseEntity<?> postNotice(NoticeDTO.BaseNotice dto) {
         String memberId = JwtUtil.getMemberIdFromToken();
 
         NoticeEntity noticeEntity = NoticeEntity.builder()
@@ -107,5 +108,19 @@ public class NoticeService {
                 .build();
 
         return ResponseEntity.ok().body(notice);
+    }
+
+    // 공지사항 업데이트
+    public ResponseEntity<?> updateNotice(Long noticeId, NoticeDTO.BaseNotice dto) {
+        NoticeEntity noticeEntity =  noticeRepository.findById(noticeId)
+                .orElseThrow(()->new AppException(ErrorCode.NOT_FOUND,"해당 공지가 없습니다."));
+
+        noticeEntity.setNoticeTitle(dto.getTitle());
+        noticeEntity.setNoticeContent(dto.getContent());
+        noticeEntity.setImportant(dto.isIsImportant());
+        noticeEntity.setUpdatedTime(LocalDateTime.now());
+        noticeRepository.save(noticeEntity);
+
+        return ResponseEntity.ok().build();
     }
 }

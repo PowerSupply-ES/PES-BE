@@ -14,7 +14,7 @@ public class NoticeController {
 
     // 공지사항 등록
     @PostMapping("/api/notice")
-    public ResponseEntity<?> postNotice(@RequestBody NoticeDTO.CreateNotice dto) {
+    public ResponseEntity<?> postNotice(@RequestBody NoticeDTO.BaseNotice dto) {
         return noticeService.postNotice(dto);
     }
 
@@ -28,5 +28,11 @@ public class NoticeController {
     @GetMapping("/api/notice/{noticeId}")
     public ResponseEntity<?> getNotice(@PathVariable Long noticeId) {
         return noticeService.getNotice(noticeId);
+    }
+
+    // 공지사항 수정
+    @PatchMapping("/api/notice/{noticeId}")
+    public ResponseEntity<?> updateNotice(@PathVariable Long noticeId, @RequestBody NoticeDTO.BaseNotice dto) {
+        return noticeService.updateNotice(noticeId, dto);
     }
 }
