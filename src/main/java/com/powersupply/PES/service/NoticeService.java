@@ -24,13 +24,13 @@ public class NoticeService {
     public ResponseEntity<?> postNotice(NoticeDTO.CreateNotice dto) {
         String memberId = JwtUtil.getMemberIdFromToken();
 
-        System.out.println("isImportant: " + dto.isImportant());
+        System.out.println("isImportant: " + dto.isIsImportant());
 
 
         NoticeEntity noticeEntity = NoticeEntity.builder()
                 .noticeTitle(dto.getTitle())
                 .noticeContent(dto.getContent())
-                .isImportant(dto.isImportant())
+                .isImportant(dto.isIsImportant())
                 .memberEntity(memberRepository.findById(memberId).get())
                 .build();
         noticeRepository.save(noticeEntity);

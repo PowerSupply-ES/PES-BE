@@ -10,6 +10,10 @@ public class NoticeDTO {
         private String title;
         private String content;
         private boolean isImportant;
+
+        public boolean isIsImportant() {
+            return isImportant;
+        }
     }
 
     @Getter
