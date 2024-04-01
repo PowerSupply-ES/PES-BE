@@ -20,5 +20,6 @@ public class NoticeDTO {
         private int writerGen;
         private String writer;
         private boolean isImportant;
+        private int noticeHit;
     }
 }
