@@ -2,6 +2,7 @@ package com.powersupply.PES.domain.dto;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 public class MemberDTO {
 
@@ -67,7 +68,9 @@ public class MemberDTO {
 
     @Getter
     @Builder
+    @Setter
     public static class Rank {
+        private int rank;
         private String memberName;
         private int score;
     }

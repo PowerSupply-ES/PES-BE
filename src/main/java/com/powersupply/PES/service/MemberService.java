@@ -206,9 +206,24 @@ public class MemberService {
             }
         }
 
-        // 스트림 API를 사용하여 score 기준으로 내림차순 정렬
-        return memberScores.stream()
-                .sorted(Comparator.comparingInt(MemberDTO.Rank::getScore).reversed())
-                .collect(Collectors.toList());
+        memberScores.sort((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()));
+
+        int rank = 1;
+        int previousScore = Integer.MAX_VALUE;
+        int skippedRanks = 0;
+        for (int i = 0; i < memberScores.size(); i++) {
+            MemberDTO.Rank currentMember = memberScores.get(i);
+            if(currentMember.getScore() == previousScore) {
+                currentMember.setRank(rank);
+                skippedRanks++;
+            } else {
+                rank += skippedRanks;
+                currentMember.setRank(rank);
+                skippedRanks = 1;
+            }
+            previousScore = currentMember.getScore();
+        }
+
+        return memberScores;
     }
 }
