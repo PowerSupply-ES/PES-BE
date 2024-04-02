@@ -235,4 +235,41 @@ public class MemberService {
 
         return memberScores;
     }
+
+    public List<MemberDTO.Rank> getSeniorRank() {
+        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("재학생");
+        List<MemberDTO.Rank> memberComments = new ArrayList<>();
+
+        for (MemberEntity memberEntity : memberEntityList) {
+            Integer count = commentRepository.findMemberCommentsCount(memberEntity.getMemberId());
+            if (count != null) {  // count가 null이 아닌 경우에만 리스트에 추가
+                MemberDTO.Rank memberRank = MemberDTO.Rank.builder()
+                        .memberName(memberEntity.getMemberName())
+                        .score(count)
+                        .build();
+                memberComments.add(memberRank);
+            }
+        }
+
+        memberComments.sort((o1, o2) -> Integer.compare(o2.getScore(), o1.getScore()));
+
+        int rank = 1;
+        int previousScore = Integer.MAX_VALUE;
+        int skippedRanks = 0;
+        for (int i = 0; i < memberComments.size(); i++) {
+            MemberDTO.Rank currentMember = memberComments.get(i);
+            if(currentMember.getScore() == previousScore) {
+                currentMember.setRank(rank);
+                skippedRanks++;
+            } else {
+                rank += skippedRanks;
+                currentMember.setRank(rank);
+                skippedRanks = 1;
+            }
+            previousScore = currentMember.getScore();
+        }
+
+        return memberComments;
+    }
+
 }

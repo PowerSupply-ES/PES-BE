@@ -13,4 +13,6 @@ public interface MemberRepository extends JpaRepository<MemberEntity, String> {
     Optional<MemberEntity> findByMemberPhone(String phone);
 
     List<MemberEntity> findByMemberGen(Integer memberGen);
+
+    List<MemberEntity> findByMemberStatus(String status);
 }
