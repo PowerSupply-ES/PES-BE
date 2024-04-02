@@ -93,4 +93,15 @@ public class MemberController {
         if (rank.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(rank);
     }
+
+    // 재학생 랭킹 가져오기
+    @GetMapping("/api/senior")
+    public ResponseEntity<List<MemberDTO.Rank>> getSeniorRank() {
+        List<MemberDTO.Rank> rank = memberService.getSeniorRank();
+        if (rank.isEmpty()) return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().body(rank);
+    }
+
 }
+
+
