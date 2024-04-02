@@ -19,7 +19,10 @@ public class AnswerEntity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long answerId;
     private String answerState;
+
+    @Lob
     private String answerFst;
+    @Lob
     private String answerSec;
     private int finalScore;
 

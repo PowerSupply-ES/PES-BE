@@ -29,7 +29,7 @@ public class JwtFilter extends OncePerRequestFilter {
     private final List<String> skipUrls = Arrays.asList("/api/signin", "/api/signup", "/api/finduser");
 
     // 인증이 필요 없는 GET 요청의 URL 목록
-    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank", "/api/senior");
+    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank/**");
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -100,6 +100,9 @@ public class JwtFilter extends OncePerRequestFilter {
                 break;
             case "관리자":
                 authority = new SimpleGrantedAuthority("ROLE_MANAGER");
+                break;
+            case "개발자":
+                authority = new SimpleGrantedAuthority("ROLE_ADMIN");
                 break;
             default:
                 authority = new SimpleGrantedAuthority("ROLE_USER");

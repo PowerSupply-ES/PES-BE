@@ -43,6 +43,7 @@ public class MemberDTO {
         private String memberStatus;
         private int memberScore;
         private int memberGen;
+        private boolean hasNewNotices;
     }
 
     @Getter

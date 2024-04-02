@@ -8,24 +8,20 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
 @Setter
-@Table(name = "comment_table")
-public class CommentEntity extends BaseEntity {
+@Getter
+@Table(name = "member_notice_table")
+public class MemberNoticeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
-    private int commentPassFail;
-
-    @Lob
-    private String commentContent;
+    private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
     private MemberEntity memberEntity;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answerId")
-    private AnswerEntity answerEntity;
+    @JoinColumn(name = "noticeId")
+    private NoticeEntity noticeEntity;
 }

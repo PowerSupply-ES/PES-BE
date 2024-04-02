@@ -82,7 +82,7 @@ public class MemberController {
     }
 
     // 랭킹 가져오기
-    @GetMapping("/api/rank")
+    @GetMapping("/api/rank/junior")
     public ResponseEntity<List<MemberDTO.Rank>> getRank(@RequestParam(value = "memberGen", required = false) Integer memberGen) {
         // year이 null이면 현재 현재 기수로 설정
         if (memberGen == null) {
@@ -95,13 +95,12 @@ public class MemberController {
     }
 
     // 재학생 랭킹 가져오기
-    @GetMapping("/api/senior")
+    @GetMapping("/api/rank/senior")
     public ResponseEntity<List<MemberDTO.Rank>> getSeniorRank() {
         List<MemberDTO.Rank> rank = memberService.getSeniorRank();
         if (rank.isEmpty()) return ResponseEntity.noContent().build();
         return ResponseEntity.ok().body(rank);
     }
-
 }
 
 
