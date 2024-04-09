@@ -4,6 +4,7 @@ import com.powersupply.PES.domain.dto.NoticeDTO;
 import com.powersupply.PES.service.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -40,5 +41,11 @@ public class NoticeController {
     @PatchMapping("/api/notice/{noticeId}")
     public ResponseEntity<?> updateNotice(@PathVariable Long noticeId, @RequestBody NoticeDTO.BaseNotice dto) {
         return noticeService.updateNotice(noticeId, dto);
+    }
+
+    // 공지사항 삭제
+    @DeleteMapping("/api/notice/{noticeId}")
+    public ResponseEntity<?> deleteNotice(@PathVariable Long noticeId) {
+        return noticeService.deleteNotice(noticeId);
     }
 }

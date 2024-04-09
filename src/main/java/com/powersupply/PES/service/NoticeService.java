@@ -160,4 +160,12 @@ public class NoticeService {
 
         return ResponseEntity.ok().body(response);
     }
+
+    public ResponseEntity<?> deleteNotice(Long noticeId) {
+        List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
+        memberNoticeRepository.deleteAll(memberNotices);
+
+        noticeRepository.deleteById(noticeId);
+        return ResponseEntity.ok().build();
+    }
 }
