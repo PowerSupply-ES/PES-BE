@@ -161,11 +161,16 @@ public class NoticeService {
         return ResponseEntity.ok().body(response);
     }
 
+    // 공지사항 삭제
     public ResponseEntity<?> deleteNotice(Long noticeId) {
-        List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
-        memberNoticeRepository.deleteAll(memberNotices);
+//        List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
+//        memberNoticeRepository.deleteAll(memberNotices);
 
-        noticeRepository.deleteById(noticeId);
+//        noticeRepository.deleteById(noticeId);
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 공지가 없습니다."));
+        noticeEntity.setDeleted(true);
+        noticeRepository.save(noticeEntity);
         return ResponseEntity.ok().build();
     }
 }
