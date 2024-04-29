@@ -68,18 +68,20 @@ public class NoticeService {
                 }
             }
 
-            NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
-                    .noticeId(noticeEntity.getNoticeId())
-                    .writerGen(noticeEntity.getMemberEntity().getMemberGen())
-                    .writer(noticeEntity.getMemberEntity().getMemberName())
-                    .title(noticeEntity.getNoticeTitle())
-                    .noticeHit(noticeEntity.getNoticeHit())
-                    .isImportant(noticeEntity.isImportant())
-                    .isNewNotice(isNewNotice)
-                    .createdTime(noticeEntity.getCreatedTime())
-                    .build();
+            if (!noticeEntity.isDeleted()) {
+                NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
+                        .noticeId(noticeEntity.getNoticeId())
+                        .writerGen(noticeEntity.getMemberEntity().getMemberGen())
+                        .writer(noticeEntity.getMemberEntity().getMemberName())
+                        .title(noticeEntity.getNoticeTitle())
+                        .noticeHit(noticeEntity.getNoticeHit())
+                        .isImportant(noticeEntity.isImportant())
+                        .isNewNotice(isNewNotice)
+                        .createdTime(noticeEntity.getCreatedTime())
+                        .build();
 
-            noticeLists.add(noticeList);
+                noticeLists.add(noticeList);
+            }
         }
 
         return ResponseEntity.ok().body(noticeLists);
