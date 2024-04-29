@@ -25,10 +25,10 @@ public class NoticeController {
         return noticeService.postNotice(dto);
     }
 
-    // 공지사항 리스트 가져오기
+    // 공지사항 리스트 가져오기(state가 true시 삭제된 것 가져오기)
     @GetMapping("/api/notice")
-    public ResponseEntity<?> getNoticeList() {
-        return noticeService.getNoticeList();
+    public ResponseEntity<?> getNoticeList(@RequestParam(required = false) boolean state) {
+        return noticeService.getNoticeList(state);
     }
 
     // 공지사항 내용 가져오기

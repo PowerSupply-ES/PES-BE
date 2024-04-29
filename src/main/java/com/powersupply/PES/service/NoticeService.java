@@ -45,7 +45,7 @@ public class NoticeService {
     }
 
     // 공지사항 리스트 가져오기
-    public ResponseEntity<?> getNoticeList() {
+    public ResponseEntity<?> getNoticeList(boolean state) {
         String memberId = JwtUtil.getMemberIdFromToken();
         List<NoticeEntity> noticeEntityList = noticeRepository.findAll();
 
@@ -68,7 +68,7 @@ public class NoticeService {
                 }
             }
 
-            if (!noticeEntity.isDeleted()) {
+            if (noticeEntity.isDeleted() == state) {
                 NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
                         .noticeId(noticeEntity.getNoticeId())
                         .writerGen(noticeEntity.getMemberEntity().getMemberGen())
