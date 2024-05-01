@@ -163,6 +163,17 @@ public class NoticeService {
         return ResponseEntity.ok().body(response);
     }
 
+    // 공지사항 복원
+    public ResponseEntity<?> restoreNotice(Long noticeId) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 noticeID가 없습니다."));
+
+        noticeEntity.setDeleted(false);
+        noticeRepository.save(noticeEntity);
+
+        return ResponseEntity.ok().build();
+    }
+
     // 공지사항 삭제
     public ResponseEntity<?> deleteNotice(Long noticeId) {
 //        List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);

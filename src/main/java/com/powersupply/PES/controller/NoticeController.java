@@ -43,6 +43,12 @@ public class NoticeController {
         return noticeService.updateNotice(noticeId, dto);
     }
 
+    // 공지사항 복구
+    @PatchMapping("/api/notice/restore/{noticeId}")
+    public ResponseEntity<?> restoreNotice(@PathVariable Long noticeId) {
+        return noticeService.restoreNotice(noticeId);
+    }
+
     // 공지사항 삭제
     @DeleteMapping("/api/notice/{noticeId}")
     public ResponseEntity<?> deleteNotice(@PathVariable Long noticeId) {
