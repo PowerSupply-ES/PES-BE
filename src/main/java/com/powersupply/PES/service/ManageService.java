@@ -34,9 +34,9 @@ public class ManageService {
     }
 
     // 특정 멤버 detail 불러오기
-    public ManageDTO.MemberList readDetail(String memberId) {
+    public ManageDTO.MemberDetail readDetail(String memberId) {
         return memberRepository.findById(memberId)
-                .map(ManageDTO.MemberList::new)
+                .map(ManageDTO.MemberDetail::new)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다."));
     }
 

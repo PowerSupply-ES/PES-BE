@@ -28,7 +28,7 @@ public class ManageController {
 
     // 특정 멤버 detail 불러오기
     @GetMapping("/member/{memberId}")
-    public ResponseEntity<ManageDTO.MemberList> readDetail(@PathVariable String memberId) {
+    public ResponseEntity<ManageDTO.MemberDetail> readDetail(@PathVariable String memberId) {
         return ResponseEntity.ok().body(manageService.readDetail(memberId));
     }
 
