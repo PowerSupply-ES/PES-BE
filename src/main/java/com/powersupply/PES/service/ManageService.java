@@ -58,4 +58,26 @@ public class ManageService {
             return ResponseEntity.ok().build();
         }
     }
+
+    public MemberEntity updateMemberStatus(String memberId, ManageDTO.MemberUpdateRequestDto updateRequestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+        assert id != null;
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
+
+        Optional<MemberEntity> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isEmpty()) {
+            throw new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음");
+        }
+
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
+        } else {
+            MemberEntity member = optionalMember.get();
+            member.setMemberStatus(updateRequestDto.getMemberStatus());
+
+            return memberRepository.save(member);
+        }
+    }
 }

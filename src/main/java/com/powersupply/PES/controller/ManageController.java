@@ -1,12 +1,10 @@
 package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.ManageDTO;
+import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.service.ManageService;
-import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.bridge.Message;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,5 +34,11 @@ public class ManageController {
     @DeleteMapping("/member/{memberId}")
     public ResponseEntity<?> deleteMember(@PathVariable String memberId) {
         return manageService.deleteMember(memberId);
+    }
+
+    // 멤버 상태 수정하기
+    @PutMapping("/member/{memberId}")
+    public ResponseEntity<MemberEntity> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.updateMemberStatus(memberId, requestDto));
     }
 }

@@ -3,6 +3,7 @@ package com.powersupply.PES.domain.dto;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 public class ManageDTO {
 
@@ -45,6 +46,27 @@ public class ManageDTO {
             this.memberMajor = member.getMemberMajor();
             this.memberStatus = member.getMemberStatus();
             this.memberEmail = member.getMemberEmail();
+        }
+    }
+
+    @Getter
+    public static class MemberResponseDto {
+        private String memberId;
+        private String memberStatus;
+
+        public MemberResponseDto(MemberEntity member) {
+            this.memberId = member.getMemberId();
+            this.memberStatus = member.getMemberStatus();
+        }
+    }
+
+    @Getter
+    @NoArgsConstructor
+    public static class MemberUpdateRequestDto {
+        private String memberStatus;
+        @Builder
+        public MemberUpdateRequestDto(String memberStatus) {
+            this.memberStatus = memberStatus;
         }
     }
 
