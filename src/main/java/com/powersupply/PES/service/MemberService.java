@@ -237,7 +237,7 @@ public class MemberService {
     }
 
     public List<MemberDTO.Rank> getSeniorRank() {
-        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("재학생");
+        List<MemberEntity> memberEntityList = memberRepository.findByMemberStatus("재학생", "관리자");
         List<MemberDTO.Rank> memberComments = new ArrayList<>();
 
         for (MemberEntity memberEntity : memberEntityList) {
