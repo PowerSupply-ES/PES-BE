@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,6 +22,14 @@ public class ProblemEntity {
     private Long problemId;
     private String problemTitle;
     private int problemScore;
+    @Column(columnDefinition = "TEXT")
+    private String context;
+    @Nullable
+    private int sample;
+    @Column(columnDefinition = "TEXT")
+    private String inputs;
+    @Column(columnDefinition = "TEXT")
+    private String outputs;
 
     @Builder.Default
     @OneToMany(mappedBy = "problemEntity")
