@@ -16,6 +16,20 @@ public class ManageController {
 
     private final ManageService manageService;
 
+    // 전체 문제 리스트 불러오기
+    @GetMapping("/problemlist")
+    public ResponseEntity<List<ManageDTO.ProblemList>> problemList() {
+        List<ManageDTO.ProblemList> problemList = manageService.problemList();
+
+        return ResponseEntity.ok().body(problemList);
+    }
+
+    // 특정 문제 detail 불러오기
+    @GetMapping("/problem/{problemId}")
+    public ResponseEntity<ManageDTO.ProblemDetail> problemDetail(@PathVariable Long problemId) {
+        return ResponseEntity.ok().body(manageService.problemDetail(problemId));
+    }
+
     // 전체 멤버 리스트 불러오기
     @GetMapping("/memberlist")
     public ResponseEntity<List<ManageDTO.MemberList>> list() {

@@ -24,6 +24,21 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ManageService {
     private final MemberRepository memberRepository;
+    private final ProblemRepository problemRepository;
+
+    // 전체 문제 리스트 불러오기
+    public List<ManageDTO.ProblemList> problemList() {
+        return problemRepository.findAll().stream()
+                .map(ManageDTO.ProblemList::new)
+                .collect(Collectors.toList());
+    }
+
+    // 특정 문제 detail 불러오기
+    public ManageDTO.ProblemDetail problemDetail(Long problemId) {
+        return problemRepository.findById(problemId)
+                .map(ManageDTO.ProblemDetail::new)
+                .orElseThrow(() -> new IllegalArgumentException("해당 문제가 존재하지 않습니다."));
+    }
 
     // 전체 멤버 리스트 불러오기
     @Transactional(readOnly = true)
