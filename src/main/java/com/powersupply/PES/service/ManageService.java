@@ -10,6 +10,7 @@ import com.powersupply.PES.repository.ProblemRepository;
 import com.powersupply.PES.repository.QuestionRepository;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +38,31 @@ public class ManageService {
     public ManageDTO.ProblemDetail problemDetail(Long problemId) {
         return problemRepository.findById(problemId)
                 .map(ManageDTO.ProblemDetail::new)
-                .orElseThrow(() -> new IllegalArgumentException("해당 문제가 존재하지 않습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 문제가 존재하지 않습니다."));
+    }
+
+    // 문제 등록하기
+    public ResponseEntity<?> postProblem(ManageDTO.ProblemPostRequestDto requestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
+
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
+        } else {
+            ProblemEntity problemEntity = ProblemEntity.builder()
+                    .problemTitle(requestDto.getProblemTitle())
+                    .problemScore(requestDto.getProblemScore())
+                    .context(requestDto.getContext())
+                    .sample(requestDto.getSample())
+                    .inputs(requestDto.getInputs())
+                    .outputs(requestDto.getOutputs())
+                    .build();
+            problemRepository.save(problemEntity);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
     }
 
     // 전체 멤버 리스트 불러오기

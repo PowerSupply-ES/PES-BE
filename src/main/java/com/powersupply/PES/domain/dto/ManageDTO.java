@@ -6,6 +6,7 @@ import com.powersupply.PES.exception.ExceptionManger;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class ManageDTO {
 
@@ -42,6 +43,29 @@ public class ManageDTO {
             this.sample = problem.getSample();
             this.inputs = problem.getInputs();
             this.outputs = problem.getOutputs();
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public class ProblemPostRequestDto {
+        private String problemTitle;
+        private int problemScore;
+        private String context;
+        private int sample;
+        private String inputs;
+        private String outputs;
+
+        @Builder
+        public ProblemPostRequestDto(String problemTitle, int problemScore,
+                                      String context, int sample, String inputs, String outputs) {
+            this.problemTitle = problemTitle;
+            this.problemScore = problemScore;
+            this.context = context;
+            this.sample = sample;
+            this.inputs = inputs;
+            this.outputs = outputs;
         }
     }
 

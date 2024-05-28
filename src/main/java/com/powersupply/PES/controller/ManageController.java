@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -28,6 +29,12 @@ public class ManageController {
     @GetMapping("/problem/{problemId}")
     public ResponseEntity<ManageDTO.ProblemDetail> problemDetail(@PathVariable Long problemId) {
         return ResponseEntity.ok().body(manageService.problemDetail(problemId));
+    }
+
+    // 문제 등록하기
+    @PostMapping("/problem/{problemId}")
+    public ResponseEntity<?> postProblem(@RequestBody ManageDTO.ProblemPostRequestDto requestDto) throws IOException {
+        return ResponseEntity.ok(manageService.postProblem(requestDto));
     }
 
     // 전체 멤버 리스트 불러오기

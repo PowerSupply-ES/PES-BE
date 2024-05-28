@@ -19,6 +19,7 @@ import java.util.List;
 public class ProblemEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long problemId;
     private String problemTitle;
     private int problemScore;
