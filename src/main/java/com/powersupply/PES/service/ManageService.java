@@ -2,79 +2,82 @@ package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.dto.MemberDTO;
-import com.powersupply.PES.domain.entity.MemberEntity;
-import com.powersupply.PES.domain.entity.ProblemEntity;
-import com.powersupply.PES.domain.entity.QuestionEntity;
+import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.repository.ProblemRepository;
 import com.powersupply.PES.repository.QuestionRepository;
+import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ManageService {
-/*
-    private final ProblemRepository problemRepository;
-    private final QuestionRepository questionRepository;
     private final MemberRepository memberRepository;
 
-    // 질문 만들기
-    @Transactional
-    public void makeQuestion(Long problemId, ManageDTO.makeQuestion dto) {
-
-        ProblemEntity problemEntity = problemRepository.findById(problemId)
-                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 문제가 없습니다."));
-
-        QuestionEntity questionEntity = QuestionEntity.builder()
-                .questionContent(dto.getQuestionContent())
-                .questionDifficulty(dto.getQuestionDifficulty())
-                .problemEntity(problemEntity)
-                .build();
-        questionRepository.save(questionEntity);
+    // 전체 멤버 리스트 불러오기
+    @Transactional(readOnly = true)
+    public List<ManageDTO.MemberList> list() {
+        return memberRepository.findAll().stream()
+                .map(ManageDTO.MemberList::new)
+                .collect(Collectors.toList());
     }
 
-    // 멤버 관리하기
-    @Transactional
-    public List<ManageDTO.MemberList> getMemberList() {
+    // 특정 멤버 detail 불러오기
+    public ManageDTO.MemberDetail readDetail(String memberId) {
+        return memberRepository.findById(memberId)
+                .map(ManageDTO.MemberDetail::new)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다."));
+    }
 
-        List<MemberEntity> memberEntityList = memberRepository.findAll();
-        List<ManageDTO.MemberList> memberListArrayList = new ArrayList<>();
+    // 멤버 삭제하기
+    public ResponseEntity<?> deleteMember(String memberId) {
+        String id = JwtUtil.getMemberIdFromToken();
+        
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
+        
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"삭제하려는 memberId가 없음"));
 
-        for(MemberEntity memberEntity: memberEntityList) {
-            ManageDTO.MemberList memberList = ManageDTO.MemberList.builder()
-                    .memberStuNum(memberEntity.getMemberStuNum())
-                    .memberGen(memberEntity.getMemberGen())
-                    .memberName(memberEntity.getMemberName())
-                    .memberMajor(memberEntity.getDetailMemberEntity().getMemberMajor())
-                    .memberEmail(memberEntity.getDetailMemberEntity().getMemberEmail())
-                    .memberStatus(memberEntity.getMemberStatus())
-                    .build();
-            memberListArrayList.add(memberList);
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
+        } else {
+            memberRepository.deleteById(memberId);
+
+            return ResponseEntity.ok().build();
+        }
+    }
+
+    public MemberEntity updateMemberStatus(String memberId, ManageDTO.MemberUpdateRequestDto updateRequestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+        assert id != null;
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
+
+        Optional<MemberEntity> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isEmpty()) {
+            throw new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음");
         }
 
-        return memberListArrayList;
-    }
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
+        } else {
+            MemberEntity member = optionalMember.get();
+            member.setMemberStatus(updateRequestDto.getMemberStatus());
 
-    // 멤버 수정하기
-    public void patchMember(String memberStuNum, ManageDTO.PatchMember dto) {
-        MemberEntity memberEntity = memberRepository.findByMemberStuNum(memberStuNum)
-                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 멤버가 없습니다."));
-        int memberGen = dto.getMemberGen();
-        if(memberGen != 0) {
-            memberEntity.setMemberGen(memberGen);
+            return memberRepository.save(member);
         }
-        memberEntity.setMemberStatus(dto.getMemberStatus());
-
-        memberRepository.save(memberEntity);
     }
-
-
- */
 }

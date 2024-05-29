@@ -1,40 +1,44 @@
 package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.ManageDTO;
+import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.service.ManageService;
-import com.powersupply.PES.utils.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/admin")
 public class ManageController {
-/*
+
     private final ManageService manageService;
 
-    // 질문 만들기
-    @PostMapping("/api/manage/questions/{problemId}")
-    public ResponseEntity<?> makeQuestion(@PathVariable Long problemId, ManageDTO.makeQuestion dto) {
-        manageService.makeQuestion(problemId, dto);
-        return ResponseUtil.successResponse("성공적으로 질문을 생성하였습니다.");
+    // 전체 멤버 리스트 불러오기
+    @GetMapping("/memberlist")
+    public ResponseEntity<List<ManageDTO.MemberList>> list() {
+        List<ManageDTO.MemberList> memberList = manageService.list();
+
+        return ResponseEntity.ok().body(memberList);
     }
 
-    // 멤버 관리하기
-    @GetMapping("/api/manage")
-    public ResponseEntity<List<ManageDTO.MemberList>> getMemberList() {
-        return ResponseEntity.ok().body(manageService.getMemberList());
+    // 특정 멤버 detail 불러오기
+    @GetMapping("/member/{memberId}")
+    public ResponseEntity<ManageDTO.MemberDetail> readDetail(@PathVariable String memberId) {
+        return ResponseEntity.ok().body(manageService.readDetail(memberId));
     }
 
-    // 멤버 수정하기
-    @PatchMapping("/api/manage/{memberStuNum}")
-    public ResponseEntity<?> patchMember(@PathVariable String memberStuNum, @RequestBody ManageDTO.PatchMember dto) {
-        manageService.patchMember(memberStuNum, dto);
-        return ResponseUtil.successResponse("성공적으로 수정하였습니다.");
+    // 멤버 삭제하기
+    @DeleteMapping("/member/{memberId}")
+    public ResponseEntity<?> deleteMember(@PathVariable String memberId) {
+        return manageService.deleteMember(memberId);
     }
 
- */
+    // 멤버 상태 수정하기
+    @PutMapping("/member/{memberId}")
+    public ResponseEntity<MemberEntity> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.updateMemberStatus(memberId, requestDto));
+    }
 }

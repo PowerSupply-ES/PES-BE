@@ -47,4 +47,8 @@ public class MemberEntity extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "memberEntity")
     private List<CommentEntity> commentEntities = new ArrayList<>();
+
+    public void update(String memberStatus) {
+        this.memberStatus = memberStatus;
+    }
 }

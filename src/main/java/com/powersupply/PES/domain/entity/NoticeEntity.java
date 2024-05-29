@@ -30,6 +30,7 @@ public class NoticeEntity {
     private String noticeContent;
     private int noticeHit;
     private boolean isImportant;
+    private boolean isDeleted;
 
     @CreationTimestamp
     @Column(updatable = false)

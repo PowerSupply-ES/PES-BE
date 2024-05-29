@@ -36,7 +36,7 @@ public class SecurityConfig {
                 .cors().configurationSource(corsConfigurationSource()).and() // cross site 도메인 다른 경우 허용
                 .authorizeRequests()
                 .antMatchers("/api/signin","/api/signup").permitAll() // 기본 요청 언제나 접근 가능
-                .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank/**", "/api/notice/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/problemlist" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank/**", "/api/notice/**", "/api/admin/**").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/comment/**").hasRole("REGULAR_STUDENT")
                 .antMatchers(HttpMethod.POST,"/api/notice/**").hasRole("MANAGER")
                 .antMatchers(HttpMethod.PATCH,"/api/notice/**").hasRole("MANAGER")
@@ -54,7 +54,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("https://www.pes23.com", "https://pes23.com")); // 여기에 IP 추가
-        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "PUT", "DELETE"));
+        configuration.setAllowedMethods(Arrays.asList("POST", "GET", "OPTIONS", "PUT", "DELETE", "PATCH"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true); // 필요한 경우, 쿠키와 함께 요청을 보내는 것을 허용
 

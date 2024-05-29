@@ -16,6 +16,6 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
     @Query("SELECT COUNT(c) AS count " +
             "FROM MemberEntity m " +
             "LEFT JOIN CommentEntity c ON m.memberId = c.memberEntity.memberId " +
-            "WHERE m.memberStatus = '재학생' AND m.memberId = :id")
+            "WHERE m.memberId = :id")
     Integer findMemberCommentsCount(@Param("id") String id);
 }

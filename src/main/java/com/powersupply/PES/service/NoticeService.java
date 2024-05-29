@@ -46,7 +46,7 @@ public class NoticeService {
     }
 
     // 공지사항 리스트 가져오기
-    public ResponseEntity<?> getNoticeList() {
+    public ResponseEntity<?> getNoticeList(boolean state) {
         String memberId = JwtUtil.getMemberIdFromToken();
         List<NoticeEntity> noticeEntityList = noticeRepository.findAll();
 
@@ -69,18 +69,20 @@ public class NoticeService {
                 }
             }
 
-            NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
-                    .noticeId(noticeEntity.getNoticeId())
-                    .writerGen(noticeEntity.getMemberEntity().getMemberGen())
-                    .writer(noticeEntity.getMemberEntity().getMemberName())
-                    .title(noticeEntity.getNoticeTitle())
-                    .noticeHit(noticeEntity.getNoticeHit())
-                    .isImportant(noticeEntity.isImportant())
-                    .isNewNotice(isNewNotice)
-                    .createdTime(noticeEntity.getCreatedTime())
-                    .build();
+            if (noticeEntity.isDeleted() == state) {
+                NoticeDTO.NoticeList noticeList = NoticeDTO.NoticeList.builder()
+                        .noticeId(noticeEntity.getNoticeId())
+                        .writerGen(noticeEntity.getMemberEntity().getMemberGen())
+                        .writer(noticeEntity.getMemberEntity().getMemberName())
+                        .title(noticeEntity.getNoticeTitle())
+                        .noticeHit(noticeEntity.getNoticeHit())
+                        .isImportant(noticeEntity.isImportant())
+                        .isNewNotice(isNewNotice)
+                        .createdTime(noticeEntity.getCreatedTime())
+                        .build();
 
-            noticeLists.add(noticeList);
+                noticeLists.add(noticeList);
+            }
         }
 
         return ResponseEntity.ok().body(noticeLists);
@@ -162,6 +164,18 @@ public class NoticeService {
         return ResponseEntity.ok().body(response);
     }
 
+    // 공지사항 복원
+    public ResponseEntity<?> restoreNotice(Long noticeId) {
+        NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 noticeID가 없습니다."));
+
+        noticeEntity.setDeleted(false);
+        noticeRepository.save(noticeEntity);
+
+        return ResponseEntity.ok().build();
+    }
+
+    // 공지사항 삭제
     public ResponseEntity<?> deleteNotice(Long noticeId) {
         String id = JwtUtil.getMemberIdFromToken();
         MemberEntity admin = memberRepository.findById(id)
