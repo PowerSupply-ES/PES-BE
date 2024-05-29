@@ -164,17 +164,16 @@ public class NoticeService {
 
     public ResponseEntity<?> deleteNotice(Long noticeId) {
         String id = JwtUtil.getMemberIdFromToken();
-
         MemberEntity admin = memberRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없습니다."));
 
         if (admin.getMemberStatus() != "관리자") {
-            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아닙니다.");
         } else {
-            List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
-            memberNoticeRepository.deleteAll(memberNotices);
-
-            noticeRepository.deleteById(noticeId);
+            NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
+                    .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 공지가 없습니다."));
+            noticeEntity.setDeleted(true);
+            noticeRepository.save(noticeEntity);
             return ResponseEntity.ok().build();
         }
     }
