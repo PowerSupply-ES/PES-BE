@@ -2,6 +2,7 @@ package com.powersupply.PES.controller;
 
 import com.powersupply.PES.domain.dto.ManageDTO;
 import com.powersupply.PES.domain.entity.MemberEntity;
+import com.powersupply.PES.exception.ExceptionManger;
 import com.powersupply.PES.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +34,14 @@ public class ManageController {
 
     // 문제 등록하기
     @PostMapping("/problem")
-    public ResponseEntity<?> postProblem(@RequestBody ManageDTO.ProblemPostRequestDto requestDto) throws IOException {
+    public ResponseEntity<?> postProblem(@RequestBody ManageDTO.ProblemRequestDto requestDto) throws IOException {
         return ResponseEntity.ok(manageService.postProblem(requestDto));
+    }
+
+    // 문제 수정하기
+    @PatchMapping("/problem/{problemId}")
+    public ResponseEntity<?> patchProblem(@PathVariable Long problemId, @RequestBody ManageDTO.ProblemRequestDto requestDto) {
+        return manageService.patchProblem(problemId, requestDto);
     }
 
     // 전체 멤버 리스트 불러오기

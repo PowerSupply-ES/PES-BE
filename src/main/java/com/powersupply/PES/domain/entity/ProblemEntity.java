@@ -1,9 +1,6 @@
 package com.powersupply.PES.domain.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -15,6 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @Table(name = "problem_table")
 public class ProblemEntity {
 

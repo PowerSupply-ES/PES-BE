@@ -42,7 +42,7 @@ public class ManageService {
     }
 
     // 문제 등록하기
-    public ResponseEntity<?> postProblem(ManageDTO.ProblemPostRequestDto requestDto) {
+    public ResponseEntity<?> postProblem(ManageDTO.ProblemRequestDto requestDto) {
         String id = JwtUtil.getMemberIdFromToken();
 
         MemberEntity admin = memberRepository.findById(id)
@@ -62,6 +62,31 @@ public class ManageService {
             problemRepository.save(problemEntity);
 
             return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+    }
+
+    // 문제 수정하기
+    public ResponseEntity<?> patchProblem(Long problemId, ManageDTO.ProblemRequestDto requestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없습니다."));
+
+        ProblemEntity problem = problemRepository.findById(problemId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 problemId가 없습니다."));
+
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
+        } else {
+            problem.setProblemTitle(requestDto.getProblemTitle());
+            problem.setProblemScore(requestDto.getProblemScore());
+            problem.setContext(requestDto.getContext());
+            problem.setSample(requestDto.getSample());
+            problem.setInputs(requestDto.getInputs());
+            problem.setOutputs(requestDto.getOutputs());
+            problemRepository.save(problem);
+
+            return ResponseEntity.ok().build();
         }
     }
 

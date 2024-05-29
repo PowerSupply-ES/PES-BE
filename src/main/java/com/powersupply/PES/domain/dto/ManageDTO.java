@@ -49,7 +49,7 @@ public class ManageDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public class ProblemPostRequestDto {
+    public class ProblemRequestDto {
         private String problemTitle;
         private int problemScore;
         private String context;
@@ -58,7 +58,7 @@ public class ManageDTO {
         private String outputs;
 
         @Builder
-        public ProblemPostRequestDto(String problemTitle, int problemScore,
+        public ProblemRequestDto(String problemTitle, int problemScore,
                                       String context, int sample, String inputs, String outputs) {
             this.problemTitle = problemTitle;
             this.problemScore = problemScore;
