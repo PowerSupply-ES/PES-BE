@@ -1,6 +1,7 @@
 package com.powersupply.PES.service;
 
 import com.powersupply.PES.domain.dto.NoticeDTO;
+import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.domain.entity.MemberNoticeEntity;
 import com.powersupply.PES.domain.entity.NoticeEntity;
 import com.powersupply.PES.exception.AppException;
@@ -162,10 +163,19 @@ public class NoticeService {
     }
 
     public ResponseEntity<?> deleteNotice(Long noticeId) {
-        List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
-        memberNoticeRepository.deleteAll(memberNotices);
+        String id = JwtUtil.getMemberIdFromToken();
 
-        noticeRepository.deleteById(noticeId);
-        return ResponseEntity.ok().build();
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        if (admin.getMemberStatus() != "관리자") {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            List<MemberNoticeEntity> memberNotices = memberNoticeRepository.findByNoticeEntity_NoticeId(noticeId);
+            memberNoticeRepository.deleteAll(memberNotices);
+
+            noticeRepository.deleteById(noticeId);
+            return ResponseEntity.ok().build();
+        }
     }
 }
