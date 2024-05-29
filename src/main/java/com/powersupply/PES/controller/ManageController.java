@@ -32,7 +32,7 @@ public class ManageController {
     }
 
     // 문제 등록하기
-    @PostMapping("/problem/{problemId}")
+    @PostMapping("/problem")
     public ResponseEntity<?> postProblem(@RequestBody ManageDTO.ProblemPostRequestDto requestDto) throws IOException {
         return ResponseEntity.ok(manageService.postProblem(requestDto));
     }
