@@ -48,7 +48,7 @@ public class ManageService {
         MemberEntity admin = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
 
-        if (admin.getMemberStatus() != "관리자") {
+        if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
         } else {
             ProblemEntity problemEntity = ProblemEntity.builder()
@@ -75,7 +75,7 @@ public class ManageService {
         ProblemEntity problem = problemRepository.findById(problemId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 problemId가 없습니다."));
 
-        if (admin.getMemberStatus() != "관리자") {
+        if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
         } else {
             problem.setProblemTitle(requestDto.getProblemTitle());
@@ -115,7 +115,7 @@ public class ManageService {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"삭제하려는 memberId가 없음"));
 
-        if (admin.getMemberStatus() != "관리자") {
+        if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
         } else {
             memberRepository.deleteById(memberId);
@@ -136,7 +136,7 @@ public class ManageService {
             throw new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음");
         }
 
-        if (admin.getMemberStatus() != "관리자") {
+        if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
         } else {
             MemberEntity member = optionalMember.get();
