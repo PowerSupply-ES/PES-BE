@@ -4,6 +4,7 @@ os: linux
 files:
   - source: /
     destination: /home/ubuntu/PES-BE
+file_exists_behavior: OVERWRITE
 permissions:
   - object: /home/ubuntu/PES-BE
     owner: ubuntu
