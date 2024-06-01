@@ -4,6 +4,14 @@
 REPOSITORY=/home/ubuntu/PES-BE
 cd $REPOSITORY
 
+# gradle-wrapper.jar가 존재하는지 확인 후 백업
+WRAPPER_PATH="$REPOSITORY/gradle/wrapper/gradle-wrapper.jar"
+if [ -f "$WRAPPER_PATH" ]; then
+    echo "gradle-wrapper.jar 파일이 이미 존재합니다. 파일을 백업하고 새로운 파일로 교체합니다."
+    # 파일 백업
+    mv "$WRAPPER_PATH" "$WRAPPER_PATH.bak"
+fi
+
 # 빌드 권한 설정
 chmod +x gradlew
 
