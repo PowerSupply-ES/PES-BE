@@ -1,11 +1,73 @@
 package com.powersupply.PES.domain.dto;
 
 import com.powersupply.PES.domain.entity.MemberEntity;
+import com.powersupply.PES.domain.entity.ProblemEntity;
+import com.powersupply.PES.exception.ExceptionManger;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class ManageDTO {
+
+    @Getter
+    public static class ProblemList {
+        private Long problemId;
+        private String problemTitle;
+        private int problemScore;
+
+        @Builder
+        public ProblemList(ProblemEntity problem) {
+            this.problemId = problem.getProblemId();
+            this.problemTitle = problem.getProblemTitle();
+            this.problemScore = problem.getProblemScore();
+        }
+    }
+
+    @Getter
+    public static class ProblemDetail {
+        private Long problemId;
+        private String problemTitle;
+        private int problemScore;
+        private String context;
+        private int sample;
+        private String inputs;
+        private String outputs;
+
+        @Builder
+        public ProblemDetail(ProblemEntity problem) {
+            this.problemId = problem.getProblemId();
+            this.problemTitle = problem.getProblemTitle();
+            this.problemScore = problem.getProblemScore();
+            this.context = problem.getContext();
+            this.sample = problem.getSample();
+            this.inputs = problem.getInputs();
+            this.outputs = problem.getOutputs();
+        }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public class ProblemRequestDto {
+        private String problemTitle;
+        private int problemScore;
+        private String context;
+        private int sample;
+        private String inputs;
+        private String outputs;
+
+        @Builder
+        public ProblemRequestDto(String problemTitle, int problemScore,
+                                      String context, int sample, String inputs, String outputs) {
+            this.problemTitle = problemTitle;
+            this.problemScore = problemScore;
+            this.context = context;
+            this.sample = sample;
+            this.inputs = inputs;
+            this.outputs = outputs;
+        }
+    }
 
     @Getter
     public static class makeQuestion {
