@@ -2,6 +2,7 @@ package com.powersupply.PES.domain.dto;
 
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.domain.entity.ProblemEntity;
+import com.powersupply.PES.domain.entity.QuestionEntity;
 import com.powersupply.PES.exception.ExceptionManger;
 import lombok.Builder;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import lombok.Setter;
 
 public class ManageDTO {
 
+    // 문제 관리 기능 관련
     @Getter
     public static class ProblemList {
         private Long problemId;
@@ -58,6 +60,7 @@ public class ManageDTO {
         private String outputs;
     }
 
+    // 회원 관리 기능 관련
     @Getter
     public static class MemberList {
         private String memberId; // 학번
@@ -98,5 +101,19 @@ public class ManageDTO {
     @NoArgsConstructor
     public static class MemberUpdateRequestDto {
         private String memberStatus;
+    }
+
+    // 질문 관리 기능 관련
+
+    @Getter
+    public static class QuestionList {
+        private Long questionId;
+        private String questionContent;
+
+        @Builder
+        public QuestionList(QuestionEntity question) {
+            this.questionId = question.getQuestionId();
+            this.questionContent = question.getQuestionContent();
+        }
     }
 }

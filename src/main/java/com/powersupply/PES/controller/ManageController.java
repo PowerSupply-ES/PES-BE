@@ -17,6 +17,8 @@ import java.util.List;
 public class ManageController {
 
     private final ManageService manageService;
+    
+    /* ---------- 문제 관리 기능 ---------- */
 
     // 전체 문제 리스트 불러오기
     @GetMapping("/problemlist")
@@ -43,6 +45,8 @@ public class ManageController {
     public ResponseEntity<?> patchProblem(@PathVariable Long problemId, @RequestBody ManageDTO.ProblemRequestDto requestDto) {
         return manageService.patchProblem(problemId, requestDto);
     }
+    
+    /* ---------- 회원 관리 기능 ---------- */
 
     // 전체 멤버 리스트 불러오기
     @GetMapping("/memberlist")
@@ -68,5 +72,15 @@ public class ManageController {
     @PutMapping("/member/{memberId}")
     public ResponseEntity<MemberEntity> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
         return ResponseEntity.ok(manageService.updateMemberStatus(memberId, requestDto));
+    }
+
+    /* ---------- 질문 관리 기능 ---------- */
+
+    // 문제 별 질문 목록 가져오기
+    @GetMapping("/questionlist/{problemId}")
+    public ResponseEntity<List<ManageDTO.QuestionList>> questionList(@PathVariable Long problemId) {
+        List<ManageDTO.QuestionList> questionList = manageService.questionList(problemId);
+
+        return ResponseEntity.ok().body(questionList);
     }
 }

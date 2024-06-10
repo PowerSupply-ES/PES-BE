@@ -26,7 +26,10 @@ import java.util.stream.Collectors;
 public class ManageService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
+    private final QuestionRepository questionRepository;
 
+    /* ---------- 문제 관리 기능 관련 ---------- */
+    
     // 전체 문제 리스트 불러오기
     public List<ManageDTO.ProblemList> problemList() {
         return problemRepository.findAll().stream()
@@ -90,6 +93,8 @@ public class ManageService {
         }
     }
 
+    /* ---------- 회원 관리 기능 관련 ---------- */
+
     // 전체 멤버 리스트 불러오기
     @Transactional(readOnly = true)
     public List<ManageDTO.MemberList> list() {
@@ -144,5 +149,12 @@ public class ManageService {
 
             return memberRepository.save(member);
         }
+    }
+
+    /* ---------- 질문 관리 기능 관련 ---------- */
+    public List<ManageDTO.QuestionList> questionList(Long problemId) {
+        return questionRepository.findByProblemEntity_ProblemId(problemId).stream()
+                .map(ManageDTO.QuestionList::new)
+                .collect(Collectors.toList());
     }
 }
