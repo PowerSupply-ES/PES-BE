@@ -49,30 +49,13 @@ public class ManageDTO {
     @Getter
     @Setter
     @NoArgsConstructor
-    public class ProblemRequestDto {
+    public static class ProblemRequestDto {
         private String problemTitle;
         private int problemScore;
         private String context;
         private int sample;
         private String inputs;
         private String outputs;
-
-        @Builder
-        public ProblemRequestDto(String problemTitle, int problemScore,
-                                      String context, int sample, String inputs, String outputs) {
-            this.problemTitle = problemTitle;
-            this.problemScore = problemScore;
-            this.context = context;
-            this.sample = sample;
-            this.inputs = inputs;
-            this.outputs = outputs;
-        }
-    }
-
-    @Getter
-    public static class makeQuestion {
-        private String questionContent;
-        private int questionDifficulty;
     }
 
     @Getter
@@ -112,29 +95,8 @@ public class ManageDTO {
     }
 
     @Getter
-    public static class MemberResponseDto {
-        private String memberId;
-        private String memberStatus;
-
-        public MemberResponseDto(MemberEntity member) {
-            this.memberId = member.getMemberId();
-            this.memberStatus = member.getMemberStatus();
-        }
-    }
-
-    @Getter
     @NoArgsConstructor
     public static class MemberUpdateRequestDto {
-        private String memberStatus;
-        @Builder
-        public MemberUpdateRequestDto(String memberStatus) {
-            this.memberStatus = memberStatus;
-        }
-    }
-
-    @Getter
-    public static class PatchMember {
-        private int memberGen;
         private String memberStatus;
     }
 }
