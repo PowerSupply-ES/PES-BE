@@ -116,4 +116,11 @@ public class ManageDTO {
             this.questionContent = question.getQuestionContent();
         }
     }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    public static class QuestionRequestDto {
+        private String questionContent;
+    }
 }

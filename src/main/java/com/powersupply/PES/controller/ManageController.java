@@ -6,6 +6,7 @@ import com.powersupply.PES.exception.ExceptionManger;
 import com.powersupply.PES.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -82,5 +83,11 @@ public class ManageController {
         List<ManageDTO.QuestionList> questionList = manageService.questionList(problemId);
 
         return ResponseEntity.ok().body(questionList);
+    }
+
+    // 질문 등록하기
+    @PostMapping("/question/{problemId}")
+    public ResponseEntity<?> postQuestion(@PathVariable Long problemId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.postQuestion(problemId, requestDto));
     }
 }

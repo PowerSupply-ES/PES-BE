@@ -157,4 +157,27 @@ public class ManageService {
                 .map(ManageDTO.QuestionList::new)
                 .collect(Collectors.toList());
     }
+
+    // 질문 등록하기
+    public ResponseEntity<?> postQuestion(Long problemId, ManageDTO.QuestionRequestDto requestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        if (!admin.getMemberStatus().equals("관리자")) {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            ProblemEntity problemEntity = problemRepository.findById(problemId)
+                    .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 problemId가 없음"));
+
+            QuestionEntity questionEntity = QuestionEntity.builder()
+                    .questionContent(requestDto.getQuestionContent())
+                    .problemEntity(problemEntity)
+                    .build();
+            questionRepository.save(questionEntity);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+    }
 }
