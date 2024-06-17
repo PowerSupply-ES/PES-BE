@@ -90,4 +90,10 @@ public class ManageController {
     public ResponseEntity<?> postQuestion(@PathVariable Long problemId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
         return ResponseEntity.ok(manageService.postQuestion(problemId, requestDto));
     }
+
+    // 질문 수정하기
+    @PatchMapping("/question/{questionId}")
+    public ResponseEntity<?> patchQuestion(@PathVariable Long questionId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.updateQuestion(questionId, requestDto));
+    }
 }
