@@ -1,8 +1,10 @@
 package com.powersupply.PES.domain.entity;
 
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,4 +33,10 @@ public class QuestionEntity extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "questionSec")
     private List<AnswerEntity> answerEntitiesForSec = new ArrayList<>();
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdTime;
+
+    private LocalDateTime updatedTime;
 }
