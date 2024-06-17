@@ -1,6 +1,7 @@
 package com.powersupply.PES.repository;
 
 import com.powersupply.PES.domain.entity.AnswerEntity;
+import com.powersupply.PES.domain.entity.QuestionEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,4 +19,6 @@ public interface AnswerRepository extends JpaRepository<AnswerEntity, Long> {
     List<AnswerEntity> findAllByMemberEntity_MemberId(String id);
 
     Optional<AnswerEntity> findByMemberEntity_MemberIdAndProblemEntity_ProblemId(String id, Long problemId);
+
+    List<AnswerEntity> findByQuestionFstOrQuestionSec(QuestionEntity questionFst, QuestionEntity questionSec);
 }

@@ -6,6 +6,7 @@ import com.powersupply.PES.exception.ExceptionManger;
 import com.powersupply.PES.service.ManageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,6 +18,8 @@ import java.util.List;
 public class ManageController {
 
     private final ManageService manageService;
+    
+    /* ---------- 문제 관리 기능 ---------- */
 
     // 전체 문제 리스트 불러오기
     @GetMapping("/problemlist")
@@ -43,6 +46,8 @@ public class ManageController {
     public ResponseEntity<?> patchProblem(@PathVariable Long problemId, @RequestBody ManageDTO.ProblemRequestDto requestDto) {
         return manageService.patchProblem(problemId, requestDto);
     }
+    
+    /* ---------- 회원 관리 기능 ---------- */
 
     // 전체 멤버 리스트 불러오기
     @GetMapping("/memberlist")
@@ -68,5 +73,33 @@ public class ManageController {
     @PutMapping("/member/{memberId}")
     public ResponseEntity<MemberEntity> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
         return ResponseEntity.ok(manageService.updateMemberStatus(memberId, requestDto));
+    }
+
+    /* ---------- 질문 관리 기능 ---------- */
+
+    // 문제 별 질문 목록 가져오기
+    @GetMapping("/questionlist/{problemId}")
+    public ResponseEntity<List<ManageDTO.QuestionList>> questionList(@PathVariable Long problemId) {
+        List<ManageDTO.QuestionList> questionList = manageService.questionList(problemId);
+
+        return ResponseEntity.ok().body(questionList);
+    }
+
+    // 질문 등록하기
+    @PostMapping("/question/{problemId}")
+    public ResponseEntity<?> postQuestion(@PathVariable Long problemId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.postQuestion(problemId, requestDto));
+    }
+
+    // 질문 수정하기
+    @PatchMapping("/question/{questionId}")
+    public ResponseEntity<?> patchQuestion(@PathVariable Long questionId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
+        return ResponseEntity.ok(manageService.updateQuestion(questionId, requestDto));
+    }
+
+    // 질문 삭제하기
+    @DeleteMapping("/question/{questionId}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId) {
+        return ResponseEntity.ok(manageService.deleteQuestion(questionId));
     }
 }

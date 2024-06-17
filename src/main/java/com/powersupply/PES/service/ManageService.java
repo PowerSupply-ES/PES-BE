@@ -5,6 +5,7 @@ import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
+import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.repository.ProblemRepository;
 import com.powersupply.PES.repository.QuestionRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.Member;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +28,11 @@ import java.util.stream.Collectors;
 public class ManageService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
+    private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
+    /* ---------- 문제 관리 기능 관련 ---------- */
+    
     // 전체 문제 리스트 불러오기
     public List<ManageDTO.ProblemList> problemList() {
         return problemRepository.findAll().stream()
@@ -90,6 +96,8 @@ public class ManageService {
         }
     }
 
+    /* ---------- 회원 관리 기능 관련 ---------- */
+
     // 전체 멤버 리스트 불러오기
     @Transactional(readOnly = true)
     public List<ManageDTO.MemberList> list() {
@@ -143,6 +151,83 @@ public class ManageService {
             member.setMemberStatus(updateRequestDto.getMemberStatus());
 
             return memberRepository.save(member);
+        }
+    }
+
+    /* ---------- 질문 관리 기능 관련 ---------- */
+
+    // 문제 별 질문 목록 가져오기
+    public List<ManageDTO.QuestionList> questionList(Long problemId) {
+        return questionRepository.findByProblemEntity_ProblemId(problemId).stream()
+                .map(ManageDTO.QuestionList::new)
+                .collect(Collectors.toList());
+    }
+
+    // 질문 등록하기
+    public ResponseEntity<?> postQuestion(Long problemId, ManageDTO.QuestionRequestDto requestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        if (!admin.getMemberStatus().equals("관리자")) {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            ProblemEntity problemEntity = problemRepository.findById(problemId)
+                    .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 problemId가 없음"));
+
+            QuestionEntity questionEntity = QuestionEntity.builder()
+                    .questionContent(requestDto.getQuestionContent())
+                    .problemEntity(problemEntity)
+                    .build();
+            questionRepository.save(questionEntity);
+
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        }
+    }
+
+    // 질문 수정하기
+    public ResponseEntity<?> updateQuestion(Long questionId, ManageDTO.QuestionRequestDto requestDto) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        QuestionEntity questionEntity = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 questionId가 없음"));
+
+        if (!admin.getMemberStatus().equals("관리자")) {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            questionEntity.setQuestionContent(requestDto.getQuestionContent());
+            questionEntity.setUpdatedTime(LocalDateTime.now());
+            questionRepository.save(questionEntity);
+
+            return ResponseEntity.ok().build();
+        }
+    }
+
+    // 질문 삭제하기
+    public ResponseEntity<?> deleteQuestion(Long questionId) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        QuestionEntity questionEntity = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 questionId가 없음"));
+
+        if (!admin.getMemberStatus().equals("관리자")) {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            List<AnswerEntity> relatedQuestion = answerRepository.findByQuestionFstOrQuestionSec(questionEntity, questionEntity);
+
+            if (!relatedQuestion.isEmpty()) {
+                throw new AppException(ErrorCode.FORBIDDEN, "이미 답변을 한 학생이 있어, 삭제가 불가능합니다.");
+            } else {
+                questionRepository.delete(questionEntity);
+                return ResponseEntity.noContent().build();
+            }
         }
     }
 }
