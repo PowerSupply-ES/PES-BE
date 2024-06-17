@@ -96,4 +96,10 @@ public class ManageController {
     public ResponseEntity<?> patchQuestion(@PathVariable Long questionId, @RequestBody ManageDTO.QuestionRequestDto requestDto) {
         return ResponseEntity.ok(manageService.updateQuestion(questionId, requestDto));
     }
+
+    // 질문 삭제하기
+    @DeleteMapping("/question/{questionId}")
+    public ResponseEntity<?> deleteQuestion(@PathVariable Long questionId) {
+        return ResponseEntity.ok(manageService.deleteQuestion(questionId));
+    }
 }

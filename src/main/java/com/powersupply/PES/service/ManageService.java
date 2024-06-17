@@ -5,6 +5,7 @@ import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
+import com.powersupply.PES.repository.AnswerRepository;
 import com.powersupply.PES.repository.MemberRepository;
 import com.powersupply.PES.repository.ProblemRepository;
 import com.powersupply.PES.repository.QuestionRepository;
@@ -28,6 +29,7 @@ public class ManageService {
     private final MemberRepository memberRepository;
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
+    private final AnswerRepository answerRepository;
 
     /* ---------- 문제 관리 기능 관련 ---------- */
     
@@ -202,6 +204,30 @@ public class ManageService {
             questionRepository.save(questionEntity);
 
             return ResponseEntity.ok().build();
+        }
+    }
+
+    // 질문 삭제하기
+    public ResponseEntity<?> deleteQuestion(Long questionId) {
+        String id = JwtUtil.getMemberIdFromToken();
+
+        MemberEntity admin = memberRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
+        QuestionEntity questionEntity = questionRepository.findById(questionId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 questionId가 없음"));
+
+        if (!admin.getMemberStatus().equals("관리자")) {
+            throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아님");
+        } else {
+            List<AnswerEntity> relatedQuestion = answerRepository.findByQuestionFstOrQuestionSec(questionEntity, questionEntity);
+
+            if (!relatedQuestion.isEmpty()) {
+                throw new AppException(ErrorCode.FORBIDDEN, "이미 답변을 한 학생이 있어, 삭제가 불가능합니다.");
+            } else {
+                questionRepository.delete(questionEntity);
+                return ResponseEntity.noContent().build();
+            }
         }
     }
 }
