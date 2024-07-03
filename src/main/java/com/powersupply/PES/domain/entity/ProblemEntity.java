@@ -24,7 +24,7 @@ public class ProblemEntity {
     @Column(columnDefinition = "TEXT")
     private String context;
     @Column(nullable = true)
-    private int sample;
+    private Integer sample;
     @Column(columnDefinition = "TEXT")
     private String inputs;
     @Column(columnDefinition = "TEXT")
