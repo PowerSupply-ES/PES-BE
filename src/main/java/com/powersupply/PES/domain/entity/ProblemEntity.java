@@ -23,7 +23,7 @@ public class ProblemEntity {
     private int problemScore;
     @Column(columnDefinition = "TEXT")
     private String context;
-    @Nullable
+    @Column(nullable = true)
     private int sample;
     @Column(columnDefinition = "TEXT")
     private String inputs;
