@@ -25,7 +25,6 @@ public class ManageController {
     @GetMapping("/problemlist")
     public ResponseEntity<List<ManageDTO.ProblemList>> problemList() {
         List<ManageDTO.ProblemList> problemList = manageService.problemList();
-
         return ResponseEntity.ok().body(problemList);
     }
 
