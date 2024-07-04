@@ -32,7 +32,7 @@ public class ManageDTO {
         private String problemTitle;
         private int problemScore;
         private String context;
-        private int sample;
+        private Integer sample;
         private String inputs;
         private String outputs;
 
@@ -55,7 +55,7 @@ public class ManageDTO {
         private String problemTitle;
         private int problemScore;
         private String context;
-        private int sample;
+        private Integer sample;
         private String inputs;
         private String outputs;
     }
