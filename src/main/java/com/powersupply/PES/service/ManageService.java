@@ -9,6 +9,7 @@ import com.powersupply.PES.mapper.MapperUtils;
 import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.Hibernate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class ManageService {
     private final CommentRepository commentRepository;
 
     /* ---------- 문제 관리 기능 관련 ---------- */
-    
+
     // 전체 문제 리스트 불러오기
     public List<ManageDTO.ProblemList> problemList() {
         return problemRepository.findAll().stream()
@@ -106,9 +107,13 @@ public class ManageService {
     }
 
     // 특정 멤버 detail 불러오기
+    @Transactional
     public ManageDTO.MemberDetail readDetail(String memberId) {
         MemberEntity member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없습니다."));
+
+        Hibernate.initialize(member.getAnswerEntities());
+        Hibernate.initialize(member.getCommentEntities());
 
         List<MemberDTO.MemberMySolveResponse> mySolveResponseList = answerRepository.findAllByMemberEntity_MemberId(memberId).stream()
                 .map(MapperUtils::toMemberMySolveResponse)
@@ -128,10 +133,10 @@ public class ManageService {
     // 멤버 삭제하기
     public ResponseEntity<?> deleteMember(String memberId) {
         String id = JwtUtil.getMemberIdFromToken();
-        
+
         MemberEntity admin = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
-        
+
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"삭제하려는 memberId가 없음"));
 

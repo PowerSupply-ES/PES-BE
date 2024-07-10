@@ -88,6 +88,7 @@ public class ManageDTO {
         private String memberMajor; // 학과
         private String memberStatus; // 상태
         private String memberEmail; // 이메일
+        private String memberPhone;
         private List<MemberDTO.MemberMySolveResponse> mySolveResponse;
         private List<MemberDTO.MemberMyFeedbackResponse> myFeedbackResponse;
 
@@ -99,6 +100,7 @@ public class ManageDTO {
             this.memberMajor = member.getMemberMajor();
             this.memberStatus = member.getMemberStatus();
             this.memberEmail = member.getMemberEmail();
+            this.memberPhone = member.getMemberPhone();
             this.mySolveResponse = mySolveResponse;
             this.myFeedbackResponse = myFeedbackResponse;
         }
