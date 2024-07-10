@@ -5,10 +5,8 @@ import com.powersupply.PES.domain.dto.MemberDTO;
 import com.powersupply.PES.domain.entity.*;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
-import com.powersupply.PES.repository.AnswerRepository;
-import com.powersupply.PES.repository.MemberRepository;
-import com.powersupply.PES.repository.ProblemRepository;
-import com.powersupply.PES.repository.QuestionRepository;
+import com.powersupply.PES.mapper.MapperUtils;
+import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,6 +28,7 @@ public class ManageService {
     private final ProblemRepository problemRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
+    private final CommentRepository commentRepository;
 
     /* ---------- 문제 관리 기능 관련 ---------- */
     
@@ -108,9 +107,22 @@ public class ManageService {
 
     // 특정 멤버 detail 불러오기
     public ManageDTO.MemberDetail readDetail(String memberId) {
-        return memberRepository.findById(memberId)
-                .map(ManageDTO.MemberDetail::new)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id가 존재하지 않습니다."));
+        MemberEntity member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없습니다."));
+
+        List<MemberDTO.MemberMySolveResponse> mySolveResponseList = answerRepository.findAllByMemberEntity_MemberId(memberId).stream()
+                .map(MapperUtils::toMemberMySolveResponse)
+                .collect(Collectors.toList());
+
+        List<MemberDTO.MemberMyFeedbackResponse> myFeedbackResponseList = commentRepository.findAllByMemberEntity_MemberId(memberId).stream()
+                .map(MapperUtils::toMemberMyFeedbackResponse)
+                .collect(Collectors.toList());
+
+        return ManageDTO.MemberDetail.builder()
+                .member(member)
+                .mySolveResponse(mySolveResponseList)
+                .myFeedbackResponse(myFeedbackResponseList)
+                .build();
     }
 
     // 멤버 삭제하기
