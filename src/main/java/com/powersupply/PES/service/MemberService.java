@@ -6,6 +6,7 @@ import com.powersupply.PES.domain.entity.CommentEntity;
 import com.powersupply.PES.domain.entity.MemberEntity;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
+import com.powersupply.PES.mapper.MapperUtils;
 import com.powersupply.PES.repository.*;
 import com.powersupply.PES.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -157,19 +158,10 @@ public class MemberService {
             return ResponseEntity.noContent().build();
         }
 
-        List<MemberDTO.MemberMySolveResponse> mySolveResponseList = new ArrayList<>();
+        List<MemberDTO.MemberMySolveResponse> mySolveResponseList = answerRepository.findAllByMemberEntity_MemberId(id).stream()
+                .map(MapperUtils::toMemberMySolveResponse)
+                .collect(Collectors.toList());
 
-        for (AnswerEntity answerEntity: answerEntityList) {
-            MemberDTO.MemberMySolveResponse mySolveResponse = MemberDTO.MemberMySolveResponse.builder()
-                    .problemId(answerEntity.getProblemEntity().getProblemId())
-                    .problemTitle(answerEntity.getProblemEntity().getProblemTitle())
-                    .problemScore(answerEntity.getProblemEntity().getProblemScore())
-                    .answerId(answerEntity.getAnswerId())
-                    .answerState(answerEntity.getAnswerState())
-                    .finalScore(answerEntity.getFinalScore())
-                    .build();
-            mySolveResponseList.add(mySolveResponse);
-        }
         return ResponseEntity.ok().body(mySolveResponseList);
     }
 
@@ -184,18 +176,10 @@ public class MemberService {
             return ResponseEntity.noContent().build();
         }
 
-        List<MemberDTO.MemberMyFeedbackResponse> memberMyFeedbackResponseList = new ArrayList<>();
+        List<MemberDTO.MemberMyFeedbackResponse> memberMyFeedbackResponseList = commentRepository.findAllByMemberEntity_MemberId(id).stream()
+                .map(MapperUtils::toMemberMyFeedbackResponse)
+                .collect(Collectors.toList());
 
-        for (CommentEntity commentEntity : commentEntityList) {
-            MemberDTO.MemberMyFeedbackResponse myFeedbackResponse = MemberDTO.MemberMyFeedbackResponse.builder()
-                    .answerId(commentEntity.getAnswerEntity().getAnswerId())
-                    .memberGen(commentEntity.getAnswerEntity().getMemberEntity().getMemberGen())
-                    .memberName(commentEntity.getAnswerEntity().getMemberEntity().getMemberName())
-                    .commentPassFail(commentEntity.getCommentPassFail())
-                    .commentContent(commentEntity.getCommentContent())
-                    .build();
-            memberMyFeedbackResponseList.add(myFeedbackResponse);
-        }
         return ResponseEntity.ok().body(memberMyFeedbackResponseList);
     }
 
