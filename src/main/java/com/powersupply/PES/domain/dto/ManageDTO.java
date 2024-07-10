@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ManageDTO {
 
     // 문제 관리 기능 관련
@@ -85,15 +88,19 @@ public class ManageDTO {
         private String memberMajor; // 학과
         private String memberStatus; // 상태
         private String memberEmail; // 이메일
+        private List<MemberDTO.MemberMySolveResponse> mySolveResponse;
+        private List<MemberDTO.MemberMyFeedbackResponse> myFeedbackResponse;
 
         @Builder
-        public MemberDetail(MemberEntity member) {
+        public MemberDetail(MemberEntity member, List<MemberDTO.MemberMySolveResponse> mySolveResponse, List<MemberDTO.MemberMyFeedbackResponse> myFeedbackResponse) {
             this.memberId = member.getMemberId();
             this.memberName = member.getMemberName();
             this.memberGen = member.getMemberGen();
             this.memberMajor = member.getMemberMajor();
             this.memberStatus = member.getMemberStatus();
             this.memberEmail = member.getMemberEmail();
+            this.mySolveResponse = mySolveResponse;
+            this.myFeedbackResponse = myFeedbackResponse;
         }
     }
 
