@@ -1,8 +1,8 @@
 package com.powersupply.PES.mapper;
 
-import com.powersupply.PES.domain.dto.MemberDTO;
-import com.powersupply.PES.domain.entity.AnswerEntity;
-import com.powersupply.PES.domain.entity.CommentEntity;
+import com.powersupply.PES.member.dto.MemberDTO;
+import com.powersupply.PES.answer.entity.AnswerEntity;
+import com.powersupply.PES.comment.entity.CommentEntity;
 
 public class MapperUtils {
 

@@ -26,10 +26,25 @@ public class JwtFilter extends OncePerRequestFilter {
     private final String secretKey;
 
     // 인증이 필요없는 경로 URL 목록
-    private final List<String> skipUrls = Arrays.asList("/api/signin", "/api/signup", "/api/finduser");
+    private final List<String> skipUrls = Arrays.asList(
+            "/api/signin",
+            "/api/signup",
+            "/api/finduser",
+            "/swagger-ui/**",
+            "/v3/api-docs/**",
+            "/swagger-resources/**",
+            "/webjars/**"
+    );
 
     // 인증이 필요 없는 GET 요청의 URL 목록
-    private final List<String> skipGetUrls = Arrays.asList("/api/problemlist/" , "/api/answer/**", "/api/comment/**", "/api/answerlist/**", "/api/rank/**", "/api/admin/**");
+    private final List<String> skipGetUrls = Arrays.asList(
+            "/api/problemlist/",
+            "/api/answer/**",
+            "/api/comment/**",
+            "/api/answerlist/**",
+            "/api/rank/**",
+            "/api/admin/**"
+    );
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -46,7 +61,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         // 인증이 필요없는 경로는 바로 통과
-        if (skipUrls.contains(requestURI)) {
+        if (skipUrls.stream().anyMatch(uri -> pathMatcher.match(uri, requestURI))) {
             log.info("인증 필요 없음 : {}", requestURI);
             filterChain.doFilter(request, response);
             return;
