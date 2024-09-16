@@ -44,7 +44,7 @@ public class MemberEntity extends BaseEntity {
     private String memberPhone; // 전화번호
 
     @Builder.Default
-    @OneToMany(mappedBy = "memberEntity")
+    @OneToMany(mappedBy = "memberEntity", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AnswerEntity> answerEntities = new ArrayList<>();
 
     @Builder.Default
