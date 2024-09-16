@@ -136,6 +136,7 @@ public class ManageService {
     }
 
     // 멤버 삭제하기
+    @Transactional
     public ResponseEntity<?> deleteMember(String memberId) {
         String id = JwtUtil.getMemberIdFromToken();
 
@@ -154,6 +155,8 @@ public class ManageService {
         }
     }
 
+    // 멤버 등업하기
+    @Transactional
     public MemberEntity updateMemberStatus(String memberId, ManageDTO.MemberUpdateRequestDto updateRequestDto) {
         String id = JwtUtil.getMemberIdFromToken();
         assert id != null;
