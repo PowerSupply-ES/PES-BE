@@ -4,10 +4,14 @@ import com.powersupply.PES.member.dto.MemberDTO;
 import com.powersupply.PES.member.entity.MemberEntity;
 import com.powersupply.PES.problem.entity.ProblemEntity;
 import com.powersupply.PES.question.entity.QuestionEntity;
+
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -106,8 +110,22 @@ public class ManageDTO {
     }
 
     @Getter
+    @Setter
     @NoArgsConstructor
+    @AllArgsConstructor
     public static class MemberUpdateRequestDto {
+        private String memberStatus;
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @ToString
+    @EqualsAndHashCode
+    public static class MemberResponseDto {
+        private String memberId;
+        private String memberName;
         private String memberStatus;
     }
 

@@ -4,6 +4,7 @@ import com.powersupply.PES.answer.entity.AnswerEntity;
 import com.powersupply.PES.answer.repository.AnswerRepository;
 import com.powersupply.PES.comment.repository.CommentRepository;
 import com.powersupply.PES.manage.dto.ManageDTO;
+import com.powersupply.PES.manage.dto.ManageDTO.MemberResponseDto;
 import com.powersupply.PES.member.dto.MemberDTO;
 import com.powersupply.PES.exception.AppException;
 import com.powersupply.PES.exception.ErrorCode;
@@ -157,26 +158,25 @@ public class ManageService {
 
     // 멤버 등업하기
     @Transactional
-    public MemberEntity updateMemberStatus(String memberId, ManageDTO.MemberUpdateRequestDto updateRequestDto) {
+    public MemberResponseDto updateMemberStatus(String memberId, ManageDTO.MemberUpdateRequestDto updateRequestDto) {
         String id = JwtUtil.getMemberIdFromToken();
         assert id != null;
 
         MemberEntity admin = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음"));
 
-        Optional<MemberEntity> optionalMember = memberRepository.findById(memberId);
-        if (optionalMember.isEmpty()) {
-            throw new AppException(ErrorCode.NOT_FOUND,"해당 memberId가 없음");
-        }
+        MemberEntity member = memberRepository.findById(memberId)
+            .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없음"));
+
 
         if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN,"관리자가 아님");
-        } else {
-            MemberEntity member = optionalMember.get();
-            member.setMemberStatus(updateRequestDto.getMemberStatus());
-
-            return memberRepository.save(member);
         }
+        
+        member.setMemberStatus(updateRequestDto.getMemberStatus());
+        memberRepository.save(member);
+
+        return new MemberResponseDto(member.getMemberId(), member.getMemberName(), member.getMemberStatus());
     }
 
     /* ---------- 질문 관리 기능 관련 ---------- */

@@ -1,6 +1,7 @@
 package com.powersupply.PES.manage.controller;
 
 import com.powersupply.PES.manage.dto.ManageDTO;
+import com.powersupply.PES.manage.dto.ManageDTO.MemberResponseDto;
 import com.powersupply.PES.member.entity.MemberEntity;
 import com.powersupply.PES.manage.service.ManageService;
 import lombok.RequiredArgsConstructor;
@@ -68,7 +69,7 @@ public class ManageController {
 
     // 멤버 상태 수정하기
     @PutMapping("/member/{memberId}")
-    public ResponseEntity<MemberEntity> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
+    public ResponseEntity<MemberResponseDto> updateMemberStatus(@PathVariable String memberId, @RequestBody ManageDTO.MemberUpdateRequestDto requestDto) {
         return ResponseEntity.ok(manageService.updateMemberStatus(memberId, requestDto));
     }
 
