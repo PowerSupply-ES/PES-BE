@@ -181,7 +181,7 @@ public class NoticeService {
         MemberEntity admin = memberRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.NOT_FOUND, "해당 memberId가 없습니다."));
 
-        if (admin.getMemberStatus() != "관리자") {
+        if (!admin.getMemberStatus().equals("관리자")) {
             throw new AppException(ErrorCode.FORBIDDEN, "관리자가 아닙니다.");
         } else {
             NoticeEntity noticeEntity = noticeRepository.findById(noticeId)
